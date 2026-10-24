@@ -90,6 +90,17 @@
                     </svg>
                     Kelola Pengguna
                 </a>
+                <a href="{{ route('admin.projects.index') }}" class="flex items-center justify-between px-3 py-2.5 rounded-lg transition {{ request()->routeIs('admin.projects.*') ? 'bg-indigo-600 text-white shadow-sm' : 'hover:bg-slate-800 hover:text-white' }}">
+                    <div class="flex items-center">
+                        <svg class="w-5 h-5 mr-3 text-slate-400 {{ request()->routeIs('admin.projects.*') ? '!text-white' : '' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                        <span>Semua Proyek</span>
+                    </div>
+                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full {{ request()->routeIs('admin.projects.*') ? 'bg-indigo-800 text-white' : 'bg-slate-800 text-slate-400' }}">
+                        {{ \App\Models\Project::count() }}
+                    </span>
+                </a>
             @endif
         </nav>
 
@@ -141,6 +152,12 @@
                 <a href="{{ route('invitations.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('invitations.*') ? 'bg-indigo-600 text-white' : 'hover:bg-slate-800' }}">Undangan Proyek</a>
                 @if(auth()->user()->isAdmin())
                     <a href="{{ route('admin.users.index') }}" class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.users.*') ? 'bg-indigo-600 text-white' : 'hover:bg-slate-800' }}">Kelola Pengguna</a>
+                    <a href="{{ route('admin.projects.index') }}" class="flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('admin.projects.*') ? 'bg-indigo-600 text-white' : 'hover:bg-slate-800' }}">
+                        <span>Semua Proyek</span>
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">
+                            {{ \App\Models\Project::count() }}
+                        </span>
+                    </a>
                 @endif
                 <a href="{{ route('profile.edit') }}" class="block px-3 py-2 rounded-lg text-sm font-medium {{ request()->routeIs('profile.*') ? 'bg-indigo-600 text-white' : 'hover:bg-slate-800' }}">Profil Saya</a>
             </nav>

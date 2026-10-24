@@ -44,11 +44,11 @@ class ProjectPolicy
 
     /**
      * Determine whether the user can delete the model.
-     * Hanya Project Leader / Owner yang boleh.
+     * Hanya Project Leader / Owner atau Administrator yang boleh.
      */
     public function delete(User $user, Project $project): bool
     {
-        return $project->isLeader($user);
+        return $user->isAdmin() || $project->isLeader($user);
     }
 
     /**

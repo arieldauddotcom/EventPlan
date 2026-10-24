@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +37,77 @@ class AdminUserController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.users.index', compact('users', 'search', 'role'));
+        $stats = [
+            'total_users' => User::count(),
+            'admin_users' => User::where('role', 'admin')->count(),
+            'regular_users' => User::where('role', 'user')->count(),
+            'total_projects' => Project::count(),
+            'active_projects' => Project::where('status', 'active')->count(),
+            'planning_projects' => Project::where('status', 'planning')->count(),
+            'completed_projects' => Project::where('status', 'completed')->count(),
+            'draft_projects' => Project::where('status', 'draft')->count(),
+            'total_tasks' => Task::count(),
+        ];
+
+        return view('admin.users.index', compact('users', 'search', 'role', 'stats'));
+    }
+
+    /**
+     * Tampilkan seluruh proyek secara global untuk administrator.
+     */
+    public function projects(Request $request)
+    {
+        $search = $request->query('search');
+        $status = $request->query('status');
+        $ownerId = $request->query('owner_id');
+
+        $projectsQuery = Project::query()
+            ->with(['owner', 'workCalendar'])
+            ->withCount(['tasks', 'members'])
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('organization', 'like', "%{$search}%")
+                      ->orWhereHas('owner', function ($oq) use ($search) {
+                          $oq->where('name', 'like', "%{$search}%")
+                             ->orWhere('username', 'like', "%{$search}%")
+                             ->orWhere('email', 'like', "%{$search}%");
+                      });
+                });
+            })
+            ->when($status, function ($query, $status) {
+                $query->where('status', $status);
+            })
+            ->when($ownerId, function ($query, $ownerId) {
+                $query->where('owner_id', $ownerId);
+            });
+
+        $projects = (clone $projectsQuery)->latest()->paginate(12)->withQueryString();
+
+        $stats = [
+            'total_projects' => Project::count(),
+            'active_projects' => Project::where('status', 'active')->count(),
+            'planning_projects' => Project::where('status', 'planning')->count(),
+            'completed_projects' => Project::where('status', 'completed')->count(),
+            'draft_projects' => Project::where('status', 'draft')->count(),
+            'total_tasks' => Task::count(),
+        ];
+
+        $selectedOwner = $ownerId ? User::find($ownerId) : null;
+        $usersList = User::has('ownedProjects')->orderBy('name')->get(['id', 'name', 'username']);
+
+        return view('admin.projects.index', compact('projects', 'stats', 'search', 'status', 'ownerId', 'selectedOwner', 'usersList'));
+    }
+
+    /**
+     * Hapus proyek oleh administrator.
+     */
+    public function destroyProject(Project $project)
+    {
+        $projectName = $project->name;
+        $project->delete();
+
+        return back()->with('success', "Proyek '{$projectName}' berhasil dihapus oleh Administrator.");
     }
 
     /**

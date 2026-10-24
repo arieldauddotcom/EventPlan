@@ -92,6 +92,8 @@ Route::middleware('auth')->group(function () {
     // Admin Routes
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::resource('users', AdminUserController::class)->only(['index', 'edit', 'update', 'destroy']);
+        Route::get('/projects', [AdminUserController::class, 'projects'])->name('projects.index');
+        Route::delete('/projects/{project}', [AdminUserController::class, 'destroyProject'])->name('projects.destroy');
     });
 
     // Projects CRUD

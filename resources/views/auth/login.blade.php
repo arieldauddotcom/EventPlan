@@ -129,7 +129,7 @@
                             <input type="text"
                                    name="email"
                                    id="login-identity"
-                                   value="{{ old('email', 'admin@eventplan.local') }}"
+                                   value="{{ old('email') }}"
                                    required
                                    autofocus
                                    placeholder="Username atau Email"

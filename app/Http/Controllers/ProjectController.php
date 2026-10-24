@@ -45,6 +45,10 @@ class ProjectController extends Controller
             $query->where('status', $request->status);
         }
 
+        if ($request->filled('owner_id')) {
+            $query->where('owner_id', $request->owner_id);
+        }
+
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->search . '%')
