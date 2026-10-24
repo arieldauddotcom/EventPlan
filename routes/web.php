@@ -98,6 +98,7 @@ Route::middleware('auth')->group(function () {
 
     // Projects CRUD
     Route::resource('projects', ProjectController::class);
+    Route::patch('/projects/{project}/status', [ProjectController::class, 'updateStatus'])->name('projects.status.update');
     Route::post('/projects/{project}/holidays', [ProjectController::class, 'addHoliday'])->name('projects.holidays.store');
     Route::delete('/projects/{project}/holidays/{holiday}', [ProjectController::class, 'removeHoliday'])->name('projects.holidays.destroy');
 

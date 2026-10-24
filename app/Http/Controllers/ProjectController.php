@@ -191,6 +191,42 @@ class ProjectController extends Controller
     }
 
     /**
+     * Perbarui status proyek secara cepat langsung dari halaman detail proyek.
+     */
+    public function updateStatus(Request $request, Project $project)
+    {
+        $this->authorize('update', $project);
+
+        $validated = $request->validate([
+            'status' => 'required|in:draft,planning,active,completed,archived',
+        ], [
+            'status.required' => 'Status proyek wajib dipilih.',
+            'status.in' => 'Status proyek tidak valid.',
+        ]);
+
+        $oldStatus = $project->status;
+        $newStatus = $validated['status'];
+
+        if ($oldStatus === $newStatus) {
+            return back()->with('info', 'Status proyek tidak berubah.');
+        }
+
+        $project->update(['status' => $newStatus]);
+
+        $statusLabels = [
+            'draft' => 'Draft',
+            'planning' => 'Perencanaan (Planning)',
+            'active' => 'Aktif (Active)',
+            'completed' => 'Selesai (Completed)',
+            'archived' => 'Diarsipkan (Archived)',
+        ];
+
+        $label = $statusLabels[$newStatus] ?? ucfirst($newStatus);
+
+        return back()->with('success', "Status proyek '{$project->name}' berhasil diubah menjadi '{$label}'!");
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Project $project)

@@ -11,13 +11,68 @@
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-xs">
         <div>
             <div class="flex flex-wrap items-center gap-1.5">
-                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold
-                    @if($project->status === 'active') bg-emerald-100 text-emerald-700
-                    @elseif($project->status === 'planning') bg-indigo-100 text-indigo-700
-                    @elseif($project->status === 'completed') bg-blue-100 text-blue-700
-                    @else bg-slate-100 text-slate-700 @endif">
-                    {{ ucfirst($project->status) }}
-                </span>
+                @if($isLeader)
+                    <div class="relative inline-block text-left" x-data="{ openBadgeMenu: false }" @click.away="openBadgeMenu = false">
+                        <button type="button" @click="openBadgeMenu = !openBadgeMenu" class="px-2.5 py-0.5 rounded-full text-xs font-semibold flex items-center space-x-1.5 transition cursor-pointer shadow-2xs hover:ring-2 hover:ring-indigo-300
+                            @if($project->status === 'active') bg-emerald-100 text-emerald-800 border border-emerald-300 hover:bg-emerald-200
+                            @elseif($project->status === 'planning') bg-amber-100 text-amber-800 border border-amber-300 hover:bg-amber-200
+                            @elseif($project->status === 'completed') bg-purple-100 text-purple-800 border border-purple-300 hover:bg-purple-200
+                            @elseif($project->status === 'archived') bg-zinc-100 text-zinc-800 border border-zinc-300 hover:bg-zinc-200
+                            @else bg-slate-100 text-slate-800 border border-slate-300 hover:bg-slate-200 @endif"
+                            title="Klik untuk mengubah status proyek secara cepat">
+                            <span class="w-2 h-2 rounded-full
+                                @if($project->status === 'active') bg-emerald-500
+                                @elseif($project->status === 'planning') bg-amber-500
+                                @elseif($project->status === 'completed') bg-purple-500
+                                @elseif($project->status === 'archived') bg-zinc-500
+                                @else bg-slate-400 @endif"></span>
+                            <span>{{ ucfirst($project->status) }}</span>
+                            <svg class="w-3 h-3 text-current opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+
+                        <div x-show="openBadgeMenu" x-cloak class="absolute left-0 mt-2 w-64 rounded-2xl bg-white shadow-xl border border-slate-200 py-1.5 z-50 transition" style="display: none;">
+                            <div class="px-3.5 py-2 border-b border-slate-100">
+                                <p class="text-xs font-bold text-slate-900">Ubah Status Proyek</p>
+                                <p class="text-[11px] text-slate-400">Pilih status baru untuk proyek ini.</p>
+                            </div>
+                            <div class="p-1.5 space-y-1">
+                                @foreach([
+                                    'planning' => ['label' => 'Perencanaan (Planning)', 'desc' => 'Penyusunan jadwal & CPM aktif', 'dot' => 'bg-amber-500'],
+                                    'active' => ['label' => 'Aktif (Active)', 'desc' => 'Acara sedang dalam eksekusi', 'dot' => 'bg-emerald-500'],
+                                    'completed' => ['label' => 'Selesai (Completed)', 'desc' => 'Pelaksanaan acara tuntas', 'dot' => 'bg-purple-500'],
+                                    'draft' => ['label' => 'Draft', 'desc' => 'Konsep awal perencanaan acara', 'dot' => 'bg-slate-400'],
+                                    'archived' => ['label' => 'Diarsipkan (Archived)', 'desc' => 'Disimpan sebagai arsip proyek', 'dot' => 'bg-zinc-500'],
+                                ] as $sKey => $sVal)
+                                    <form method="POST" action="{{ route('projects.status.update', $project) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="status" value="{{ $sKey }}">
+                                        <button type="submit" class="w-full text-left px-3 py-2 rounded-xl text-xs transition flex items-start space-x-2.5 cursor-pointer {{ $project->status === $sKey ? 'bg-indigo-50 text-indigo-900 font-bold ring-1 ring-indigo-200' : 'hover:bg-slate-50 text-slate-700' }}">
+                                            <span class="w-2 h-2 rounded-full {{ $sVal['dot'] }} shrink-0 mt-1"></span>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex items-center justify-between">
+                                                    <span class="font-semibold">{{ $sVal['label'] }}</span>
+                                                    @if($project->status === $sKey)
+                                                        <span class="text-[10px] text-indigo-600 font-bold shrink-0">✓ Sedang Aktif</span>
+                                                    @endif
+                                                </div>
+                                                <p class="text-[10px] text-slate-400 font-normal leading-tight mt-0.5">{{ $sVal['desc'] }}</p>
+                                            </div>
+                                        </button>
+                                    </form>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @else
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold
+                        @if($project->status === 'active') bg-emerald-100 text-emerald-700
+                        @elseif($project->status === 'planning') bg-indigo-100 text-indigo-700
+                        @elseif($project->status === 'completed') bg-blue-100 text-blue-700
+                        @else bg-slate-100 text-slate-700 @endif">
+                        {{ ucfirst($project->status) }}
+                    </span>
+                @endif
                 <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase {{ $isLeader ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-600' }}">
                     Peran: {{ $isLeader ? 'Leader' : 'Member' }}
                 </span>
@@ -99,6 +154,55 @@
             </div>
 
             @if($isLeader)
+                <!-- Tombol Dropdown Ubah Status Proyek Cepat -->
+                <div class="relative inline-block text-left" x-data="{ openStatusMenu: false }" @click.away="openStatusMenu = false">
+                    <button type="button" @click="openStatusMenu = !openStatusMenu" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-white border border-slate-300 hover:border-slate-400 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition flex items-center space-x-1.5 shadow-2xs cursor-pointer" title="Ubah status proyek secara langsung tanpa edit form">
+                        <span class="w-2 h-2 rounded-full
+                            @if($project->status === 'active') bg-emerald-500
+                            @elseif($project->status === 'planning') bg-amber-500
+                            @elseif($project->status === 'completed') bg-purple-500
+                            @elseif($project->status === 'archived') bg-zinc-500
+                            @else bg-slate-400 @endif"></span>
+                        <span class="hidden sm:inline">Status:</span>
+                        <strong>{{ ucfirst($project->status) }}</strong>
+                        <svg class="w-3.5 h-3.5 text-slate-400 transition" :class="openStatusMenu ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
+
+                    <div x-show="openStatusMenu" x-cloak class="absolute right-0 mt-2 w-64 rounded-2xl bg-white shadow-xl border border-slate-200 py-1.5 z-50 transition" style="display: none;">
+                        <div class="px-3.5 py-2 border-b border-slate-100">
+                            <p class="text-xs font-bold text-slate-900">Ubah Status Proyek</p>
+                            <p class="text-[11px] text-slate-400">Perbarui status linimasa acara secara cepat.</p>
+                        </div>
+                        <div class="p-1.5 space-y-1">
+                            @foreach([
+                                'planning' => ['label' => 'Perencanaan (Planning)', 'desc' => 'Penyusunan jadwal & CPM aktif', 'dot' => 'bg-amber-500'],
+                                'active' => ['label' => 'Aktif (Active)', 'desc' => 'Acara sedang dalam eksekusi', 'dot' => 'bg-emerald-500'],
+                                'completed' => ['label' => 'Selesai (Completed)', 'desc' => 'Pelaksanaan acara tuntas', 'dot' => 'bg-purple-500'],
+                                'draft' => ['label' => 'Draft', 'desc' => 'Konsep awal perencanaan acara', 'dot' => 'bg-slate-400'],
+                                'archived' => ['label' => 'Diarsipkan (Archived)', 'desc' => 'Disimpan sebagai arsip proyek', 'dot' => 'bg-zinc-500'],
+                            ] as $sKey => $sVal)
+                                <form method="POST" action="{{ route('projects.status.update', $project) }}">
+                                    @csrf
+                                    @method('PATCH')
+                                    <input type="hidden" name="status" value="{{ $sKey }}">
+                                    <button type="submit" class="w-full text-left px-3 py-2 rounded-xl text-xs transition flex items-start space-x-2.5 cursor-pointer {{ $project->status === $sKey ? 'bg-indigo-50 text-indigo-900 font-bold ring-1 ring-indigo-200' : 'hover:bg-slate-50 text-slate-700' }}">
+                                        <span class="w-2 h-2 rounded-full {{ $sVal['dot'] }} shrink-0 mt-1"></span>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex items-center justify-between">
+                                                <span class="font-semibold">{{ $sVal['label'] }}</span>
+                                                @if($project->status === $sKey)
+                                                    <span class="text-[10px] text-indigo-600 font-bold shrink-0">✓ Sedang Aktif</span>
+                                                @endif
+                                            </div>
+                                            <p class="text-[10px] text-slate-400 font-normal leading-tight mt-0.5">{{ $sVal['desc'] }}</p>
+                                        </div>
+                                    </button>
+                                </form>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
                 <button type="button" @click="activeTab = 'members'; showAddTeamModal = true" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-xs transition flex items-center space-x-1.5">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
                     <span>Tambah Tim</span>
