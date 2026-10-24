@@ -78,8 +78,8 @@ Pusat kendali pengguna yang menyajikan kartu metrik global (Total Proyek, Proyek
 ---
 
 ### 3. Manajemen Rincian Proyek & Struktur Tugas
-Tampilan detail manajemen proyek acara dengan tab navigasi lengkap (*Daftar Tugas, Kolaborasi Tim & Anggota, Tim & Sumber Daya, Kalender Kerja & Hari Libur*). Setiap tugas memuat indikator prioritas (*Urgent/High*), durasi hari kerja, relasi *predecessor*, petugas yang dialokasikan, dan badge penanda jalur kritis otomatis.
-![Detail Proyek & Manajemen Tugas](screenshoot/03-detail-proyek-tugas.png)
+Tampilan detail manajemen proyek acara dengan tab navigasi lengkap (*Daftar Tugas, Kolaborasi Tim & Anggota, Tim & Sumber Daya, Kalender Kerja & Hari Libur*). Setiap tugas memuat indikator prioritas (*Urgent/High*), durasi hari kerja, relasi *predecessor*, petugas yang dialokasikan, badge penanda jalur kritis otomatis, serta tombol pengubah status proyek instan.
+![Detail Proyek & Manajemen Tugas](screenshoot/detailproyek.png)
 
 ---
 
