@@ -1,42 +1,27 @@
-# Operating System Files
-.DS_Store
-Thumbs.db
-
-# Environment Variables & Secrets
-.env
-.env.local
-.env.*.local
-*.env
-
-# Dependencies
-node_modules/
-vendor/
-venv/
-.venv/
-__pycache__/
-*.pyc
-
-# Build & Dist
-dist/
-build/
-out/
-.next/
-.nuxt/
-
-# Logs
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# IDE & Editors
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Database & Storage
-*.sqlite
-*.sqlite3
-*.db
+.DS_Store
+.env
+.env.backup
+.env.production
+.phpactor.json
+.phpunit.result.cache
+/.codex
+/.cursor/
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+/auth.json
+/node_modules
+/public/build
+/public/fonts-manifest.dev.json
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
+_ide_helper.php
+Homestead.json
+Homestead.yaml
+Thumbs.db
