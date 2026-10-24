@@ -274,9 +274,13 @@ app/
 ---
 
 ## TUGAS MATA KULIAH ARSITEKTUR SISTEM INFORMASI 
-Implementasi Aplikasi Sistem Informasi Berbasis Agentic AI (Freebuff CLI)
-NAMA : MOHAMAD NAZRIL R. DAUD
-NIM : 531424083
-Kelas : D
-Dosen Pengampu : Dr. Mohamad Syafri Tuloli, ST, MT
+**Implementasi Aplikasi Sistem Informasi Berbasis Agentic AI (Freebuff CLI)
+
+**NAMA : MOHAMAD NAZRIL R. DAUD
+
+**NIM : 531424083
+
+**Kelas : D
+
+**Dosen Pengampu : Dr. Mohamad Syafri Tuloli, ST, MT
 
