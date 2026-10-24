@@ -76,14 +76,14 @@ Antarmuka autentikasi modern dengan desain *split layout* responsif (*fixed view
 ---
 
 ### 2. Dashboard Analitik Utama (Project Overview)
-Pusat kendali pengguna yang menyajikan kartu metrik global (Total Proyek, Proyek Aktif, Fase Planning, Proyek Selesai), status tugas (Total, Sedang Dikerjakan, Tuntas, dan Tugas Kritis CPM), daftar proyek terbaru, serta widget pengingat tenggat waktu (*Deadline 7 Hari Kedepan*).
-![Dashboard Utama EventPlan](screenshoot/02-dashboard-utama.png)
+Pusat kendali operasional yang menyajikan kartu metrik global (Total Proyek, Proyek Aktif, Fase Planning, Proyek Selesai), status tugas (Total, Sedang Dikerjakan, Tuntas, dan Tugas Kritis CPM), daftar proyek terbaru, widget pengingat tenggat waktu (*Deadline 7 Hari Kedepan*), serta panel *Admin Overview* (Ringkasan Sistem dan Global) khusus peran Administrator.
+![Dashboard Utama EventPlan](screenshoot/admin-dashboardutama.png)
 
 ---
 
 ### 3. Manajemen Rincian Proyek & Struktur Tugas
 Tampilan detail manajemen proyek acara dengan tab navigasi lengkap (*Daftar Tugas, Kolaborasi Tim & Anggota, Tim & Sumber Daya, Kalender Kerja & Hari Libur*). Setiap tugas memuat indikator prioritas (*Urgent/High*), durasi hari kerja, relasi *predecessor*, petugas yang dialokasikan, badge penanda jalur kritis otomatis, serta tombol pengubah status proyek instan.
-![Detail Proyek & Manajemen Tugas](screenshoot/detailproyek.png)
+![Detail Proyek & Manajemen Tugas](screenshoot/detailproyekbaru.png)
 
 ---
 
@@ -116,11 +116,11 @@ Modul manajemen terpusat khusus bagi **Administrator** untuk mengontrol ekosiste
 
 - **Manajemen Seluruh Proyek Global (`/admin/projects`)**:
   Menyajikan metrik agregat seluruh proyek (Total Portofolio, Proyek Aktif, Perencanaan, dan Selesai), filter pencarian otomatis berbasis teks (*live search debounce*), penyaringan status acara, penelusuran pemilik (*owner filter*), pemantauan tanggal linimasa, serta opsi pembersihan (*delete*) proyek secara aman.
-  ![Admin Kelola Proyek](screenshoot/admin-kelola-proyek.png)
+  ![Admin Kelola Proyek](screenshoot/admin-kelolaproyekbaru.png)
 
 - **Manajemen Pengguna & Hak Akses Global (`/admin/users`)**:
   Panel komprehensif untuk mengelola akun pengguna terdaftar dengan metrik jumlah pengguna & tugas CPM terdata, pencarian cepat nama/username/email, filter peran sistem (*Admin* vs *User*), tautan pintas portofolio per pemilik, pembaruan data pengguna, serta kontrol penghapusan akun.
-  ![Admin Kelola Pengguna](screenshoot/admin-kelola-pengguna.png)
+  ![Admin Kelola Pengguna](screenshoot/admin-kelolapenggunabaru.png)
 
 ---
 
