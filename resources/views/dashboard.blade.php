@@ -8,18 +8,18 @@
             <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Dashboard Utama</h1>
             <p class="text-sm text-slate-500 mt-1">Ringkasan analitik proyek, aktivitas jalur kritis, dan linimasa acara.</p>
         </div>
-        <div class="flex items-center space-x-2.5">
-            <a href="{{ route('profile.edit') }}" class="inline-flex items-center px-3.5 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm transition border border-slate-200 shadow-2xs">
+        <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
+            <a href="{{ route('profile.edit') }}" class="inline-flex items-center px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm transition border border-slate-200 shadow-2xs">
                 @if(auth()->user()->avatar_url)
                     <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="w-5 h-5 rounded-full object-cover mr-2 aspect-square" style="border-radius: 9999px;">
                 @else
                     <svg class="w-4 h-4 mr-2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
                 @endif
-                Pengaturan Profil
+                Profil
             </a>
-            <a href="{{ route('projects.create') }}" class="inline-flex items-center px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition shadow-sm shadow-indigo-600/25">
-                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Buat Proyek Baru
+            <a href="{{ route('projects.create') }}" class="inline-flex items-center px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs sm:text-sm transition shadow-sm shadow-indigo-600/25">
+                <svg class="w-4 h-4 mr-1.5 sm:mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                Buat Proyek
             </a>
         </div>
     </div>

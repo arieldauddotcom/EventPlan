@@ -4,10 +4,10 @@
 <div class="max-w-3xl mx-auto space-y-6">
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Buat Proyek Acara Baru</h1>
-            <p class="text-sm text-slate-500 mt-1">Isi rincian perencanaan acara dan konfigurasikan kalender kerjanya.</p>
+            <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Buat Proyek Acara Baru</h1>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Isi rincian perencanaan acara dan konfigurasikan kalender kerjanya.</p>
         </div>
-        <a href="{{ route('projects.index') }}" class="text-xs font-semibold text-slate-600 hover:text-slate-900">
+        <a href="{{ route('projects.index') }}" class="text-xs font-semibold text-slate-600 hover:text-slate-900 shrink-0 ml-2">
             &larr; Kembali
         </a>
     </div>
@@ -23,7 +23,7 @@
         </div>
     @endif
 
-    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs">
+    <div class="bg-white p-4 sm:p-8 rounded-2xl border border-slate-200 shadow-xs">
         <form method="POST" action="{{ route('projects.store') }}" class="space-y-5">
             @csrf
 
@@ -62,7 +62,7 @@
             <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
                 <label class="block text-xs font-bold text-slate-800">Pengaturan Hari Kerja (Work Calendar)</label>
                 <p class="text-xs text-slate-500">Pilih hari-hari yang dihitung sebagai hari kerja aktif untuk perhitungan durasi dan CPM:</p>
-                <div class="flex flex-wrap gap-3">
+                <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-3">
                     @php
                         $days = [
                             1 => 'Senin',
@@ -88,9 +88,9 @@
                 <textarea name="description" rows="3" placeholder="Tuliskan tujuan acara, target peserta, atau catatan penting..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">{{ old('description') }}</textarea>
             </div>
 
-            <div class="pt-4 flex items-center justify-end space-x-3">
-                <a href="{{ route('projects.index') }}" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-sm font-semibold hover:bg-slate-50 transition">Batal</a>
-                <button type="submit" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold transition shadow-sm">
+            <div class="pt-4 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5 sm:space-x-3 sm:gap-0">
+                <a href="{{ route('projects.index') }}" class="w-full sm:w-auto text-center px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-sm font-semibold hover:bg-slate-50 transition">Batal</a>
+                <button type="submit" class="w-full sm:w-auto text-center px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold transition shadow-sm">
                     Simpan Proyek
                 </button>
             </div>

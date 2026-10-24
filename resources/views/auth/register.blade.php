@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-slate-950 overflow-hidden">
+<html lang="id" class="h-full bg-slate-950">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,8 +12,8 @@
     <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="h-full antialiased font-sans text-slate-800 bg-slate-950 overflow-hidden select-none">
-    <div class="h-screen w-full flex flex-col lg:flex-row overflow-hidden">
+<body class="min-h-full antialiased font-sans text-slate-800 bg-slate-950 overflow-y-auto lg:overflow-hidden">
+    <div class="min-h-screen lg:h-screen w-full flex flex-col lg:flex-row">
 
         <!-- Kolom Kiri: Visual Event & CPM Atmosphere dengan Glassmorphism Card (Fixed) -->
         <div class="relative hidden lg:flex lg:w-7/12 xl:w-3/5 h-full items-center justify-center p-8 lg:p-12 xl:p-16 overflow-hidden bg-slate-950">
@@ -58,8 +58,8 @@
             </div>
         </div>
 
-        <!-- Kolom Kanan: Form Pendaftaran Bersih, Fixed Tanpa Scroll -->
-        <div class="w-full lg:w-5/12 xl:w-2/5 h-full bg-white flex flex-col justify-between p-6 sm:p-8 lg:p-8 xl:p-10 overflow-y-auto lg:overflow-hidden select-text">
+        <!-- Kolom Kanan: Form Pendaftaran Bersih & Responsif Mobile -->
+        <div class="w-full lg:w-5/12 xl:w-2/5 min-h-screen lg:h-full bg-white flex flex-col justify-between p-5 sm:p-8 lg:p-8 xl:p-10 overflow-y-auto select-text">
             <div class="max-w-md w-full mx-auto my-auto flex flex-col justify-center space-y-3.5">
 
                 <!-- Header Brand & Logo -->

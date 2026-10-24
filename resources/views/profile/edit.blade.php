@@ -4,11 +4,11 @@
 <div class="max-w-3xl mx-auto space-y-6">
     <div class="flex items-center justify-between">
         <div>
-            <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Profil Saya</h1>
-            <p class="text-sm text-slate-500 mt-1">Perbarui informasi akun, email, foto profil, dan kata sandi Anda.</p>
+            <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Profil Saya</h1>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Perbarui informasi akun, email, foto profil, dan kata sandi Anda.</p>
         </div>
-        <a href="{{ route('dashboard') }}" class="text-xs font-semibold text-slate-600 hover:text-slate-900">
-            &larr; Kembali ke Dashboard
+        <a href="{{ route('dashboard') }}" class="text-xs font-semibold text-slate-600 hover:text-slate-900 shrink-0 ml-2">
+            &larr; Dashboard
         </a>
     </div>
 
@@ -23,7 +23,7 @@
         </div>
     @endif
 
-    <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs">
+    <div class="bg-white p-4 sm:p-8 rounded-2xl border border-slate-200 shadow-xs">
         <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
             @method('PUT')
@@ -37,7 +37,7 @@
                     Informasi Akun
                 </h2>
 
-                <div class="flex items-center space-x-4 pt-2">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 pt-2">
                     @if($user->avatar_url)
                         <img src="{{ $user->avatar_url }}" alt="{{ $user->name }}" class="w-16 h-16 rounded-full object-cover border-2 border-indigo-200 aspect-square shrink-0 shadow-xs" style="border-radius: 9999px;">
                     @else
@@ -120,14 +120,17 @@
             </div>
 
             <!-- Tombol Simpan -->
-            <div class="flex items-center justify-end space-x-3 pt-6 border-t border-slate-100">
-                <a href="{{ route('dashboard') }}" class="px-5 py-2.5 text-xs font-semibold text-slate-600 hover:text-slate-800 transition">
+            <div class="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5 sm:space-x-3 sm:gap-0 pt-6 border-t border-slate-100">
+                <a href="{{ route('dashboard') }}" class="w-full sm:w-auto text-center px-5 py-2.5 text-xs font-semibold text-slate-600 hover:text-slate-800 transition">
                     Batal
                 </a>
-                <button type="submit" class="px-6 py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700 shadow-sm transition">
+                <button type="submit" class="w-full sm:w-auto text-center px-6 py-2.5 rounded-xl bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700 shadow-sm transition">
                     Simpan Perubahan Profil
                 </button>
             </div>
+        </form>
+    </div>
+</div>
         </form>
     </div>
 </div>

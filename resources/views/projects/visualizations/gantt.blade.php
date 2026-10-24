@@ -8,21 +8,21 @@
     zoomOut() { this.dayWidth = Math.max(34, this.dayWidth - 12); },
     resetZoom() { this.dayWidth = 52; }
 }">
-    <!-- Header -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+    <!-- Header Responsif Mobile -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-xs">
         <div>
             <div class="flex items-center space-x-2 text-xs">
-                <a href="{{ route('projects.show', $project) }}" class="text-indigo-600 font-semibold hover:underline">&larr; Kembali ke Detail Proyek</a>
+                <a href="{{ route('projects.show', $project) }}" class="text-indigo-600 font-semibold hover:underline">&larr; Detail Proyek</a>
                 <span class="text-slate-400">•</span>
-                <span class="text-slate-500">{{ $project->name }}</span>
+                <span class="text-slate-500 truncate max-w-[200px]">{{ $project->name }}</span>
             </div>
-            <h1 class="text-2xl font-bold text-slate-900 tracking-tight mt-1">Gantt Chart Timeline</h1>
+            <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">Gantt Chart Timeline</h1>
             <p class="text-xs sm:text-sm text-slate-500 mt-1">
                 Visualisasi linimasa tugas panjang, progres, ketergantungan (dependencies), dan jalur kritis (CPM).
             </p>
         </div>
 
-        <div class="flex flex-wrap items-center gap-2" x-data="{ openGanttPdfModal: false, startDate: '{{ $minDate->format('Y-m-d') }}', endDate: '{{ $maxDate->format('Y-m-d') }}' }">
+        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2" x-data="{ openGanttPdfModal: false, startDate: '{{ $minDate->format('Y-m-d') }}', endDate: '{{ $maxDate->format('Y-m-d') }}' }">
             <!-- Zoom Controls untuk Atur Panjang Kolom / Garis Waktu -->
             <div class="inline-flex items-center bg-slate-100 rounded-xl p-1 border border-slate-200 text-xs">
                 <button type="button" @click="zoomOut()" class="p-1.5 hover:bg-white rounded-lg text-slate-600 hover:text-slate-900 transition" title="Persempit Garis Waktu">
@@ -36,23 +36,23 @@
                 </button>
             </div>
 
-            <button @click="filterCritical = !filterCritical" :class="filterCritical ? 'bg-rose-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3.5 py-2 rounded-xl text-xs font-semibold transition flex items-center space-x-1.5">
+            <button @click="filterCritical = !filterCritical" :class="filterCritical ? 'bg-rose-600 text-white shadow-xs' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl text-xs font-semibold transition flex items-center space-x-1.5">
                 <span class="w-2 h-2 rounded-full" :class="filterCritical ? 'bg-white' : 'bg-rose-500'"></span>
                 <span x-text="filterCritical ? 'Semua Tugas' : 'Sorot CPM'"></span>
             </button>
 
-            <button type="button" @click="openGanttPdfModal = true" class="px-3.5 py-2 rounded-xl bg-rose-50 border border-rose-300 text-xs font-semibold text-rose-800 hover:bg-rose-100 transition flex items-center space-x-1.5" title="Filter & Ekspor PDF">
+            <button type="button" @click="openGanttPdfModal = true" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-rose-50 border border-rose-300 text-xs font-semibold text-rose-800 hover:bg-rose-100 transition flex items-center space-x-1.5" title="Filter & Ekspor PDF">
                 <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                <span>Laporan PDF</span>
+                <span>PDF</span>
             </button>
 
-            <a href="{{ route('projects.pert', $project) }}" class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition">
-                PERT Diagram &rarr;
+            <a href="{{ route('projects.pert', $project) }}" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition">
+                PERT &rarr;
             </a>
 
             <!-- Modal Filter & Ekspor PDF -->
-            <div x-show="openGanttPdfModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs">
-                <div @click.away="openGanttPdfModal = false" class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 text-left">
+            <div x-show="openGanttPdfModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs">
+                <div @click.away="openGanttPdfModal = false" class="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-200 text-left max-h-[85vh] overflow-y-auto">
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                         <div class="flex items-center space-x-2">
                             <span class="p-1.5 bg-rose-50 text-rose-600 rounded-lg">
@@ -122,8 +122,17 @@
                 <a href="{{ route('projects.show', $project) }}" class="text-xs text-indigo-600 font-bold hover:underline mt-2 inline-block">Tambah Tugas Sekarang &rarr;</a>
             </div>
         @else
+            <!-- Petunjuk Scroll Mobile -->
+            <div class="sm:hidden px-4 py-2 bg-indigo-50 border-b border-indigo-100 flex items-center justify-between text-[11px] text-indigo-700 font-medium">
+                <span class="flex items-center">
+                    <svg class="w-3.5 h-3.5 mr-1 text-indigo-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                    Geser kanan &rarr; untuk melihat seluruh linimasa
+                </span>
+                <span class="text-[10px] text-indigo-400 font-mono" x-text="dayWidth + 'px'"></span>
+            </div>
+
             <!-- Scrollable Timeline -->
-            <div class="overflow-x-auto select-none" id="gantt-scroll-container">
+            <div class="overflow-x-auto select-none" id="gantt-scroll-container" style="-webkit-overflow-scrolling: touch;">
                 <div class="inline-block min-w-full p-6"
                      :style="'min-width: calc(340px + ' + ({{ $totalDays }} * dayWidth) + 'px);'">
 

@@ -13,17 +13,17 @@
                 <span class="text-slate-300">/</span>
                 <span class="text-xs text-slate-500 font-semibold">Administrasi Proyek</span>
             </div>
-            <h1 class="text-2xl font-bold text-slate-900 tracking-tight mt-1">Daftar Seluruh Proyek (Global)</h1>
-            <p class="text-sm text-slate-500 mt-0.5">Pantau seluruh portofolio proyek acara yang dibuat oleh semua pengguna di sistem.</p>
+            <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">Daftar Seluruh Proyek (Global)</h1>
+            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Pantau seluruh portofolio proyek acara yang dibuat oleh semua pengguna di sistem.</p>
         </div>
-        <div class="flex items-center space-x-2.5">
-            <a href="{{ route('admin.users.index') }}" class="inline-flex items-center px-3.5 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm transition border border-slate-200 shadow-2xs">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:space-x-2.5 sm:gap-0">
+            <a href="{{ route('admin.users.index') }}" class="inline-flex items-center justify-center px-3.5 py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm transition border border-slate-200 shadow-2xs">
                 <svg class="w-4 h-4 mr-2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
                 Kelola Pengguna
             </a>
-            <a href="{{ route('projects.create') }}" class="inline-flex items-center px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition shadow-sm">
+            <a href="{{ route('projects.create') }}" class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs sm:text-sm transition shadow-sm">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 Buat Proyek Baru
             </a>
@@ -31,7 +31,7 @@
     </div>
 
     <!-- Ringkasan Statistik Total Proyek -->
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         <!-- Total Proyek -->
         <div class="bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-900 rounded-2xl p-4 text-white shadow-xs border border-indigo-800/50">
             <span class="text-xs font-semibold text-indigo-300 uppercase tracking-wider">Total Proyek</span>
@@ -136,7 +136,11 @@
 
     <!-- Tabel Seluruh Proyek -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-        <div class="overflow-x-auto">
+        <div class="sm:hidden px-4 py-2 bg-slate-50 border-b border-slate-200/80 text-[11px] text-slate-500 flex items-center space-x-1.5">
+            <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            <span>Geser tabel ke kanan untuk melihat rincian proyek</span>
+        </div>
+        <div class="overflow-x-auto" style="-webkit-overflow-scrolling: touch;">
             <table class="w-full text-left text-sm text-slate-600">
                 <thead class="bg-slate-50 text-xs font-semibold text-slate-500 uppercase border-b border-slate-200">
                     <tr>

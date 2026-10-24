@@ -7,10 +7,10 @@
 @endphp
 
 <div class="space-y-8" x-data="{ activeTab: 'tasks', showNewTaskModal: false, showNewResourceModal: false, showInviteModal: false, editTask: null }">
-    <!-- Header Proyek -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+    <!-- Header Proyek Responsif Mobile -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-xs">
         <div>
-            <div class="flex items-center space-x-2">
+            <div class="flex flex-wrap items-center gap-1.5">
                 <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold
                     @if($project->status === 'active') bg-emerald-100 text-emerald-700
                     @elseif($project->status === 'planning') bg-indigo-100 text-indigo-700
@@ -25,31 +25,31 @@
                     <span class="text-xs text-slate-500 font-medium">• {{ $project->organization }}</span>
                 @endif
             </div>
-            <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mt-1">{{ $project->name }}</h1>
-            <p class="text-xs sm:text-sm text-slate-500 mt-1">
+            <h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-slate-900 tracking-tight mt-1.5">{{ $project->name }}</h1>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
                 Jadwal: <span class="font-semibold text-slate-700">{{ $project->start_date->format('d M Y') }}</span> s/d <span class="font-semibold text-slate-700">{{ $project->deadline->format('d M Y') }}</span>
                 • Kalender: <span class="text-indigo-600 font-medium">{{ $project->workCalendar->name }}</span>
             </p>
         </div>
 
-        <div class="flex flex-wrap items-center gap-2" x-data="{ openPdfModal: false, startDate: '{{ $project->start_date->format('Y-m-d') }}', endDate: '{{ $project->deadline->format('Y-m-d') }}' }">
+        <div class="flex flex-wrap items-center gap-1.5 sm:gap-2" x-data="{ openPdfModal: false, startDate: '{{ $project->start_date->format('Y-m-d') }}', endDate: '{{ $project->deadline->format('Y-m-d') }}' }">
             <!-- Visualisasi (Tersedia bagi Leader maupun Member) -->
-            <a href="{{ route('projects.gantt', $project) }}" class="px-3.5 py-2 rounded-xl bg-indigo-50 border border-indigo-200 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition flex items-center space-x-1">
+            <a href="{{ route('projects.gantt', $project) }}" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-indigo-50 border border-indigo-200 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition flex items-center space-x-1">
                 <span>Gantt Chart</span>
             </a>
-            <a href="{{ route('projects.pert', $project) }}" class="px-3.5 py-2 rounded-xl bg-indigo-50 border border-indigo-200 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition flex items-center space-x-1">
+            <a href="{{ route('projects.pert', $project) }}" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-indigo-50 border border-indigo-200 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition flex items-center space-x-1">
                 <span>PERT Diagram</span>
             </a>
-            <a href="{{ route('projects.resources-chart', $project) }}" class="px-3.5 py-2 rounded-xl bg-indigo-50 border border-indigo-200 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition flex items-center space-x-1">
+            <a href="{{ route('projects.resources-chart', $project) }}" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-indigo-50 border border-indigo-200 text-xs font-semibold text-indigo-700 hover:bg-indigo-100 transition flex items-center space-x-1">
                 <span>Beban Tim</span>
             </a>
-            <a href="{{ route('projects.export-tasks', $project) }}" class="px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-300 text-xs font-semibold text-emerald-800 hover:bg-emerald-100 transition flex items-center space-x-1.5" title="Unduh CSV">
-                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                <span>Ekspor CSV</span>
+            <a href="{{ route('projects.export-tasks', $project) }}" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-emerald-50 border border-emerald-300 text-xs font-semibold text-emerald-800 hover:bg-emerald-100 transition flex items-center space-x-1" title="Unduh CSV">
+                <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                <span>CSV</span>
             </a>
-            <button type="button" @click="openPdfModal = true" class="px-3.5 py-2 rounded-xl bg-rose-50 border border-rose-300 text-xs font-semibold text-rose-800 hover:bg-rose-100 transition flex items-center space-x-1.5" title="Filter & Ekspor Laporan PDF">
-                <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
-                <span>Laporan PDF</span>
+            <button type="button" @click="openPdfModal = true" class="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-rose-50 border border-rose-300 text-xs font-semibold text-rose-800 hover:bg-rose-100 transition flex items-center space-x-1" title="Filter & Ekspor Laporan PDF">
+                <svg class="w-3.5 h-3.5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                <span>PDF</span>
             </button>
 
             <!-- Modal Filter & Ekspor PDF -->
@@ -113,36 +113,38 @@
         </div>
     </div>
 
-    <!-- Tab Navigasi -->
-    <div class="flex border-b border-slate-200 space-x-6 text-sm font-semibold overflow-x-auto">
-        <button @click="activeTab = 'tasks'" :class="activeTab === 'tasks' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-800'" class="pb-3 border-b-2 transition flex items-center space-x-2 shrink-0">
-            <span>Daftar Tugas</span>
-            <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700">{{ $project->tasks->count() }}</span>
-        </button>
-        <button @click="activeTab = 'members'" :class="activeTab === 'members' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-800'" class="pb-3 border-b-2 transition flex items-center space-x-2 shrink-0">
-            <span>Kolaborasi & Anggota</span>
-            <span class="px-2 py-0.5 rounded-full text-[10px] bg-indigo-50 text-indigo-700 font-bold">{{ $project->members->count() }}</span>
-        </button>
-        <button @click="activeTab = 'resources'" :class="activeTab === 'resources' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-800'" class="pb-3 border-b-2 transition flex items-center space-x-2 shrink-0">
-            <span>Tim & Sumber Daya</span>
-            <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700">{{ $project->resources->count() }}</span>
-        </button>
-        @if($isLeader)
-            <button @click="activeTab = 'calendar'" :class="activeTab === 'calendar' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-800'" class="pb-3 border-b-2 transition shrink-0">
-                <span>Kalender Kerja & Hari Libur</span>
+    <!-- Tab Navigasi Responsif Mobile -->
+    <div class="border-b border-slate-200 -mx-3 px-3 sm:mx-0 sm:px-0">
+        <div class="flex space-x-3 sm:space-x-6 text-xs sm:text-sm font-semibold overflow-x-auto whitespace-nowrap pb-1">
+            <button @click="activeTab = 'tasks'" :class="activeTab === 'tasks' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-800'" class="pb-3 border-b-2 transition flex items-center space-x-1.5 shrink-0 py-1">
+                <span>Daftar Tugas</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700">{{ $project->tasks->count() }}</span>
             </button>
-        @endif
+            <button @click="activeTab = 'members'" :class="activeTab === 'members' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-800'" class="pb-3 border-b-2 transition flex items-center space-x-1.5 shrink-0 py-1">
+                <span>Kolaborasi & Anggota</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] bg-indigo-50 text-indigo-700 font-bold">{{ $project->members->count() }}</span>
+            </button>
+            <button @click="activeTab = 'resources'" :class="activeTab === 'resources' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-800'" class="pb-3 border-b-2 transition flex items-center space-x-1.5 shrink-0 py-1">
+                <span>Tim & Sumber Daya</span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700">{{ $project->resources->count() }}</span>
+            </button>
+            @if($isLeader)
+                <button @click="activeTab = 'calendar'" :class="activeTab === 'calendar' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-800'" class="pb-3 border-b-2 transition shrink-0 py-1">
+                    <span>Kalender Kerja & Hari Libur</span>
+                </button>
+            @endif
+        </div>
     </div>
 
     <!-- TAB 1: TUGAS (TASKS & DEPENDENCY) -->
     <div x-show="activeTab === 'tasks'" class="space-y-6">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-                <h2 class="text-lg font-bold text-slate-900">Manajemen Tugas Proyek</h2>
+                <h2 class="text-base sm:text-lg font-bold text-slate-900">Manajemen Tugas Proyek</h2>
                 <p class="text-xs text-slate-500">Tugas, durasi hari kerja, prioritas, status, serta relasi dependensi (FS/SS).</p>
             </div>
             @if($isLeader)
-                <button @click="showNewTaskModal = true" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs transition flex items-center space-x-1.5">
+                <button @click="showNewTaskModal = true" class="w-full sm:w-auto px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs transition flex items-center justify-center space-x-1.5">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                     <span>Tambah Tugas</span>
                 </button>
@@ -150,7 +152,7 @@
         </div>
 
         @if($project->tasks->isEmpty())
-            <div class="p-12 text-center bg-white rounded-2xl border border-dashed border-slate-300">
+            <div class="p-8 sm:p-12 text-center bg-white rounded-2xl border border-dashed border-slate-300">
                 <div class="w-12 h-12 rounded-full bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-3">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                 </div>
@@ -169,10 +171,10 @@
                         });
                         $canEditProgress = $isLeader || $isAssignedToCurrentUser;
                     @endphp
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4" x-data="{ showDepModal: false, showAssignModal: false, showProgressModal: false }">
-                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4" x-data="{ showDepModal: false, showAssignModal: false, showProgressModal: false }">
+                        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
                             <div>
-                                <div class="flex items-center space-x-2">
+                                <div class="flex flex-wrap items-center gap-1.5">
                                     <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase
                                         @if($t->priority === 'urgent') bg-rose-100 text-rose-700
                                         @elseif($t->priority === 'high') bg-amber-100 text-amber-700
@@ -193,11 +195,11 @@
                                         </span>
                                     @endif
                                 </div>
-                                <h3 class="text-base font-bold text-slate-900 mt-1">{{ $t->name }}</h3>
+                                <h3 class="text-sm sm:text-base font-bold text-slate-900 mt-1">{{ $t->name }}</h3>
                                 @if($t->description)
                                     <p class="text-xs text-slate-500 mt-0.5">{{ $t->description }}</p>
                                 @endif
-                                <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 mt-2">
+                                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs text-slate-500 mt-2">
                                     <span>Durasi: <strong class="text-slate-800">{{ $t->duration_days }} hari kerja</strong></span>
                                     <span>Mulai: <strong class="text-slate-800">{{ $t->start_date->format('d M Y') }}</strong></span>
                                     <span>Selesai: <strong class="text-slate-800">{{ $t->end_date->format('d M Y') }}</strong></span>
@@ -208,28 +210,28 @@
                                 </div>
                             </div>
 
-                            <div class="flex items-center space-x-2">
+                            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 pt-2 lg:pt-0 border-t lg:border-t-0 border-slate-100">
                                 @if($canEditProgress)
-                                    <button @click="showProgressModal = true" class="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-lg text-xs font-semibold transition">
+                                    <button @click="showProgressModal = true" class="px-2.5 py-1.5 sm:px-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-lg text-xs font-semibold transition">
                                         Update Progres
                                     </button>
                                 @endif
 
                                 @if($isLeader)
-                                    <a href="{{ route('projects.tasks.edit', [$project, $t]) }}" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition flex items-center space-x-1">
+                                    <a href="{{ route('projects.tasks.edit', [$project, $t]) }}" class="px-2.5 py-1.5 sm:px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition flex items-center space-x-1">
                                         <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
                                         <span>Edit</span>
                                     </a>
-                                    <button @click="showAssignModal = true" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition">
+                                    <button @click="showAssignModal = true" class="px-2.5 py-1.5 sm:px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition">
                                         + Tugaskan ({{ $t->assignments->count() }})
                                     </button>
-                                    <button @click="showDepModal = true" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition">
+                                    <button @click="showDepModal = true" class="px-2.5 py-1.5 sm:px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition">
                                         + Dependency ({{ $t->predecessors->count() }})
                                     </button>
                                     <form method="POST" action="{{ route('projects.tasks.destroy', [$project, $t]) }}" onsubmit="return confirm('Hapus tugas ini?')">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="p-1.5 text-slate-400 hover:text-rose-600 transition">
+                                        <button type="submit" class="p-1.5 text-slate-400 hover:text-rose-600 transition" title="Hapus Tugas">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                                         </button>
                                     </form>
@@ -286,15 +288,15 @@
 
                         <!-- MODAL UPDATE PROGRES TUGAS (LEADER & MEMBER) -->
                         @if($canEditProgress)
-                            <div x-show="showProgressModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs" style="display: none;">
-                                <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-xl border border-slate-200" @click.away="showProgressModal = false">
+                            <div x-show="showProgressModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs" style="display: none;">
+                                <div class="bg-white rounded-2xl max-w-sm w-full p-5 sm:p-6 shadow-xl border border-slate-200 max-h-[85vh] overflow-y-auto" @click.away="showProgressModal = false">
                                     <h4 class="text-sm font-bold text-slate-900 mb-1">Update Progres Tugas</h4>
                                     <p class="text-xs text-slate-500 mb-4">{{ $t->name }}</p>
                                     <form method="POST" action="{{ route('projects.tasks.update', [$project, $t]) }}" class="space-y-4">
                                         @csrf
                                         @method('PUT')
                                         <div>
-                                            <label class="block text-xs font-semibold text-slate-700 mb-1">Status Pengerjaan</label>
+                                             <label class="block text-xs font-semibold text-slate-700 mb-1">Status Pengerjaan</label>
                                             <select name="status" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs">
                                                 <option value="todo" {{ $t->status === 'todo' ? 'selected' : '' }}>To Do</option>
                                                 <option value="in_progress" {{ $t->status === 'in_progress' ? 'selected' : '' }}>In Progress</option>
@@ -317,8 +319,8 @@
 
                         <!-- MODAL TAMBAH DEPENDENCY (LEADER ONLY) -->
                         @if($isLeader)
-                            <div x-show="showDepModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs" style="display: none;">
-                                <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200" @click.away="showDepModal = false">
+                            <div x-show="showDepModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs" style="display: none;">
+                                <div class="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-xl border border-slate-200 max-h-[85vh] overflow-y-auto" @click.away="showDepModal = false">
                                     <h4 class="text-sm font-bold text-slate-900 mb-2">Tambah Predecessor untuk "{{ $t->name }}"</h4>
                                     <form method="POST" action="{{ route('projects.tasks.dependencies.store', [$project, $t]) }}" class="space-y-4">
                                         @csrf
@@ -330,7 +332,7 @@
                                                 @endforeach
                                             </select>
                                         </div>
-                                        <div class="grid grid-cols-2 gap-3">
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                             <div>
                                                 <label class="block text-xs font-semibold text-slate-700 mb-1">Tipe Relasi</label>
                                                 <select name="type" class="w-full px-3 py-2 border border-slate-300 rounded-xl text-xs">
@@ -352,8 +354,8 @@
                             </div>
 
                             <!-- MODAL TAMBAH ASSIGNMENT (LEADER ONLY) -->
-                            <div x-show="showAssignModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs" style="display: none;">
-                                <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200" @click.away="showAssignModal = false">
+                            <div x-show="showAssignModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs" style="display: none;">
+                                <div class="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-xl border border-slate-200 max-h-[85vh] overflow-y-auto" @click.away="showAssignModal = false">
                                     <h4 class="text-sm font-bold text-slate-900 mb-2">Tugaskan Anggota ke "{{ $t->name }}"</h4>
                                     <form method="POST" action="{{ route('projects.tasks.assignments.store', [$project, $t]) }}" class="space-y-4">
                                         @csrf
@@ -699,8 +701,8 @@
 
     <!-- MODAL TAMBAH TUGAS (LEADER ONLY) -->
     @if($isLeader)
-        <div x-show="showNewTaskModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs" style="display: none;">
-            <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-xl border border-slate-200" @click.away="showNewTaskModal = false">
+        <div x-show="showNewTaskModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs" style="display: none;">
+            <div class="bg-white rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-xl border border-slate-200 max-h-[85vh] overflow-y-auto" @click.away="showNewTaskModal = false">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-base font-bold text-slate-900">Tambah Tugas Baru</h3>
                     <button @click="showNewTaskModal = false" class="text-slate-400 hover:text-slate-600">&times;</button>
@@ -711,7 +713,7 @@
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Tugas / Aktivitas *</label>
                         <input type="text" name="name" required placeholder="Contoh: Booking Venue Acara" class="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Mulai *</label>
                             <input type="date" name="start_date" value="{{ $project->start_date->format('Y-m-d') }}" required class="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs">
@@ -721,7 +723,7 @@
                             <input type="number" name="duration_days" value="2" min="1" max="365" required class="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs">
                         </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Prioritas *</label>
                             <select name="priority" required class="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs">
@@ -754,8 +756,8 @@
         </div>
 
         <!-- MODAL TAMBAH RESOURCE (LEADER ONLY) -->
-        <div x-show="showNewResourceModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs" style="display: none;">
-            <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200" @click.away="showNewResourceModal = false">
+        <div x-show="showNewResourceModal" class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs" style="display: none;">
+            <div class="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-xl border border-slate-200 max-h-[85vh] overflow-y-auto" @click.away="showNewResourceModal = false">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-base font-bold text-slate-900">Tambah Anggota Tim / Sumber Daya</h3>
                     <button @click="showNewResourceModal = false" class="text-slate-400 hover:text-slate-600">&times;</button>
@@ -766,7 +768,7 @@
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Anggota *</label>
                         <input type="text" name="name" required placeholder="Contoh: Sarah Anindya" class="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs">
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Peran / Jabatan *</label>
                             <input type="text" name="role" required placeholder="Contoh: Koordinator Acara" class="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs">
@@ -780,7 +782,7 @@
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Email</label>
                         <input type="email" name="email" placeholder="sarah@example.com" class="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs">
                     </div>
-                    <div class="grid grid-cols-2 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-semibold text-slate-700 mb-1">Tarif / Jam (Rp)</label>
                             <input type="number" name="cost_per_hour" value="50000" min="0" step="1000" class="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs">

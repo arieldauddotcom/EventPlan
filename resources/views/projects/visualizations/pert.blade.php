@@ -18,6 +18,18 @@
         this.panX = e.clientX - this.startX;
         this.panY = e.clientY - this.startY;
     },
+    startPanTouch(e) {
+        if (e.touches && e.touches.length === 1) {
+            this.isDragging = true;
+            this.startX = e.touches[0].clientX - this.panX;
+            this.startY = e.touches[0].clientY - this.panY;
+        }
+    },
+    onPanTouch(e) {
+        if (!this.isDragging || !e.touches || e.touches.length !== 1) return;
+        this.panX = e.touches[0].clientX - this.startX;
+        this.panY = e.touches[0].clientY - this.startY;
+    },
     endPan() {
         this.isDragging = false;
     },
@@ -26,32 +38,35 @@
     resetView() { this.zoom = 1; this.panX = 0; this.panY = 0; }
 }">
     <!-- Header -->
-    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-xs">
         <div>
             <div class="flex items-center space-x-2 text-xs">
                 <a href="{{ route('projects.show', $project) }}" class="text-indigo-600 font-semibold hover:underline">&larr; Kembali ke Detail Proyek</a>
                 <span class="text-slate-400">•</span>
-                <span class="text-slate-500">{{ $project->name }}</span>
+                <span class="text-slate-500 truncate max-w-[180px] sm:max-w-none">{{ $project->name }}</span>
             </div>
-            <h1 class="text-2xl font-bold text-slate-900 tracking-tight mt-1">PERT / Network Diagram</h1>
+            <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight mt-1">PERT / Network Diagram</h1>
             <p class="text-xs sm:text-sm text-slate-500 mt-1">
                 Representasi graf simpul aktivitas (Activity on Node) dengan jalur kritis (Critical Path Method) bertanda merah.
             </p>
         </div>
 
         <!-- Tombol Kontrol Zoom & Navigasi -->
-        <div class="flex items-center space-x-2">
-            <button @click="zoomIn()" class="p-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold" title="Perbesar (+)">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-            </button>
-            <button @click="zoomOut()" class="p-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold" title="Perkecil (-)">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg>
-            </button>
-            <button @click="resetView()" class="px-3 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold">
-                Reset
-            </button>
-            <a href="{{ route('projects.gantt', $project) }}" class="px-3.5 py-2 rounded-xl bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700 transition">
-                Gantt Chart &rarr;
+        <div class="flex flex-wrap items-center gap-2">
+            <div class="flex items-center space-x-1.5">
+                <button @click="zoomIn()" class="p-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold" title="Perbesar (+)">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                </button>
+                <button @click="zoomOut()" class="p-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold" title="Perkecil (-)">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg>
+                </button>
+                <button @click="resetView()" class="px-3 py-2 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-50 text-xs font-semibold">
+                    Reset
+                </button>
+            </div>
+            <a href="{{ route('projects.gantt', $project) }}" class="px-3.5 py-2 rounded-xl bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700 transition flex items-center space-x-1">
+                <span>Gantt Chart</span>
+                <span>&rarr;</span>
             </a>
         </div>
     </div>
@@ -71,21 +86,25 @@
                 @endforelse
             </div>
         </div>
-        <div class="text-right">
+        <div class="text-left md:text-right pt-2 md:pt-0 border-t md:border-t-0 border-rose-200/60">
             <span class="text-slate-500">Total Durasi Acara:</span>
             <strong class="text-rose-700 text-sm ml-1">{{ $cpm['project_duration'] }} Hari Kerja</strong>
         </div>
     </div>
 
     <!-- Canvas SVG PERT Diagram -->
-    <div class="bg-slate-900 rounded-2xl p-4 shadow-inner overflow-hidden relative cursor-grab active:cursor-grabbing h-[600px] border border-slate-800"
+    <div class="bg-slate-900 rounded-2xl p-4 shadow-inner overflow-hidden relative cursor-grab active:cursor-grabbing h-[440px] sm:h-[600px] border border-slate-800 touch-none select-none"
          @mousedown="startPan($event)"
          @mousemove="onPan($event)"
          @mouseup="endPan()"
-         @mouseleave="endPan()">
+         @mouseleave="endPan()"
+         @touchstart.passive="startPanTouch($event)"
+         @touchmove.prevent="onPanTouch($event)"
+         @touchend="endPan()"
+         @touchcancel="endPan()">
 
-        <div class="absolute top-4 left-4 z-10 bg-slate-800/80 backdrop-blur-xs text-white text-[11px] px-3 py-1.5 rounded-xl border border-slate-700 pointer-events-none">
-            Gunakan drag/mouse untuk geser (pan), zoom in/out via tombol atas.
+        <div class="absolute top-3 left-3 z-10 bg-slate-800/90 backdrop-blur-xs text-white text-[11px] px-3 py-1.5 rounded-xl border border-slate-700 pointer-events-none max-w-[85%] sm:max-w-none">
+            💡 Geser layar (sentuh / drag) untuk navigasi graf, zoom in/out via tombol atas.
         </div>
 
         @if($tasks->isEmpty())

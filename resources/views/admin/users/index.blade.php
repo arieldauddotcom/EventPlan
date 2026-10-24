@@ -4,11 +4,11 @@
 <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-            <h1 class="text-2xl font-bold text-slate-900 tracking-tight">Kelola Pengguna & Sistem</h1>
-            <p class="text-sm text-slate-500 mt-1">Daftar seluruh akun terdaftar, hak akses, dan metrik keseluruhan proyek sistem.</p>
+            <h1 class="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">Kelola Pengguna & Sistem</h1>
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">Daftar seluruh akun terdaftar, hak akses, dan metrik keseluruhan proyek sistem.</p>
         </div>
-        <div class="flex items-center space-x-2.5">
-            <a href="{{ route('admin.projects.index') }}" class="inline-flex items-center px-4 py-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-sm transition border border-indigo-200 shadow-2xs">
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:space-x-2.5 sm:gap-0">
+            <a href="{{ route('admin.projects.index') }}" class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-semibold text-xs sm:text-sm transition border border-indigo-200 shadow-2xs">
                 <svg class="w-4 h-4 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
@@ -17,7 +17,7 @@
                     {{ $stats['total_projects'] }}
                 </span>
             </a>
-            <a href="{{ route('projects.create') }}" class="inline-flex items-center px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition shadow-sm">
+            <a href="{{ route('projects.create') }}" class="inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs sm:text-sm transition shadow-sm">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
@@ -118,22 +118,22 @@
     </div>
 
     <!-- Filter & Pencarian -->
-    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
-        <form method="GET" action="{{ route('admin.users.index') }}" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div class="sm:col-span-2">
-                <input type="text" name="search" value="{{ $search }}" placeholder="Cari berdasarkan nama, username, atau email..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+    <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs">
+        <form method="GET" action="{{ route('admin.users.index') }}" class="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+            <div class="flex-1">
+                <input type="text" name="search" value="{{ $search }}" placeholder="Cari nama, username, atau email..." class="w-full px-3.5 py-2 sm:py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
             </div>
-            <div class="flex space-x-2">
-                <select name="role" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+            <div class="flex items-center space-x-2">
+                <select name="role" class="w-full sm:w-36 px-3.5 py-2 sm:py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
                     <option value="">Semua Role</option>
                     <option value="admin" {{ $role === 'admin' ? 'selected' : '' }}>Admin</option>
                     <option value="user" {{ $role === 'user' ? 'selected' : '' }}>User</option>
                 </select>
-                <button type="submit" class="px-5 py-2.5 bg-slate-900 text-white rounded-xl text-xs font-semibold hover:bg-slate-800 transition">
+                <button type="submit" class="px-5 py-2 sm:py-2.5 bg-slate-900 text-white rounded-xl text-xs font-semibold hover:bg-slate-800 transition shrink-0">
                     Cari
                 </button>
                 @if($search || $role)
-                    <a href="{{ route('admin.users.index') }}" class="px-3.5 py-2.5 bg-slate-100 text-slate-600 rounded-xl text-xs font-semibold hover:bg-slate-200 transition flex items-center justify-center">
+                    <a href="{{ route('admin.users.index') }}" class="px-3 py-2 sm:py-2.5 bg-slate-100 text-slate-600 rounded-xl text-xs font-semibold hover:bg-slate-200 transition shrink-0 flex items-center justify-center">
                         Reset
                     </a>
                 @endif
@@ -143,7 +143,11 @@
 
     <!-- Tabel Pengguna -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
-        <div class="overflow-x-auto">
+        <div class="sm:hidden px-4 py-2 bg-slate-50 border-b border-slate-200/80 text-[11px] text-slate-500 flex items-center space-x-1.5">
+            <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            <span>Geser tabel ke kanan untuk melihat rincian akun</span>
+        </div>
+        <div class="overflow-x-auto" style="-webkit-overflow-scrolling: touch;">
             <table class="w-full text-left text-sm text-slate-600">
                 <thead class="bg-slate-50 text-xs font-semibold text-slate-500 uppercase border-b border-slate-200">
                     <tr>
