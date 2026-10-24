@@ -56,7 +56,7 @@ class ProjectInvitationController extends Controller
         }
 
         // Aturan 6: Pengguna harus sudah terdaftar
-        $invitee = User::where('email', $inviteeEmail)->first();
+        $invitee = User::whereRaw('LOWER(TRIM(email)) = ?', [$inviteeEmail])->first();
         if (!$invitee) {
             return back()->with('error', 'Pengguna dengan email ' . $inviteeEmail . ' belum terdaftar di sistem. Harap minta mereka mendaftar terlebih dahulu.');
         }

@@ -19,7 +19,11 @@ class ProjectMemberController extends Controller
     {
         $user = Auth::user();
         if (!$project->isLeader($user)) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json([
+                'exists' => false,
+                'error' => 'Unauthorized',
+                'message' => 'Hanya Project Leader yang dapat memeriksa email anggota.'
+            ], 403);
         }
 
         $email = strtolower(trim($request->query('email', '')));
@@ -30,7 +34,7 @@ class ProjectMemberController extends Controller
             ]);
         }
 
-        $targetUser = User::where('email', $email)->first();
+        $targetUser = User::whereRaw('LOWER(TRIM(email)) = ?', [$email])->first();
         if (!$targetUser) {
             return response()->json([
                 'exists' => false,
@@ -81,7 +85,7 @@ class ProjectMemberController extends Controller
         $email = strtolower(trim($validated['email']));
 
         // Deteksi apakah email terdaftar di sistem
-        $targetUser = User::where('email', $email)->first();
+        $targetUser = User::whereRaw('LOWER(TRIM(email)) = ?', [$email])->first();
         if (!$targetUser) {
             return back()->with('error', 'Email "' . $email . '" tidak terdaftar di sistem EventPlan. Anggota tim harus memiliki akun terdaftar terlebih dahulu.')
                 ->with('tab', 'members')

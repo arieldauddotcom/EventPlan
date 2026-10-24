@@ -67,6 +67,10 @@ class Project extends Model
 
     public function isLeader(User $user): bool
     {
+        if ($user->isAdmin()) {
+            return true;
+        }
+
         if ($this->owner_id === $user->id) {
             return true;
         }

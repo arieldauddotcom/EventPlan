@@ -849,18 +849,25 @@
                         this.status = null;
                         clearTimeout(this.timer);
                         this.timer = setTimeout(() => {
-                            fetch('{{ route('projects.members.check-email', $project) }}?email=' + encodeURIComponent(cleanEmail), {
+                            fetch('{{ route('projects.members.check-email', $project, false) }}?email=' + encodeURIComponent(cleanEmail), {
                                 headers: {
                                     'Accept': 'application/json',
                                     'X-Requested-With': 'XMLHttpRequest'
                                 }
                             })
-                            .then(res => res.json())
-                            .then(data => {
+                            .then(res => res.json().then(data => ({ ok: res.ok, status: res.status, data })))
+                            .then(result => {
                                 this.checking = false;
-                                if (!data.exists) {
+                                const data = result.data;
+                                if (!result.ok) {
+                                    this.status = 'error';
+                                    this.message = (data && data.message) ? data.message : 'Gagal memeriksa email (Error ' + result.status + ').';
+                                    this.userFound = null;
+                                    return;
+                                }
+                                if (!data || !data.exists) {
                                     this.status = 'not_found';
-                                    this.message = data.message || 'Email tidak terdaftar di sistem EventPlan.';
+                                    this.message = (data && data.message) ? data.message : 'Email tidak terdaftar di sistem EventPlan.';
                                     this.userFound = null;
                                 } else if (data.is_owner || (data.user && data.user.id === {{ $currentUser->id }})) {
                                     this.status = 'is_self';
@@ -876,12 +883,13 @@
                                     this.userFound = data.user;
                                 }
                             })
-                            .catch(() => {
+                            .catch(err => {
                                 this.checking = false;
                                 this.status = 'error';
-                                this.message = 'Gagal memeriksa status pendaftaran email.';
+                                this.message = 'Gagal terhubung ke server untuk memeriksa email.';
+                                this.userFound = null;
                             });
-                        }, 350);
+                        }, 300);
                     },
                     closeModal() {
                         this.email = '';
@@ -917,6 +925,8 @@
                                    name="email"
                                    x-model="email"
                                    @input="checkEmail()"
+                                   @blur="checkEmail()"
+                                   @keydown.enter.prevent="checkEmail()"
                                    required
                                    autocomplete="off"
                                    placeholder="Masukkan email yang terdaftar..."
@@ -968,6 +978,15 @@
                         <p class="text-[11px] text-slate-500 pt-1 border-t border-rose-100 mt-1">
                             Calon anggota harus membuat akun terlebih dahulu sebelum dapat dimasukkan ke tim proyek.
                         </p>
+                    </div>
+
+                    <!-- Deteksi: ERROR SISTEM / SERVER -->
+                    <div x-show="!checking && status === 'error'" class="p-3.5 bg-rose-50 border border-rose-200 rounded-xl space-y-1">
+                        <div class="flex items-center space-x-2 text-rose-800 font-semibold text-xs">
+                            <svg class="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span>Terjadi Kendala</span>
+                        </div>
+                        <p class="text-[11px] text-rose-700 leading-relaxed" x-text="message"></p>
                     </div>
 
                     <!-- Deteksi: SUDAH JADI ANGGOTA ATAU AKUN SENDIRI -->
