@@ -27,29 +27,58 @@
     <meta name="twitter:title" content="EventPlan — Manajemen Waktu Acara Berbasis Critical Path Method">
     <meta name="twitter:description" content="Optimalkan jadwal dan hindari keterlambatan event dengan analisis jalur kritis (CPM) dan visualisasi Gantt timeline cerdas.">
     <meta name="twitter:image" content="{{ asset('images/logo.png') }}">
+    <meta name="theme-color" content="#030712">
 
     <!-- Structured Data (JSON-LD Schema) -->
     <script type="application/ld+json">
     {
       "@@context": "https://schema.org",
-      "@@type": "SoftwareApplication",
-      "name": "EventPlan",
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Web Browser",
-      "description": "Aplikasi manajemen linimasa dan penjadwalan proyek acara berbasis algoritma Critical Path Method (CPM) dengan diagram Gantt dan PERT.",
-      "url": "{{ url('/') }}",
-      "offers": {
-        "@@type": "Offer",
-        "price": "0",
-        "priceCurrency": "IDR"
-      },
-      "featureList": [
-        "Critical Path Method (CPM) Otomatis",
-        "Visualisasi Gantt Chart Dinamis",
-        "Diagram Jaringan PERT",
-        "Manajemen Beban Kerja & Resource Acara",
-        "Kalender Kerja & Hari Libur Kustom",
-        "Ekspor Laporan PDF & CSV"
+      "@@graph": [
+        {
+          "@@type": "Organization",
+          "@@id": "{{ url('/#organization') }}",
+          "name": "EventPlan",
+          "url": "{{ url('/') }}",
+          "logo": {
+            "@@type": "ImageObject",
+            "url": "{{ asset('images/logo.png') }}"
+          }
+        },
+        {
+          "@@type": "WebSite",
+          "@@id": "{{ url('/#website') }}",
+          "url": "{{ url('/') }}",
+          "name": "EventPlan",
+          "description": "Platform Manajemen Proyek Acara & Penjadwalan Critical Path Method (CPM)",
+          "publisher": {
+            "@@id": "{{ url('/#organization') }}"
+          },
+          "inLanguage": "id-ID"
+        },
+        {
+          "@@type": "SoftwareApplication",
+          "@@id": "{{ url('/#software') }}",
+          "name": "EventPlan",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Web Browser",
+          "description": "Aplikasi manajemen linimasa dan penjadwalan proyek acara berbasis algoritma Critical Path Method (CPM) dengan diagram Gantt dan PERT interaktif.",
+          "url": "{{ url('/') }}",
+          "image": "{{ asset('images/logo.png') }}",
+          "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "IDR"
+          },
+          "featureList": [
+            "Critical Path Method (CPM) Forward & Backward Pass Otomatis",
+            "Deteksi Siklus Ketergantungan DAG (Directed Acyclic Graph)",
+            "Visualisasi Gantt Chart Dinamis",
+            "Diagram Jaringan PERT Interaktif",
+            "Manajemen Beban Kerja & Resource Acara",
+            "Kalender Kerja & Hari Libur Kustom",
+            "Ekspor Laporan PDF & CSV dengan Proteksi Formula Injection"
+          ]
+        }
       ]
     }
     </script>

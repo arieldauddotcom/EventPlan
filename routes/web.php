@@ -14,6 +14,43 @@ use App\Http\Controllers\ProjectMemberController;
 use App\Http\Controllers\VisualizationController;
 use Illuminate\Support\Facades\Route;
 
+// SEO: Dynamic Robots.txt & Sitemap.xml
+Route::get('/robots.txt', function () {
+    $content = implode("\n", [
+        'User-agent: *',
+        'Disallow: /login',
+        'Disallow: /register',
+        'Disallow: /dashboard',
+        'Disallow: /projects',
+        'Disallow: /invitations',
+        'Disallow: /profile',
+        'Disallow: /admin',
+        'Disallow: /auth/',
+        '',
+        'Allow: /',
+        'Allow: /images/',
+        'Allow: /build/',
+        '',
+        'Sitemap: ' . url('/sitemap.xml'),
+    ]);
+    return response($content, 200)->header('Content-Type', 'text/plain');
+});
+
+Route::get('/sitemap.xml', function () {
+    $now = now()->toAtomString();
+    $xml = '<?xml version="1.0" encoding="UTF-8"?>';
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+    $xml .= '  <url>';
+    $xml .= '    <loc>' . url('/') . '</loc>';
+    $xml .= '    <lastmod>' . $now . '</lastmod>';
+    $xml .= '    <changefreq>weekly</changefreq>';
+    $xml .= '    <priority>1.0</priority>';
+    $xml .= '  </url>';
+    $xml .= '</urlset>';
+
+    return response($xml, 200)->header('Content-Type', 'application/xml');
+});
+
 // Public avatar storage fallback route (works without auth, ensures LAN IP / reverse-proxy renders avatars)
 Route::get('/storage/avatars/{filename}', function ($filename) {
     $path = 'avatars/' . $filename;
