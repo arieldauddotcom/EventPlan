@@ -6,7 +6,7 @@
     $isLeader = $project->isLeader($currentUser);
 @endphp
 
-<div class="space-y-8" x-data="{ activeTab: 'tasks', showNewTaskModal: false, showNewResourceModal: false, showInviteModal: false, editTask: null }">
+<div class="space-y-8" x-data="{ activeTab: '{{ session('tab', 'tasks') }}', showNewTaskModal: false, showNewResourceModal: false, showInviteModal: false, showAddTeamModal: false, editTask: null }">
     <!-- Header Proyek Responsif Mobile -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-xs">
         <div>
@@ -99,6 +99,10 @@
             </div>
 
             @if($isLeader)
+                <button type="button" @click="activeTab = 'members'; showAddTeamModal = true" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-xs transition flex items-center space-x-1.5">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                    <span>Tambah Tim</span>
+                </button>
                 <a href="{{ route('projects.edit', $project) }}" class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition">
                     Edit Proyek
                 </a>
@@ -121,7 +125,7 @@
                 <span class="px-2 py-0.5 rounded-full text-[10px] bg-slate-100 text-slate-700">{{ $project->tasks->count() }}</span>
             </button>
             <button @click="activeTab = 'members'" :class="activeTab === 'members' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-800'" class="pb-3 border-b-2 transition flex items-center space-x-1.5 shrink-0 py-1">
-                <span>Kolaborasi & Anggota</span>
+                <span>Tim & Kolaborasi</span>
                 <span class="px-2 py-0.5 rounded-full text-[10px] bg-indigo-50 text-indigo-700 font-bold">{{ $project->members->count() }}</span>
             </button>
             <button @click="activeTab = 'resources'" :class="activeTab === 'resources' ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-500 hover:text-slate-800'" class="pb-3 border-b-2 transition flex items-center space-x-1.5 shrink-0 py-1">
@@ -389,16 +393,22 @@
 
     <!-- TAB 2: KOLABORASI & ANGGOTA PROYEK (MEMBERS & INVITATIONS) -->
     <div x-show="activeTab === 'members'" class="space-y-6" style="display: none;">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <div>
-                <h2 class="text-lg font-bold text-slate-900">Kolaborasi & Anggota Tim</h2>
-                <p class="text-xs text-slate-500">Daftar pengguna dengan akses proyek (Leader & Member) serta undangan pending.</p>
+                <h2 class="text-lg font-bold text-slate-900">Kolaborasi & Tim Proyek</h2>
+                <p class="text-xs text-slate-500">Daftar pengguna dengan akses proyek (Leader & Member) serta status undangan tim.</p>
             </div>
             @if($isLeader)
-                <button @click="showInviteModal = true" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs transition flex items-center space-x-1.5">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
-                    <span>Undang Anggota</span>
-                </button>
+                <div class="flex items-center space-x-2">
+                    <button type="button" @click="showAddTeamModal = true" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-xl shadow-xs transition flex items-center space-x-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                        <span>+ Tambah Tim</span>
+                    </button>
+                    <button type="button" @click="showInviteModal = true" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition flex items-center space-x-1.5" title="Kirim email undangan">
+                        <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        <span>Undang via Email</span>
+                    </button>
+                </div>
             @endif
         </div>
 
@@ -406,13 +416,21 @@
             <!-- Kolom Anggota Aktif -->
             <div class="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
                 <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-                    <h3 class="text-sm font-bold text-slate-900">Anggota Proyek ({{ $project->members->count() }})</h3>
+                    <div>
+                        <h3 class="text-sm font-bold text-slate-900">Anggota Tim Aktif ({{ $project->members->count() }})</h3>
+                        <p class="text-[11px] text-slate-400">Pengguna yang memiliki akun dan akses kerja pada proyek ini.</p>
+                    </div>
+                    @if($isLeader)
+                        <button type="button" @click="showAddTeamModal = true" class="text-xs text-indigo-600 hover:text-indigo-800 font-semibold flex items-center space-x-1">
+                            <span>+ Tambah Anggota</span>
+                        </button>
+                    @endif
                 </div>
                 <div class="divide-y divide-slate-100">
                     @foreach($project->members as $member)
                         <div class="p-4 flex items-center justify-between hover:bg-slate-50/80 transition">
                             <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm">
+                                <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm shadow-2xs">
                                     {{ strtoupper(substr($member->user->name, 0, 2)) }}
                                 </div>
                                 <div>
@@ -421,20 +439,26 @@
                                         <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase {{ $member->isLeader() ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-600' }}">
                                             {{ $member->role }}
                                         </span>
+                                        @if($member->user_id === $project->owner_id)
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-amber-100 text-amber-800">
+                                                Owner
+                                            </span>
+                                        @endif
                                         @if($member->user_id === $currentUser->id)
-                                            <span class="text-[10px] text-slate-400">(Anda)</span>
+                                            <span class="text-[10px] text-slate-400 font-medium">(Anda)</span>
                                         @endif
                                     </div>
                                     <p class="text-xs text-slate-500">{{ $member->user->email }}</p>
                                 </div>
                             </div>
 
-                            @if($isLeader && !$member->isLeader() && $member->user_id !== $project->owner_id)
-                                <form method="POST" action="{{ route('projects.members.destroy', [$project, $member]) }}" onsubmit="return confirm('Keluarkan anggota ini dari proyek?')">
+                            @if($isLeader && $member->user_id !== $currentUser->id && $member->user_id !== $project->owner_id && (!$member->isLeader() || $project->owner_id === $currentUser->id))
+                                <form method="POST" action="{{ route('projects.members.destroy', [$project, $member]) }}" onsubmit="return confirm('Apakah Anda yakin ingin mengeluarkan {{ addslashes($member->user->name) }} dari tim proyek?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="px-3 py-1.5 text-xs text-rose-600 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 rounded-lg font-semibold transition">
-                                        Keluarkan
+                                    <button type="submit" class="px-3 py-1.5 text-xs text-rose-600 hover:text-white hover:bg-rose-600 border border-rose-200 hover:border-rose-600 rounded-xl font-semibold transition flex items-center space-x-1 shadow-2xs" title="Hapus dari Tim">
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                        <span>Hapus</span>
                                     </button>
                                 </form>
                             @endif
@@ -795,6 +819,221 @@
                     <div class="flex justify-end space-x-2 pt-2">
                         <button type="button" @click="showNewResourceModal = false" class="px-4 py-2 border border-slate-300 text-xs rounded-xl font-semibold text-slate-700 hover:bg-slate-50">Batal</button>
                         <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs rounded-xl font-semibold">Simpan Anggota</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- MODAL TAMBAH TIM PROYEK (LEADER ONLY) DENGAN DETEKSI REAL-TIME EMAIL -->
+        <div x-show="showAddTeamModal" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs" style="display: none;">
+            <div class="bg-white rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-200"
+                 @click.away="closeModal()"
+                 x-data="{
+                    email: '',
+                    role: 'member',
+                    checking: false,
+                    status: null,
+                    userFound: null,
+                    message: '',
+                    timer: null,
+                    checkEmail() {
+                        const cleanEmail = this.email.trim().toLowerCase();
+                        if (!cleanEmail || !cleanEmail.includes('@') || !cleanEmail.includes('.')) {
+                            this.status = null;
+                            this.userFound = null;
+                            this.message = '';
+                            this.checking = false;
+                            return;
+                        }
+                        this.checking = true;
+                        this.status = null;
+                        clearTimeout(this.timer);
+                        this.timer = setTimeout(() => {
+                            fetch('{{ route('projects.members.check-email', $project) }}?email=' + encodeURIComponent(cleanEmail), {
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                this.checking = false;
+                                if (!data.exists) {
+                                    this.status = 'not_found';
+                                    this.message = data.message || 'Email tidak terdaftar di sistem EventPlan.';
+                                    this.userFound = null;
+                                } else if (data.is_owner || (data.user && data.user.id === {{ $currentUser->id }})) {
+                                    this.status = 'is_self';
+                                    this.message = 'Email ini adalah akun Anda sendiri.';
+                                    this.userFound = data.user;
+                                } else if (data.is_member) {
+                                    this.status = 'already_member';
+                                    this.message = 'Pengguna sudah menjadi anggota tim proyek ini (' + (data.member_role || 'Anggota') + ').';
+                                    this.userFound = data.user;
+                                } else {
+                                    this.status = 'available';
+                                    this.message = 'Akun terdaftar ditemukan!';
+                                    this.userFound = data.user;
+                                }
+                            })
+                            .catch(() => {
+                                this.checking = false;
+                                this.status = 'error';
+                                this.message = 'Gagal memeriksa status pendaftaran email.';
+                            });
+                        }, 350);
+                    },
+                    closeModal() {
+                        this.email = '';
+                        this.role = 'member';
+                        this.status = null;
+                        this.userFound = null;
+                        this.message = '';
+                        this.checking = false;
+                        showAddTeamModal = false;
+                    }
+                 }">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="p-2 bg-indigo-50 text-indigo-600 rounded-xl">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-base font-bold text-slate-900">Tambah Tim Proyek</h3>
+                            <p class="text-xs text-slate-500">Cari email pengguna terdaftar di sistem EventPlan.</p>
+                        </div>
+                    </div>
+                    <button type="button" @click="closeModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold p-1 rounded-lg hover:bg-slate-100 transition">&times;</button>
+                </div>
+
+                <form method="POST" action="{{ route('projects.members.store', $project) }}" class="space-y-4">
+                    @csrf
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">
+                            Alamat Email Pengguna <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="email"
+                                   name="email"
+                                   x-model="email"
+                                   @input="checkEmail()"
+                                   required
+                                   autocomplete="off"
+                                   placeholder="Masukkan email yang terdaftar..."
+                                   class="w-full px-3.5 py-2.5 pr-10 border rounded-xl text-xs transition focus:outline-none"
+                                   :class="{
+                                       'border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100': status === null && !checking,
+                                       'border-amber-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-100': checking,
+                                       'border-emerald-500 ring-2 ring-emerald-100': status === 'available',
+                                       'border-rose-400 ring-2 ring-rose-100': status === 'not_found' || status === 'error',
+                                       'border-amber-400 ring-2 ring-amber-100': status === 'already_member' || status === 'is_self'
+                                   }">
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <template x-if="checking">
+                                    <svg class="animate-spin h-4 w-4 text-indigo-600" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                    </svg>
+                                </template>
+                                <template x-if="!checking && status === 'available'">
+                                    <svg class="h-4 w-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                </template>
+                                <template x-if="!checking && (status === 'not_found' || status === 'error')">
+                                    <svg class="h-4 w-4 text-rose-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                </template>
+                                <template x-if="!checking && (status === 'already_member' || status === 'is_self')">
+                                    <svg class="h-4 w-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                                </template>
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1">Sistem otomatis mendeteksi apakah email terdaftar di sistem EventPlan.</p>
+                    </div>
+
+                    <!-- Deteksi: Loading / Memeriksa -->
+                    <div x-show="checking" class="p-3 bg-indigo-50/70 border border-indigo-100 rounded-xl flex items-center space-x-2 text-xs text-indigo-700">
+                        <svg class="animate-spin h-3.5 w-3.5 text-indigo-600 shrink-0" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        <span>Memeriksa ketersediaan email di database...</span>
+                    </div>
+
+                    <!-- Deteksi: TIDAK TERDAFTAR -->
+                    <div x-show="!checking && status === 'not_found'" class="p-3.5 bg-rose-50 border border-rose-200 rounded-xl space-y-1">
+                        <div class="flex items-center space-x-2 text-rose-800 font-semibold text-xs">
+                            <svg class="w-4 h-4 text-rose-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span>Email Belum Terdaftar</span>
+                        </div>
+                        <p class="text-[11px] text-rose-700 leading-relaxed" x-text="message"></p>
+                        <p class="text-[11px] text-slate-500 pt-1 border-t border-rose-100 mt-1">
+                            Calon anggota harus membuat akun terlebih dahulu sebelum dapat dimasukkan ke tim proyek.
+                        </p>
+                    </div>
+
+                    <!-- Deteksi: SUDAH JADI ANGGOTA ATAU AKUN SENDIRI -->
+                    <div x-show="!checking && (status === 'already_member' || status === 'is_self')" class="p-3.5 bg-amber-50 border border-amber-200 rounded-xl space-y-1">
+                        <div class="flex items-center space-x-2 text-amber-800 font-semibold text-xs">
+                            <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                            <span x-text="status === 'is_self' ? 'Akun Anda Sendiri' : 'Sudah Bergabung'"></span>
+                        </div>
+                        <p class="text-[11px] text-amber-700 leading-relaxed" x-text="message"></p>
+                    </div>
+
+                    <!-- Deteksi: AKUN DITEMUKAN & TERSEDIA -->
+                    <div x-show="!checking && status === 'available' && userFound" class="p-3.5 bg-emerald-50/80 border border-emerald-200 rounded-xl space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full flex items-center space-x-1">
+                                <svg class="w-3 h-3 text-emerald-600 inline mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                                <span>Akun Terdaftar</span>
+                            </span>
+                            <span class="text-[11px] text-emerald-700 font-medium">Siap ditambahkan</span>
+                        </div>
+                        <div class="flex items-center space-x-3 pt-1">
+                            <div class="w-10 h-10 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-sm shadow-xs shrink-0" x-text="userFound ? userFound.name.substring(0, 2).toUpperCase() : 'EP'">
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <h4 class="text-xs font-bold text-slate-900 truncate" x-text="userFound ? userFound.name : ''"></h4>
+                                <p class="text-[11px] text-slate-500 truncate" x-text="userFound ? (userFound.username ? '@' + userFound.username + ' • ' + userFound.email : userFound.email) : ''"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pemilihan Peran -->
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1.5">
+                            Peran dalam Tim <span class="text-rose-500">*</span>
+                        </label>
+                        <div class="grid grid-cols-2 gap-3">
+                            <label class="cursor-pointer border rounded-xl p-3 flex flex-col space-y-1 transition"
+                                   :class="role === 'member' ? 'border-indigo-600 bg-indigo-50/50 ring-1 ring-indigo-500' : 'border-slate-200 hover:border-slate-300'">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-slate-900">Member</span>
+                                    <input type="radio" name="role" value="member" x-model="role" class="text-indigo-600 focus:ring-indigo-500">
+                                </div>
+                                <span class="text-[10px] text-slate-500 leading-tight">Mengerjakan tugas dan melihat linimasa proyek.</span>
+                            </label>
+                            <label class="cursor-pointer border rounded-xl p-3 flex flex-col space-y-1 transition"
+                                   :class="role === 'leader' ? 'border-indigo-600 bg-indigo-50/50 ring-1 ring-indigo-500' : 'border-slate-200 hover:border-slate-300'">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold text-slate-900">Co-Leader</span>
+                                    <input type="radio" name="role" value="leader" x-model="role" class="text-indigo-600 focus:ring-indigo-500">
+                                </div>
+                                <span class="text-[10px] text-slate-500 leading-tight">Dapat mengelola tugas, anggota tim, dan jadwal.</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="pt-3 border-t border-slate-100 flex items-center justify-end space-x-2">
+                        <button type="button" @click="closeModal()" class="px-4 py-2 border border-slate-300 text-xs rounded-xl font-semibold text-slate-700 hover:bg-slate-50 transition">
+                            Batal
+                        </button>
+                        <button type="submit"
+                                :disabled="status !== 'available' || checking"
+                                class="px-5 py-2 text-xs rounded-xl font-semibold text-white transition flex items-center space-x-1.5"
+                                :class="status === 'available' && !checking ? 'bg-indigo-600 hover:bg-indigo-700 shadow-sm' : 'bg-slate-300 cursor-not-allowed opacity-60'">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                            <span>Tambahkan ke Tim</span>
+                        </button>
                     </div>
                 </form>
             </div>

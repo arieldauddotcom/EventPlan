@@ -110,6 +110,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/invitations/{invitation}/accept', [ProjectInvitationController::class, 'accept'])->name('invitations.accept');
     Route::post('/invitations/{invitation}/decline', [ProjectInvitationController::class, 'decline'])->name('invitations.decline');
     Route::delete('/projects/{project}/invitations/{invitation}', [ProjectInvitationController::class, 'destroy'])->name('projects.invitations.destroy');
+    Route::get('/projects/{project}/check-user-email', [ProjectMemberController::class, 'checkUserEmail'])->name('projects.members.check-email');
+    Route::post('/projects/{project}/members', [ProjectMemberController::class, 'store'])->name('projects.members.store');
     Route::delete('/projects/{project}/members/{member}', [ProjectMemberController::class, 'destroy'])->name('projects.members.destroy');
 
     // Visualizations (Gantt, PERT, Resource Chart)
