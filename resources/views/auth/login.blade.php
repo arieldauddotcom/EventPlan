@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Masuk ke portal EventPlan untuk mengelola proyek acara dan analisis Critical Path Method.">
+    <meta name="theme-color" content="#030712">
+    <link rel="canonical" href="{{ route('login') }}">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
     <title>EventPlan - Masuk</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">

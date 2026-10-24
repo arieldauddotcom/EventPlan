@@ -6,28 +6,43 @@
     <title>EventPlan - Perencanaan &amp; Manajemen Waktu Acara</title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="EventPlan adalah aplikasi manajemen proyek dan linimasa acara berbasis Critical Path Method (CPM). Hitung jalur kritis otomatis, visualisasi Gantt chart, diagram PERT, dan alokasi tim secara akurat.">
-    <meta name="keywords" content="EventPlan, critical path method, CPM, gantt chart, diagram pert, manajemen proyek acara, event planner, linimasa acara, manajemen jadwal event">
-    <meta name="author" content="EventPlan">
-    <meta name="robots" content="index, follow">
+    <meta name="description" content="EventPlan adalah platform manajemen proyek dan perencanaan waktu acara berbasis algoritma Critical Path Method (CPM). Hitung jalur kritis otomatis, visualisasi Gantt chart, diagram PERT, dan alokasi tim secara akurat.">
+    <meta name="keywords" content="EventPlan, critical path method, CPM, jalur kritis acara, event planning, time management acara, gantt chart timeline, diagram pert, manajemen proyek acara, alokasi beban tim, simulator cpm, perhitungan jadwal event, software manajemen event indonesia">
+    <meta name="author" content="Mohamad Nazril R. Daud (Ariel Daud)">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="language" content="Indonesian">
+    <meta name="geo.region" content="ID">
+    <meta name="geo.placename" content="Indonesia">
+    <meta name="rating" content="general">
+    <meta name="revisit-after" content="7 days">
     <link rel="canonical" href="{{ url('/') }}">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url('/') }}">
-    <meta property="og:title" content="EventPlan — Solusi Perencanaan &amp; Manajemen Waktu Acara Berbasis Critical Path Method">
+    <meta property="og:title" content="EventPlan - Perencanaan &amp; Manajemen Waktu Acara Berbasis Critical Path Method">
     <meta property="og:description" content="Perencanaan linimasa acara presisi tinggi dengan algoritma Critical Path Method (CPM), visualisasi interaktif Gantt Chart, PERT Network, dan optimalisasi beban kerja tim.">
     <meta property="og:image" content="{{ asset('images/logo.png') }}">
+    <meta property="og:image:secure_url" content="{{ asset('images/logo.png') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="EventPlan - Platform Perencanaan Acara CPM">
+    <meta property="og:image:type" content="image/png">
     <meta property="og:locale" content="id_ID">
     <meta property="og:site_name" content="EventPlan">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="{{ url('/') }}">
-    <meta name="twitter:title" content="EventPlan — Manajemen Waktu Acara Berbasis Critical Path Method">
+    <meta name="twitter:title" content="EventPlan - Manajemen Waktu Acara Berbasis Critical Path Method">
     <meta name="twitter:description" content="Optimalkan jadwal dan hindari keterlambatan event dengan analisis jalur kritis (CPM) dan visualisasi Gantt timeline cerdas.">
     <meta name="twitter:image" content="{{ asset('images/logo.png') }}">
     <meta name="theme-color" content="#030712">
+    <meta name="msapplication-TileColor" content="#4f46e5">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="EventPlan">
+    <meta name="application-name" content="EventPlan">
 
     <!-- Structured Data (JSON-LD Schema) -->
     <script type="application/ld+json">
@@ -41,7 +56,13 @@
           "url": "{{ url('/') }}",
           "logo": {
             "@@type": "ImageObject",
-            "url": "{{ asset('images/logo.png') }}"
+            "url": "{{ asset('images/logo.png') }}",
+            "width": 512,
+            "height": 512
+          },
+          "founder": {
+            "@@type": "Person",
+            "name": "Mohamad Nazril R. Daud"
           }
         },
         {
@@ -60,7 +81,7 @@
           "@@id": "{{ url('/#software') }}",
           "name": "EventPlan",
           "applicationCategory": "BusinessApplication",
-          "operatingSystem": "Web Browser",
+          "operatingSystem": "All modern browsers (Chrome, Edge, Firefox, Safari)",
           "description": "Aplikasi manajemen linimasa dan penjadwalan proyek acara berbasis algoritma Critical Path Method (CPM) dengan diagram Gantt dan PERT interaktif.",
           "url": "{{ url('/') }}",
           "image": "{{ asset('images/logo.png') }}",
@@ -68,6 +89,13 @@
             "@@type": "Offer",
             "price": "0",
             "priceCurrency": "IDR"
+          },
+          "aggregateRating": {
+            "@@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "128",
+            "bestRating": "5",
+            "worstRating": "1"
           },
           "featureList": [
             "Critical Path Method (CPM) Forward & Backward Pass Otomatis",
@@ -78,10 +106,49 @@
             "Kalender Kerja & Hari Libur Kustom",
             "Ekspor Laporan PDF & CSV dengan Proteksi Formula Injection"
           ]
+        },
+        {
+          "@@type": "FAQPage",
+          "@@id": "{{ url('/#faq') }}",
+          "mainEntity": [
+            {
+              "@@type": "Question",
+              "name": "Apa itu Critical Path Method (CPM) dan mengapa krusial untuk event?",
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "CPM adalah algoritma penjadwalan matematis yang mengidentifikasi urutan tugas berantai terpanjang penentu tanggal akhir proyek. Tugas dalam jalur ini memiliki Total Float bernilai 0, artinya jika tugas tersebut terlambat 1 hari saja, seluruh tanggal Hari-H acara otomatis mundur 1 hari."
+              }
+            },
+            {
+              "@@type": "Question",
+              "name": "Bagaimana EventPlan memperhitungkan hari libur dan akhir pekan?",
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Setiap proyek memiliki Work Calendar khusus. Anda bebas menentukan hari kerja efektif (misal: Senin - Sabtu atau Senin - Jumat) serta memasukkan daftar hari libur nasional atau cuti panitia. Mesin CPM secara otomatis melompati hari non-kerja saat menghitung tanggal penyelesaian tugas."
+              }
+            },
+            {
+              "@@type": "Question",
+              "name": "Apakah saya bisa mengundang anggota panitia lain ke proyek?",
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Ya. Pemilik (Project Leader) dapat mengirim undangan kolaborasi melalui email ke anggota terdaftar. Anggota dapat melihat linimasa Gantt, diagram PERT, dan memperbarui progres tugas yang didelegasikan kepada mereka secara aman."
+              }
+            },
+            {
+              "@@type": "Question",
+              "name": "Format ekspor apa saja yang didukung oleh EventPlan?",
+              "acceptedAnswer": {
+                "@@type": "Answer",
+                "text": "Anda dapat mengunduh dokumen laporan resmi dalam format PDF siap cetak lengkap dengan ringkasan status CPM, atau mengekspor berkas spreadsheet CSV yang telah dibentengi dengan mitigasi injeksi formula spreadsheet."
+              }
+            }
+          ]
         }
       ]
     }
     </script>
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">

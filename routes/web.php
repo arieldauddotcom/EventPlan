@@ -18,18 +18,22 @@ use Illuminate\Support\Facades\Route;
 Route::get('/robots.txt', function () {
     $content = implode("\n", [
         'User-agent: *',
-        'Disallow: /login',
-        'Disallow: /register',
+        'Allow: /',
+        'Allow: /images/',
+        'Allow: /build/',
+        'Allow: /favicon.ico',
+        'Allow: /manifest.json',
+        'Allow: /login',
+        'Allow: /register',
+        '',
+        '# Disallow private user & admin workspaces',
         'Disallow: /dashboard',
         'Disallow: /projects',
         'Disallow: /invitations',
         'Disallow: /profile',
         'Disallow: /admin',
         'Disallow: /auth/',
-        '',
-        'Allow: /',
-        'Allow: /images/',
-        'Allow: /build/',
+        'Disallow: /storage/',
         '',
         'Sitemap: ' . url('/sitemap.xml'),
     ]);
@@ -39,12 +43,29 @@ Route::get('/robots.txt', function () {
 Route::get('/sitemap.xml', function () {
     $now = now()->toAtomString();
     $xml = '<?xml version="1.0" encoding="UTF-8"?>';
-    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">';
     $xml .= '  <url>';
     $xml .= '    <loc>' . url('/') . '</loc>';
     $xml .= '    <lastmod>' . $now . '</lastmod>';
     $xml .= '    <changefreq>weekly</changefreq>';
     $xml .= '    <priority>1.0</priority>';
+    $xml .= '    <image:image>';
+    $xml .= '      <image:loc>' . asset('images/logo.png') . '</image:loc>';
+    $xml .= '      <image:title>EventPlan Logo</image:title>';
+    $xml .= '      <image:caption>Aplikasi Perencanaan &amp; Manajemen Waktu Acara Berbasis Critical Path Method</image:caption>';
+    $xml .= '    </image:image>';
+    $xml .= '  </url>';
+    $xml .= '  <url>';
+    $xml .= '    <loc>' . url('/login') . '</loc>';
+    $xml .= '    <lastmod>' . $now . '</lastmod>';
+    $xml .= '    <changefreq>monthly</changefreq>';
+    $xml .= '    <priority>0.5</priority>';
+    $xml .= '  </url>';
+    $xml .= '  <url>';
+    $xml .= '    <loc>' . url('/register') . '</loc>';
+    $xml .= '    <lastmod>' . $now . '</lastmod>';
+    $xml .= '    <changefreq>monthly</changefreq>';
+    $xml .= '    <priority>0.5</priority>';
     $xml .= '  </url>';
     $xml .= '</urlset>';
 
