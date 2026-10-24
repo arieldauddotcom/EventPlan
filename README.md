@@ -1,8 +1,8 @@
 # EventPlan - Aplikasi Perencanaan & Manajemen Waktu Acara Berbasis Critical Path Method (CPM)
 
-EventPlan adalah platform web modern untuk manajemen proyek dan perencanaan waktu acara (*Event Planning & Time Management*) yang mengimplementasikan algoritma **Critical Path Method (CPM)**, visualisasi interaktif **Gantt Chart**, **PERT / Network Diagram (Activity on Node)**, serta pemantauan kapasitas tim (**Resource Workload & Over-allocation**).
+EventPlan adalah platform web modern untuk manajemen proyek dan perencanaan waktu acara (*Event Planning & Time Management*) yang mengimplementasikan algoritma **Critical Path Method (CPM)**, visualisasi interaktif **Gantt Chart**, **PERT / Network Diagram (Activity on Node)**, pemantauan kapasitas beban kerja tim (**Resource Workload & Over-allocation**), serta kolaborasi tim terintegrasi (**Team Collaboration & Role Management**).
 
-Dibangun menggunakan stack **Laravel 13**, **Tailwind CSS v4**, **Alpine.js**, dan basis data **MySQL**.
+Dibangun menggunakan stack teknologi mutakhir **Laravel 13**, **Tailwind CSS v4**, **Alpine.js**, dan basis data **MySQL**.
 
 ---
 
@@ -11,40 +11,55 @@ Dibangun menggunakan stack **Laravel 13**, **Tailwind CSS v4**, **Alpine.js**, d
 Aplikasi telah terpasang dan dapat dicoba secara online melalui tautan berikut:
 - **URL Demo**: [https://eventplan.arieldaud.com](https://eventplan.arieldaud.com)
 
-> 💡 **Tips Pengujian:** Pada halaman login, Anda dapat menggunakan tombol dropdown **"Pilih Akun Demo"** untuk masuk langsung sebagai *Administrator* atau *Perencana Acara (Planner)* tanpa perlu mengetik kata sandi secara manual.
+> 💡 **Tips Pengujian Cepat:** Pada halaman masuk ([/login](https://eventplan.arieldaud.com/login)), Anda dapat menggunakan dropdown **"Pilih Akun Demo untuk Auto-Fill"** untuk masuk langsung sebagai *Administrator*, *Lead Planner*, *Event Coordinator*, maupun divisi lainnya tanpa perlu mengetik kata sandi secara manual.
 
 ---
 
 ## 🌟 Fitur Utama
 
-1. **Autentikasi & Multi-Tenancy Proyek**
-   - Mendukung login OAuth Google melalui Laravel Socialite.
-   - Tersedia tombol cepat *Dev / Local Login* untuk kemudahan pengujian di lingkungan pengembangan lokal tanpa kredensial Google asli.
-   - Kebijakan isolasi otorisasi data (*ProjectPolicy*): hanya pemilik (*owner*) atau anggota proyek yang berwenang yang dapat melihat dan memodifikasi data acara.
+### 1. Autentikasi Fleksibel & Multi-Tenancy Proyek
+- **Google OAuth Login**: Terintegrasi dengan Google OAuth via Laravel Socialite, dilengkapi fitur tautkan (*link*) dan lepas tautan (*unlink*) akun Google pada halaman Profil.
+- **Penyimpanan Profil Persisten**: Pembaruan nama profil pengguna tetap terjaga dan tidak akan tertimpa saat login ulang menggunakan akun Google.
+- **Tombol Dev / Local Login**: Opsi login cepat untuk pengujian lokal tanpa memerlukan kredensial Google asli.
+- **Isolasi Akses Ketat (*ProjectPolicy*)**: Hanya pemilik proyek (*Owner*), pemimpin tim (*Leader/Co-Leader*), atau anggota tim berwenang yang dapat melihat dan memodifikasi data acara.
 
-2. **Manajemen Proyek & Kalender Kerja Kustom**
-   - Konfigurasi hari kerja mingguan (default: Senin - Jumat) dan jam operasional per hari.
-   - Manajemen hari libur nasional atau cuti bersama per kalender kerja.
-   - Perhitungan otomatis tanggal selesai tugas (*end date*) yang melompati akhir pekan dan hari libur secara presisi.
+### 2. Kolaborasi Tim & Manajemen Peran Dinamis (Team Collaboration)
+- **Deteksi Email Terdaftar Real-Time**: Input email pada modal penambahan tim memeriksa eksistensi akun secara asinkron (AJAX) dan menampilkan pratinjau avatar, nama lengkap, serta *username*.
+- **Alur Undangan & Approval (*Pending Invitation Flow*)**: Undangan dikirim dengan status `pending` dan baru aktif menjadi anggota proyek setelah pengguna yang diundang menyetujuinya (*Approve*) melalui menu **Undangan Proyek** (`/invitations`).
+- **Promosi & Demosi Peran (Member $\leftrightarrow$ Co-Leader)**:
+  - Project Leader / Owner dapat mempromosikan **Member biasa menjadi Co-Leader** untuk memberikan hak pengelolaan tugas, linimasa, dan anggota.
+  - Project Owner dapat menurunkan (*demote*) **Co-Leader kembali menjadi Member biasa** hanya dengan 1-klik yang aman disertai dialog konfirmasi.
+  - Perlindungan hak akses: Peran Pemilik Proyek (*Owner*) dilindungi permanen dan tidak dapat diubah/diturunkan oleh siapapun.
+  - Sinkronisasi otomatis peran tim dengan data *Resource* (sumber daya beban kerja & jadwal).
+- **Keluarkan Anggota (*Remove Member*)**: Leader dan Owner dapat mengeluarkan anggota dari proyek secara aman.
 
-3. **Struktur Rincian Tugas & Ketergantungan (Task & Dependency Engine)**
-   - Manajemen tugas dan subtugas dengan penentuan prioritas (*Urgent*, *High*, *Medium*, *Low*) dan status kerja.
-   - Relasi ketergantungan antar-tugas: **Finish-to-Start (FS)** dan **Start-to-Start (SS)** beserta pengaturan waktu jeda (*lag days*).
-   - Validasi siklus ketergantungan berbasis algoritma deteksi siklus **Directed Acyclic Graph (DAG)** untuk mencegah *infinite loop* atau referensi melingkar (*deadlock*).
+### 3. Manajemen Proyek & Kalender Kerja Kustom
+- **Kalender Kerja & Hari Libur**: Pengaturan hari kerja mingguan (default 5 hari kerja: Senin - Jumat) dan konfigurasi hari libur nasional atau cuti bersama.
+- **Kalkulasi Hari Kerja Presisi**: Perhitungan otomatis durasi dan tanggal selesai (*end date*) tugas yang melompati akhir pekan dan hari libur secara akurat.
+- **Penyaringan Otomatis (Auto-Filter)**: Pencarian dan filter status/peran proyek bekerja otomatis dengan *debounce timer* tanpa perlu menekan tombol submit secara manual.
 
-4. **Kalkulasi Critical Path Method (CPM) Presisi Tinggi**
-   - **Forward Pass**: Menghitung *Early Start* (ES) dan *Early Finish* (EF).
-   - **Backward Pass**: Menghitung *Late Start* (LS) dan *Late Finish* (LF).
-   - **Total Float & Critical Path**: Mengidentifikasi tugas-tugas dengan kelonggaran waktu nol (*Total Float = 0*) yang menjadi jalur kritis penentu keterlambatan seluruh proyek acara.
+### 4. Struktur Rincian Tugas & Ketergantungan (Task & Dependency Engine)
+- **Manajemen Tugas**: Hierarki tugas proyek dengan rincian durasi kerja, tanggal mulai, penanggung jawab (*assigned resource*), prioritas (*Urgent*, *High*, *Medium*, *Low*), dan status progres (*Draft, In Progress, Completed*).
+- **Tipe Ketergantungan Fleksibel**: Mendukung relasi **Finish-to-Start (FS)** dan **Start-to-Start (SS)** beserta pengaturan jeda waktu (*lag days*).
+- **Deteksi Siklus Graf Ketergantungan (DAG Cycle Prevention)**: Algoritma validasi ketergantungan otomatis mencegah referensi melingkar (*circular dependency / deadlock*).
 
-5. **Visualisasi Interaktif**
-   - **Gantt Chart**: Linimasa visual tugas, persentase progres, dan penyorotan tugas di jalur kritis dengan kontras warna khusus.
-   - **PERT / Network Diagram**: Diagram graf simpul (*Activity on Node*) SVG interaktif yang dilengkapi fitur geser (*pan*), perbesar/perkecil (*zoom*), serta panah berarah merah untuk jalur kritis.
-   - **Resource Workload Matrix**: Matriks heatmap dan timeline beban kerja harian tim, pendeteksi bentrok jadwal cuti, dan peringatan *over-allocation* (> 100% kapasitas).
+### 5. Kalkulasi Critical Path Method (CPM) Presisi Tinggi
+- **Forward Pass**: Menghitung *Early Start* (ES) dan *Early Finish* (EF) untuk setiap tugas.
+- **Backward Pass**: Menghitung *Late Start* (LS) dan *Late Finish* (LF) berdasarkan batas akhir proyek (*project deadline*).
+- **Total Float & Free Float**: Mengidentifikasi kelonggaran waktu (*float*) per tugas. Tugas dengan *Total Float = 0* ditandai sebagai **Jalur Kritis (Critical Path)** yang menentukan durasi total keberhasilan acara.
 
-6. **Dashboard Analitik & Ekspor Laporan CSV**
-   - Ringkasan statistik proyek (Aktif, Planning, Selesai), tugas kritis, dan widget tugas dengan *deadline* terdekat (7 hari mendatang).
-   - Fitur ekspor data tugas dan hasil kalkulasi CPM ke format CSV dengan proteksi *CSV Formula Injection Mitigation* (penambahan karakter proteksi pada sel yang diawali tanda `=`, `+`, `-`, atau `@`).
+### 6. Visualisasi Interaktif Proyek
+- **Gantt Chart Timeline**: Linimasa horizontal dengan kontrol perbesaran hari (*dayWidth zoom*), progres tugas dinamis, panah relasi ketergantungan SVG, dan penyorotan warna merah khusus untuk tugas kritis.
+- **PERT / Network Diagram (Activity on Node)**: Diagram graf alur kerja berbasis SVG interaktif dengan fitur geser (*pan*) dan perbesar/perkecil (*zoom*). Setiap simpul memuat nilai ES, EF, LS, LF, durasi, dan TF.
+- **Resource Workload Matrix**: Matriks beban kerja harian tim, indikator kapasitas jam per hari, jadwal cuti, dan sistem peringatan kelebihan beban (*over-allocation* > 100%).
+
+### 7. Laporan & Ekspor Lengkap (PDF & CSV)
+- **Ekspor Dokumen PDF Resmi**: Menghasilkan dokumen laporan proyek profesional siap cetak yang memuat ringkasan eksekutif, linimasa proyek, daftar tugas kritis CPM, matriks anggota tim, dan kalender kerja.
+- **Ekspor Data CSV Tersanitasi**: Ekspor data rincian tugas dan hasil kalkulasi CPM dengan proteksi *CSV Formula Injection Mitigation* (mencegah eksekusi ekspresi berbahaya pada aplikasi spreadsheet).
+
+### 8. Administrasi Global (Khusus Administrator)
+- **Kelola Pengguna Global (`/admin/users`)**: Pemantauan seluruh pengguna, penggantian peran sistem (*Admin / User*), reset avatar, dan penghapusan akun.
+- **Portofolio Semua Proyek (`/admin/projects`)**: Panel kendali untuk meninjau seluruh proyek di sistem, statistik global, filter pemilik (*owner*), serta pembersihan proyek bermasalah.
 
 ---
 
@@ -69,7 +84,7 @@ Pusat kendali pengguna yang menyajikan kartu metrik global (Total Proyek, Proyek
 ---
 
 ### 4. Manajemen Rincian Proyek & Struktur Tugas
-Tampilan detail manajemen proyek acara dengan tab navigasi lengkap (*Daftar Tugas, Kolaborasi & Anggota, Tim & Sumber Daya, Kalender Kerja & Hari Libur*). Setiap tugas memuat indikator prioritas (*Urgent/High*), durasi hari kerja, relasi *predecessor*, petugas yang dialokasikan, dan badge penanda jalur kritis otomatis.
+Tampilan detail manajemen proyek acara dengan tab navigasi lengkap (*Daftar Tugas, Kolaborasi Tim & Anggota, Tim & Sumber Daya, Kalender Kerja & Hari Libur*). Setiap tugas memuat indikator prioritas (*Urgent/High*), durasi hari kerja, relasi *predecessor*, petugas yang dialokasikan, dan badge penanda jalur kritis otomatis.
 ![Detail Proyek & Manajemen Tugas](screenshoot/04-detail-proyek-tugas.png)
 
 ---
@@ -88,10 +103,11 @@ Representasi graf simpul *Activity on Node* (AoN) interaktif yang dilengkapi fit
 
 ## 🚀 Kebutuhan Sistem & Dependensi
 
-- **PHP**: `>= 8.2` (Rekomendasi PHP 8.3 / 8.5 dengan ekstensi `pdo_mysql`, `mbstring`, `openssl`, `bcmath`)
-- **Composer**: `>= 2.0`
+- **PHP**: `>= 8.2` (Disarankan PHP 8.2, 8.3, atau 8.4 dengan ekstensi `pdo_mysql`, `mbstring`, `openssl`, `bcmath`, `xml`, `gd`)
+- **Composer**: `>= 2.2`
 - **Node.js**: `>= 20.x` & **npm**
 - **Basis Data**: MySQL `>= 8.0` atau MariaDB `>= 10.5`
+- **Web Server**: Apache / Nginx dengan modul `mod_rewrite` aktif
 
 ---
 
@@ -102,7 +118,7 @@ Representasi graf simpul *Activity on Node* (AoN) interaktif yang dilengkapi fit
 git clone https://github.com/arieldauddotcom/EventPlan.git
 cd EventPlan
 
-# Install pustaka vendor PHP
+# Install seluruh dependensi PHP via Composer
 composer install
 ```
 
@@ -113,7 +129,7 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-Pastikan konfigurasi koneksi basis data pada berkas `.env` telah sesuai:
+Sesuaikan konfigurasi koneksi basis data pada berkas `.env`:
 ```env
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
@@ -123,14 +139,15 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-Buat database jika belum tersedia:
+Buat database MySQL jika belum tersedia:
 ```bash
 mysql -u root -e "CREATE DATABASE IF NOT EXISTS eventplan_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 ```
 
-### 3. Jalankan Migrasi Basis Data
+### 3. Jalankan Migrasi & Seeder Basis Data
+Jalankan migrasi tabel beserta *seeder* data demo awal:
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
 
 ### 4. Kompilasi Aset Frontend (Tailwind CSS v4 & Alpine.js)
@@ -139,12 +156,18 @@ npm install
 npm run build
 ```
 
-Untuk mode pengembangan frontend secara *hot-reload*:
+Untuk mode pengembangan frontend dengan *hot-reload*:
 ```bash
 npm run dev
 ```
 
-### 5. Menjalankan Server Lokal Laravel
+### 5. Buat Symlink Storage Publik
+Pastikan folder storage publik tertaut:
+```bash
+php artisan storage:link
+```
+
+### 6. Menjalankan Server Lokal Laravel
 ```bash
 php artisan serve
 ```
@@ -152,53 +175,74 @@ Buka browser pada alamat: `http://127.0.0.1:8000`.
 
 ---
 
-## 🔑 Petunjuk Masuk (Login)
+## 🔑 Akun Demo Pengujian
 
-1. **Demo Account Login (Pilih Akun Demo)**
-   Pada halaman login (`/login`), tersedia opsi dropdown **"Pilih Akun Demo untuk Auto-Fill"** untuk masuk secara instan (kata sandi: `password123`):
-   - `admin@arieldaud.com` (Administrator EventPlan - Hak Akses Penuh & Manajemen Sistem)
-   - `kontak@arieldaud.com` (Mohamad Nazril R. Daud - Lead Planner)
-   - `surya@arieldaud.com` (Surya Pratama - Event Coordinator)
-   - `budi@arieldaud.com` (Budi Santoso - Tech & Logistics)
-   - `doni@arieldaud.com` (Doni Kusuma - Design & Creative)
-   - `rizky@arieldaud.com` (Rizky Ramadhan - PR & Marketing)
+Semua akun demo di bawah ini siap digunakan dengan kata sandi default: **`password123`**
 
-2. **Google OAuth (Opsional)**
-   Tambahkan kredensial Google Cloud Console pada berkas `.env` jika ingin mengaktifkan *Sign in with Google*:
-   ```env
-   GOOGLE_CLIENT_ID=your_client_id_here
-   GOOGLE_CLIENT_SECRET=your_client_secret_here
-   GOOGLE_REDIRECT_URI="${APP_URL}/auth/google/callback"
-   ```
+| Nama Pengguna | Username | Alamat Email | Peran Sistem | Spesialisasi Peran |
+| :--- | :--- | :--- | :--- | :--- |
+| **Administrator EventPlan** | `admin` | `admin@arieldaud.com` | `admin` | Administrator Sistem Global |
+| **Mohamad Nazril R. Daud** | `planner` | `kontak@arieldaud.com` | `user` | Project Leader / Lead Planner |
+| **Surya Pratama** | `surya` | `surya@arieldaud.com` | `user` | Event Coordinator / Co-Leader |
+| **Budi Santoso** | `budisantoso` | `budi@arieldaud.com` | `user` | Tech, Sound & Logistics |
+| **Doni Kusuma** | `donikusuma` | `doni@arieldaud.com` | `user` | Design, Stage & Creative |
+| **Rizky Ramadhan** | `rizky` | `rizky@arieldaud.com` | `user` | PR, Media & Talent Coordinator |
+
+> *Catatan*: Kredensial di atas dapat dipilih secara otomatis melalui fitur **"Pilih Akun Demo untuk Auto-Fill"** pada halaman login.
 
 ---
 
-## 🧪 Menjalankan Automated Testing
+## 🧪 Pengujian Otomatis & Audit Kualitas (Testing & Audit)
 
-Proyek ini telah dilengkapi serangkaian pengujian unit (*Unit Tests*) dan fitur (*Feature Tests*) menggunakan PHPUnit / Pest:
+Aplikasi telah dilengkapi serangkaian pengujian unit (*Unit Tests*), pengujian fitur (*Feature Tests*), dan audit alur transaksi:
 
 ```bash
+# Menjalankan pengujian Laravel PHPUnit / Pest
 php artisan test
 ```
 
-Cakupan pengujian mencakup:
-- **CriticalPathCalculatorTest**: Validasi kalkulasi forward pass, backward pass, total float, dan deteksi critical path.
-- **WorkingDaysCalculatorTest**: Validasi pemotongan hari libur dan akhir pekan.
-- **TaskAndResourceManagementTest**: Validasi kalkulasi tanggal kerja, pencegahan circular dependency (siklus DAG), dan deteksi konflik cuti resource.
-- **VisualizationTest**: Validasi render dan aksesibilitas view Gantt Chart, PERT Network Diagram, dan Resource Chart.
-- **DashboardAndExportTest**: Pengujian metrik dashboard, widget deadline, serta integritas sanitasi file CSV terhadap formula injection.
-- **AuthAndProjectTest**: Pengujian alur otentikasi dan isolasi akses antar-pengguna.
+### Cakupan Pengujian:
+1. **CriticalPathCalculatorTest**: Validasi kalkulasi forward pass, backward pass, total float, dan deteksi critical path secara matematis.
+2. **WorkingDaysCalculatorTest**: Validasi pemotongan hari kerja, libur nasional, dan akhir pekan.
+3. **DependencyValidatorTest**: Validasi siklus ketergantungan graf (*Cycle Detection*) untuk mencegah *deadlock*.
+4. **TeamCollaborationTest**: Pengujian verifikasi email AJAX, pengiriman undangan pending, approval di `/invitations`, promosi Member ke Co-Leader, demosi Co-Leader, dan proteksi role Owner.
+5. **VisualizationTest**: Validasi render dan responsivitas view Gantt Chart, PERT Network Diagram, dan Resource Workload Heatmap.
+6. **ExportIntegrityTest**: Pengujian generasi file PDF via Dompdf dan sanitasi formula injection pada ekspor CSV.
+7. **AuthAndSecurityTest**: Validasi proteksi rute, otentikasi Google OAuth, dan isolasi akses data antar-pengguna.
 
 ---
 
 ## 📂 Struktur Modul & Layanan Utama
 
-- `app/Services/CriticalPathCalculator.php`: Algoritma inti penentuan jalur kritis (CPM).
-- `app/Services/WorkingDaysCalculator.php`: Layanan perhitungan hari dan jam kerja.
-- `app/Services/DependencyValidator.php`: Pemeriksa siklus ketergantungan graf (*Cycle Detection*).
-- `app/Http/Controllers/VisualizationController.php`: Pengontrol tampilan Gantt, PERT, dan Resource Heatmap.
-- `app/Http/Controllers/ExportController.php`: Ekspor data dan sanitasi CSV.
-- `resources/views/projects/visualizations/`: Template Blade visualisasi interaktif Gantt, PERT, dan Resource.
+```text
+app/
+├── Http/
+│   ├── Controllers/
+│   │   ├── AuthController.php               # Login, register, dev login, Google OAuth link/unlink
+│   │   ├── DashboardController.php          # Metrik analitik & widget deadline
+│   │   ├── ProjectController.php            # CRUD proyek & kalender kerja
+│   │   ├── ProjectMemberController.php      # Verifikasi email AJAX, invite, promote/demote role
+│   │   ├── ProjectInvitationController.php  # Manajemen undangan proyek (pending, accept, decline)
+│   │   ├── TaskController.php               # Manajemen tugas & relasi dependensi (FS/SS)
+│   │   ├── ResourceController.php           # Manajemen sumber daya & cuti kerja
+│   │   ├── VisualizationController.php      # Controller Gantt, PERT, dan Resource Heatmap
+│   │   ├── ExportController.php             # Ekspor PDF & CSV tersanitasi
+│   │   └── AdminUserController.php          # Administrasi pengguna & seluruh proyek global
+│   └── Middleware/
+│       └── EnsureUserIsAdmin.php            # Proteksi akses khusus administrator
+├── Models/
+│   ├── Project.php                          # Model proyek, relasi CPM, dan helper isLeader/isMember
+│   ├── ProjectMember.php                    # Model anggota tim & helper role label
+│   ├── ProjectInvitation.php                # Model undangan pending/accepted/declined
+│   ├── Task.php                             # Model tugas, status, prioritas & CPM values
+│   ├── TaskDependency.php                   # Model relasi ketergantungan (FS/SS, lag days)
+│   ├── Resource.php                         # Model sumber daya & tarif honor
+│   └── WorkCalendar.php                     # Model kalender kerja & hari libur
+└── Services/
+    ├── CriticalPathCalculator.php           # Algoritma perhitungan CPM (Forward/Backward Pass)
+    ├── WorkingDaysCalculator.php            # Layanan kalkulasi hari & jam kerja efektif
+    └── DependencyValidator.php              # Validator deteksi siklus graf ketergantungan (DAG)
+```
 
 ---
 
