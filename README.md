@@ -49,7 +49,7 @@ Halaman depan modern bernuansa *dark mode* futuristik yang dilengkapi simulator 
 
 ### 2. Halaman Masuk (Login) Fixed Viewport & Dropdown Akun Demo
 Desain split layout yang responsif dan terkunci presisi dalam 1 layar (*fixed viewport*) tanpa *scroll*. Dilengkapi opsi masuk Google OAuth, form email/username, serta dropdown pemilih akun demo untuk pengujian cepat 6 peran pengguna (*Administrator, Event Planner, Coordinator, Tech, Creative, PR*).
-![Halaman Login EventPlan](screenshoot/02-login-page.png)
+![Halaman Login EventPlan](screenshoot/02-login-pageupdate.png)
 
 ---
 
