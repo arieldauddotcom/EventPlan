@@ -73,11 +73,8 @@ Route::middleware('guest')->group(function () {
     Route::post('/auth/dev-login', [AuthController::class, 'devLogin'])->name('auth.dev-login');
 });
 
-// Landing page (guest sees landing page, auth user redirects to dashboard)
+// Landing page (dapat diakses baik oleh tamu maupun pengguna yang sudah login)
 Route::get('/', function () {
-    if (auth()->check()) {
-        return redirect()->route('dashboard');
-    }
     return view('welcome');
 })->name('welcome');
 
