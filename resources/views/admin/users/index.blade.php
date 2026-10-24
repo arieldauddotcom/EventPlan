@@ -29,11 +29,12 @@
     <!-- Panel Kartu Ringkasan Statistik Sistem -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- Kartu Total Proyek -->
-        <div class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 rounded-2xl p-5 text-white shadow-md shadow-indigo-900/20 border border-indigo-500/40 flex flex-col justify-between">
+        <div style="background: linear-gradient(135deg, #4f46e5 0%, #4338ca 50%, #6d28d9 100%);"
+             class="rounded-2xl p-5 text-white shadow-md shadow-indigo-900/20 border border-indigo-500/40 flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-2">
                     <span class="text-xs font-bold uppercase tracking-wider text-indigo-100">Total Portofolio Proyek</span>
-                    <span class="p-2 rounded-xl bg-indigo-800/60 text-indigo-200 border border-indigo-400/30">
+                    <span class="p-2 rounded-xl bg-indigo-900/60 text-indigo-200 border border-indigo-400/30">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
@@ -44,7 +45,7 @@
                     <span class="text-xs text-indigo-200 font-medium">proyek terdaftar</span>
                 </div>
                 <div class="mt-3 flex flex-wrap gap-1.5 text-[11px]">
-                    <span class="px-2 py-0.5 rounded-md bg-indigo-800/60 text-indigo-100 border border-indigo-400/30 font-semibold">
+                    <span class="px-2 py-0.5 rounded-md bg-indigo-900/60 text-indigo-100 border border-indigo-400/30 font-semibold">
                         {{ $stats['active_projects'] }} Aktif
                     </span>
                     <span class="px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-200 border border-amber-400/30 font-semibold">
