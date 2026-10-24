@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EventPlan — Solusi Perencanaan &amp; Manajemen Waktu Acara Berbasis Critical Path Method</title>
+    <title>EventPlan - Perencanaan &amp; Manajemen Waktu Acara</title>
 
     <!-- SEO Meta Tags -->
     <meta name="description" content="EventPlan adalah aplikasi manajemen proyek dan linimasa acara berbasis Critical Path Method (CPM). Hitung jalur kritis otomatis, visualisasi Gantt chart, diagram PERT, dan alokasi tim secara akurat.">

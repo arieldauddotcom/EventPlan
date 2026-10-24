@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Beban Tim: ' . $project->name)
+
 @section('content')
 <div class="space-y-6">
     <!-- Header -->

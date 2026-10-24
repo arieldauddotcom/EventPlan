@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Gantt Chart: ' . $project->name)
+
 @section('content')
 <div class="space-y-6" x-data="{
     filterCritical: false,

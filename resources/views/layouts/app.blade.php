@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="robots" content="noindex, nofollow">
     <meta name="description" content="Area kerja privat aplikasi EventPlan untuk manajemen tugas, alokasi sumber daya, dan analisis linimasa acara.">
-    <title>{{ $title ?? 'EventPlan — Perencanaan & Manajemen Acara' }}</title>
+    <title>EventPlan - @hasSection('title')@yield('title')@else{{ $title ?? 'Perencanaan & Manajemen Waktu Acara' }}@endif</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">

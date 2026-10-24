@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Dashboard Utama')
+
 @section('content')
 <div class="space-y-6">
     <!-- Header -->

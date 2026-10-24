@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Pengaturan Profil')
+
 @section('content')
 <div class="max-w-3xl mx-auto space-y-6">
     <div class="flex items-center justify-between">
