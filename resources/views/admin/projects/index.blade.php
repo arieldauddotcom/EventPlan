@@ -33,12 +33,11 @@
     <!-- Ringkasan Statistik Total Proyek -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
         <!-- Total Proyek -->
-        <div class="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 rounded-2xl p-4 text-white shadow-md shadow-indigo-500/20 border border-indigo-500/30 flex flex-col justify-between">
-            <div class="absolute -right-3 -bottom-3 w-16 h-16 bg-white/10 rounded-full blur-lg pointer-events-none"></div>
-            <div class="relative z-10">
+        <div class="bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 rounded-2xl p-4 text-white shadow-md shadow-indigo-900/20 border border-indigo-500/40 flex flex-col justify-between">
+            <div>
                 <div class="flex items-center justify-between mb-1">
                     <span class="text-xs font-bold text-indigo-100 uppercase tracking-wider">Total Proyek</span>
-                    <span class="p-1 rounded-lg bg-white/20 text-white">
+                    <span class="p-1 rounded-lg bg-indigo-800/60 text-indigo-200 border border-indigo-400/30">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                         </svg>
@@ -46,9 +45,9 @@
                 </div>
                 <div class="flex items-baseline space-x-2 mt-1">
                     <p class="text-3xl font-black text-white tracking-tight">{{ $stats['total_projects'] }}</p>
-                    <span class="text-xs text-indigo-100 font-medium">global</span>
+                    <span class="text-xs text-indigo-200 font-medium">global</span>
                 </div>
-                <p class="text-[11px] text-indigo-100/90 mt-1 font-medium">Seluruh portofolio sistem</p>
+                <p class="text-[11px] text-indigo-200 mt-1 font-medium">Seluruh portofolio sistem</p>
             </div>
         </div>
 
