@@ -39,6 +39,44 @@ Dibangun menggunakan stack **Laravel 13**, **Tailwind CSS v4**, **Alpine.js**, d
 
 ---
 
+## 📸 Tangkapan Layar Aplikasi (Screenshots)
+
+### 1. Halaman Utama & Simulator CPM Interaktif (Landing Page)
+Halaman depan modern bernuansa *dark mode* futuristik yang dilengkapi simulator interaktif perhitungan jalur kritis (CPM), linimasa tugas animasi, dan ringkasan fitur utama sistem tanpa perlu registrasi terlebih dahulu.
+![Landing Page EventPlan](screenshoot/01-landing-page.png)
+
+---
+
+### 2. Halaman Masuk (Login) Fixed Viewport & Dropdown Akun Demo
+Desain split layout yang responsif dan terkunci presisi dalam 1 layar (*fixed viewport*) tanpa *scroll*. Dilengkapi opsi masuk Google OAuth, form email/username, serta dropdown pemilih akun demo untuk pengujian cepat 6 peran pengguna (*Administrator, Event Planner, Coordinator, Tech, Creative, PR*).
+![Halaman Login EventPlan](screenshoot/02-login-page.png)
+
+---
+
+### 3. Dashboard Analitik Utama (Project Overview)
+Pusat kendali pengguna yang menyajikan kartu metrik global (Total Proyek, Proyek Aktif, Fase Planning, Proyek Selesai), status tugas (Total, Sedang Dikerjakan, Tuntas, dan Tugas Kritis CPM), daftar proyek terbaru, serta widget pengingat tenggat waktu (*Deadline 7 Hari Kedepan*).
+![Dashboard Utama EventPlan](screenshoot/03-dashboard-utama.png)
+
+---
+
+### 4. Manajemen Rincian Proyek & Struktur Tugas
+Tampilan detail manajemen proyek acara dengan tab navigasi lengkap (*Daftar Tugas, Kolaborasi & Anggota, Tim & Sumber Daya, Kalender Kerja & Hari Libur*). Setiap tugas memuat indikator prioritas (*Urgent/High*), durasi hari kerja, relasi *predecessor*, petugas yang dialokasikan, dan badge penanda jalur kritis otomatis.
+![Detail Proyek & Manajemen Tugas](screenshoot/04-detail-proyek-tugas.png)
+
+---
+
+### 5. Visualisasi Linimasa Interaktif (Gantt Chart Timeline)
+Linimasa Gantt horizontal dengan kontrol zoom lebar hari (*dayWidth*), bar progres dinamis, garis penghubung panah ketergantungan tugas (*SVG dependency connectors*), serta *highlight* merah khusus untuk tugas yang berada pada jalur kritis (CPM).
+![Gantt Chart Timeline](screenshoot/05-gantt-chart-timeline.png)
+
+---
+
+### 6. Diagram Jaringan Aktivitas (PERT / Network Diagram)
+Representasi graf simpul *Activity on Node* (AoN) interaktif yang dilengkapi fitur *pan* & *zoom*. Menampilkan rincian *Early Start* (ES), *Early Finish* (EF), *Late Start* (LS), *Late Finish* (LF), durasi, dan *Total Float* (TF) dengan panah merah menyala yang menandai urutan rantai kritis penentu durasi total acara.
+![PERT Network Diagram](screenshoot/06-pert-network-diagram.png)
+
+---
+
 ## 🚀 Kebutuhan Sistem & Dependensi
 
 - **PHP**: `>= 8.2` (Rekomendasi PHP 8.3 / 8.5 dengan ekstensi `pdo_mysql`, `mbstring`, `openssl`, `bcmath`)
