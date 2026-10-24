@@ -218,10 +218,10 @@
                             <option value="">-- Pilih Akun Demo untuk Auto-Fill --</option>
                             <option value="admin@eventplan.local">👑 Administrator EventPlan (Admin) - admin@eventplan.local</option>
                             <option value="kontak@arieldaud.com">🎯 Mohamad Nazril R. Daud (Lead Planner) - kontak@arieldaud.com</option>
-                            <option value="sarah@gemilang.com">📋 Sarah Anindya (Event Coordinator) - sarah@gemilang.com</option>
+                            <option value="surya@gemilang.com">📋 Surya Pratama (Event Coordinator) - surya@gemilang.com</option>
                             <option value="budi@gemilang.com">💻 Budi Santoso (Tech & Logistics) - budi@gemilang.com</option>
                             <option value="doni@gemilang.com">🎨 Doni Kusuma (Design & Creative) - doni@gemilang.com</option>
-                            <option value="maya@gemilang.com">📢 Maya Putri (PR & Marketing) - maya@gemilang.com</option>
+                            <option value="rizky@gemilang.com">📢 Rizky Ramadhan (PR & Marketing) - rizky@gemilang.com</option>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-500">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -766,7 +766,7 @@
                     @csrf
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Nama Anggota *</label>
-                        <input type="text" name="name" required placeholder="Contoh: Sarah Anindya" class="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs">
+                        <input type="text" name="name" required placeholder="Contoh: Surya Pratama" class="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs">
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
@@ -780,7 +780,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">Email</label>
-                        <input type="email" name="email" placeholder="sarah@example.com" class="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs">
+                        <input type="email" name="email" placeholder="surya@example.com" class="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs">
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>

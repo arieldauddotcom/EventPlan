@@ -51,11 +51,11 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        $sarah = User::updateOrCreate(
-            ['email' => 'sarah@gemilang.com'],
+        $surya = User::updateOrCreate(
+            ['email' => 'surya@gemilang.com'],
             [
-                'name' => 'Sarah Anindya',
-                'username' => 'sarah',
+                'name' => 'Surya Pratama',
+                'username' => 'surya',
                 'role' => 'user',
                 'password' => Hash::make('password123'),
                 'email_verified_at' => now(),
@@ -84,11 +84,11 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        $maya = User::updateOrCreate(
-            ['email' => 'maya@gemilang.com'],
+        $rizky = User::updateOrCreate(
+            ['email' => 'rizky@gemilang.com'],
             [
-                'name' => 'Maya Putri',
-                'username' => 'mayaputri',
+                'name' => 'Rizky Ramadhan',
+                'username' => 'rizky',
                 'role' => 'user',
                 'password' => Hash::make('password123'),
                 'email_verified_at' => now(),
@@ -125,7 +125,7 @@ class DatabaseSeeder extends Seeder
 
         // -------------------------------------------------------------
         // 3. PROYEK 1: Jakarta Music & Art Festival 2026
-        // Leader: Mohamad Nazril R. Daud | Member: Sarah, Doni | Undangan Pending: Budi
+        // Leader: Mohamad Nazril R. Daud | Member: Surya, Doni | Undangan Pending: Budi
         // Karakter: Kompleks multi-path, jalur kritis artis & panggung
         // -------------------------------------------------------------
         $p1 = Project::updateOrCreate(
@@ -142,7 +142,7 @@ class DatabaseSeeder extends Seeder
         );
 
         ProjectMember::updateOrCreate(['project_id' => $p1->id, 'user_id' => $ariel->id], ['role' => 'leader']);
-        ProjectMember::updateOrCreate(['project_id' => $p1->id, 'user_id' => $sarah->id], ['role' => 'member']);
+        ProjectMember::updateOrCreate(['project_id' => $p1->id, 'user_id' => $surya->id], ['role' => 'member']);
         ProjectMember::updateOrCreate(['project_id' => $p1->id, 'user_id' => $doni->id], ['role' => 'member']);
 
         ProjectInvitation::updateOrCreate(
@@ -160,17 +160,17 @@ class DatabaseSeeder extends Seeder
             ['project_id' => $p1->id, 'email' => 'budi@gemilang.com'],
             ['name' => 'Budi Santoso', 'role' => 'Project Director', 'cost_per_hour' => 150000, 'max_hours_per_day' => 8]
         );
-        $r1Sarah = Resource::updateOrCreate(
-            ['project_id' => $p1->id, 'email' => 'sarah@gemilang.com'],
-            ['name' => 'Sarah Anindya', 'role' => 'Koordinator Venue & Legal', 'cost_per_hour' => 100000, 'max_hours_per_day' => 8]
+        $r1Surya = Resource::updateOrCreate(
+            ['project_id' => $p1->id, 'email' => 'surya@gemilang.com'],
+            ['name' => 'Surya Pratama', 'role' => 'Koordinator Venue & Legal', 'cost_per_hour' => 100000, 'max_hours_per_day' => 8]
         );
         $r1Doni = Resource::updateOrCreate(
             ['project_id' => $p1->id, 'email' => 'doni@gemilang.com'],
             ['name' => 'Doni Kusuma', 'role' => 'Lead Audio & Lighting Engineer', 'cost_per_hour' => 125000, 'max_hours_per_day' => 8]
         );
-        $r1Maya = Resource::updateOrCreate(
-            ['project_id' => $p1->id, 'email' => 'maya@gemilang.com'],
-            ['name' => 'Maya Putri', 'role' => 'Head of Brand & Ticket Sales', 'cost_per_hour' => 95000, 'max_hours_per_day' => 8]
+        $r1Rizky = Resource::updateOrCreate(
+            ['project_id' => $p1->id, 'email' => 'rizky@gemilang.com'],
+            ['name' => 'Rizky Ramadhan', 'role' => 'Head of Brand & Ticket Sales', 'cost_per_hour' => 95000, 'max_hours_per_day' => 8]
         );
 
         $r1Doni->leaves()->firstOrCreate(
@@ -223,23 +223,23 @@ class DatabaseSeeder extends Seeder
         TaskDependency::firstOrCreate(['predecessor_id' => $t1_7->id, 'successor_id' => $t1_8->id], ['type' => 'FS']);
 
         // Assignments P1
-        TaskAssignment::firstOrCreate(['task_id' => $t1_1->id, 'resource_id' => $r1Sarah->id], ['allocation_percentage' => 100]);
+        TaskAssignment::firstOrCreate(['task_id' => $t1_1->id, 'resource_id' => $r1Surya->id], ['allocation_percentage' => 100]);
         TaskAssignment::firstOrCreate(['task_id' => $t1_2->id, 'resource_id' => $r1Budi->id], ['allocation_percentage' => 70]);
-        TaskAssignment::firstOrCreate(['task_id' => $t1_3->id, 'resource_id' => $r1Maya->id], ['allocation_percentage' => 90]);
+        TaskAssignment::firstOrCreate(['task_id' => $t1_3->id, 'resource_id' => $r1Rizky->id], ['allocation_percentage' => 90]);
         TaskAssignment::firstOrCreate(['task_id' => $t1_4->id, 'resource_id' => $r1Doni->id], ['allocation_percentage' => 100]);
-        TaskAssignment::firstOrCreate(['task_id' => $t1_5->id, 'resource_id' => $r1Sarah->id], ['allocation_percentage' => 60]);
+        TaskAssignment::firstOrCreate(['task_id' => $t1_5->id, 'resource_id' => $r1Surya->id], ['allocation_percentage' => 60]);
         TaskAssignment::firstOrCreate(['task_id' => $t1_6->id, 'resource_id' => $r1Doni->id], ['allocation_percentage' => 80]);
         TaskAssignment::firstOrCreate(['task_id' => $t1_6->id, 'resource_id' => $r1Budi->id], ['allocation_percentage' => 50]);
         TaskAssignment::firstOrCreate(['task_id' => $t1_7->id, 'resource_id' => $r1Budi->id], ['allocation_percentage' => 100]);
         TaskAssignment::firstOrCreate(['task_id' => $t1_7->id, 'resource_id' => $r1Doni->id], ['allocation_percentage' => 100]);
-        TaskAssignment::firstOrCreate(['task_id' => $t1_7->id, 'resource_id' => $r1Sarah->id], ['allocation_percentage' => 100]);
+        TaskAssignment::firstOrCreate(['task_id' => $t1_7->id, 'resource_id' => $r1Surya->id], ['allocation_percentage' => 100]);
         TaskAssignment::firstOrCreate(['task_id' => $t1_8->id, 'resource_id' => $r1Doni->id], ['allocation_percentage' => 80]);
 
         $cpmCalculator->calculate($p1);
 
         // -------------------------------------------------------------
         // 4. PROYEK 2: Indonesia Tech Summit & Exhibition 2026
-        // Leader: Budi Santoso | Member: Mohamad Nazril R. Daud, Maya Putri
+        // Leader: Budi Santoso | Member: Mohamad Nazril R. Daud, Rizky Ramadhan
         // Karakter: Konferensi teknologi hybrid, paralel webinar & expo booth
         // -------------------------------------------------------------
         $p2 = Project::updateOrCreate(
@@ -257,15 +257,15 @@ class DatabaseSeeder extends Seeder
 
         ProjectMember::updateOrCreate(['project_id' => $p2->id, 'user_id' => $budi->id], ['role' => 'leader']);
         ProjectMember::updateOrCreate(['project_id' => $p2->id, 'user_id' => $ariel->id], ['role' => 'member']);
-        ProjectMember::updateOrCreate(['project_id' => $p2->id, 'user_id' => $maya->id], ['role' => 'member']);
+        ProjectMember::updateOrCreate(['project_id' => $p2->id, 'user_id' => $rizky->id], ['role' => 'member']);
 
         $r2Ariel = Resource::updateOrCreate(
             ['project_id' => $p2->id, 'email' => 'kontak@arieldaud.com'],
             ['name' => 'Mohamad Nazril R. Daud', 'role' => 'Curator of Content & Keynote Speakers', 'cost_per_hour' => 140000, 'max_hours_per_day' => 8]
         );
-        $r2Maya = Resource::updateOrCreate(
-            ['project_id' => $p2->id, 'email' => 'maya@gemilang.com'],
-            ['name' => 'Maya Putri', 'role' => 'Sponsorship & Exhibitor Manager', 'cost_per_hour' => 110000, 'max_hours_per_day' => 8]
+        $r2Rizky = Resource::updateOrCreate(
+            ['project_id' => $p2->id, 'email' => 'rizky@gemilang.com'],
+            ['name' => 'Rizky Ramadhan', 'role' => 'Sponsorship & Exhibitor Manager', 'cost_per_hour' => 110000, 'max_hours_per_day' => 8]
         );
         $r2Budi = Resource::updateOrCreate(
             ['project_id' => $p2->id, 'email' => 'budi@gemilang.com'],
@@ -304,19 +304,19 @@ class DatabaseSeeder extends Seeder
         TaskDependency::firstOrCreate(['predecessor_id' => $t2_5->id, 'successor_id' => $t2_6->id], ['type' => 'FS']);
 
         TaskAssignment::firstOrCreate(['task_id' => $t2_1->id, 'resource_id' => $r2Ariel->id], ['allocation_percentage' => 100]);
-        TaskAssignment::firstOrCreate(['task_id' => $t2_2->id, 'resource_id' => $r2Maya->id], ['allocation_percentage' => 100]);
+        TaskAssignment::firstOrCreate(['task_id' => $t2_2->id, 'resource_id' => $r2Rizky->id], ['allocation_percentage' => 100]);
         TaskAssignment::firstOrCreate(['task_id' => $t2_3->id, 'resource_id' => $r2Budi->id], ['allocation_percentage' => 80]);
         TaskAssignment::firstOrCreate(['task_id' => $t2_4->id, 'resource_id' => $r2Ariel->id], ['allocation_percentage' => 70]);
         TaskAssignment::firstOrCreate(['task_id' => $t2_5->id, 'resource_id' => $r2Budi->id], ['allocation_percentage' => 100]);
         TaskAssignment::firstOrCreate(['task_id' => $t2_6->id, 'resource_id' => $r2Ariel->id], ['allocation_percentage' => 100]);
         TaskAssignment::firstOrCreate(['task_id' => $t2_6->id, 'resource_id' => $r2Budi->id], ['allocation_percentage' => 100]);
-        TaskAssignment::firstOrCreate(['task_id' => $t2_6->id, 'resource_id' => $r2Maya->id], ['allocation_percentage' => 100]);
+        TaskAssignment::firstOrCreate(['task_id' => $t2_6->id, 'resource_id' => $r2Rizky->id], ['allocation_percentage' => 100]);
 
         $cpmCalculator->calculate($p2);
 
         // -------------------------------------------------------------
         // 5. PROYEK 3: Pameran Otomotif & Elektrifikasi Ramah Lingkungan
-        // Leader: Mohamad Nazril R. Daud | Member: Sarah Anindya
+        // Leader: Mohamad Nazril R. Daud | Member: Surya Pratama
         // Karakter: Proyek skala menengah, status planning
         // -------------------------------------------------------------
         $p3 = Project::updateOrCreate(
@@ -333,11 +333,11 @@ class DatabaseSeeder extends Seeder
         );
 
         ProjectMember::updateOrCreate(['project_id' => $p3->id, 'user_id' => $ariel->id], ['role' => 'leader']);
-        ProjectMember::updateOrCreate(['project_id' => $p3->id, 'user_id' => $sarah->id], ['role' => 'member']);
+        ProjectMember::updateOrCreate(['project_id' => $p3->id, 'user_id' => $surya->id], ['role' => 'member']);
 
-        $r3Sarah = Resource::updateOrCreate(
-            ['project_id' => $p3->id, 'email' => 'sarah@gemilang.com'],
-            ['name' => 'Sarah Anindya', 'role' => 'Head of Venue & Safety Regulations', 'cost_per_hour' => 110000, 'max_hours_per_day' => 9]
+        $r3Surya = Resource::updateOrCreate(
+            ['project_id' => $p3->id, 'email' => 'surya@gemilang.com'],
+            ['name' => 'Surya Pratama', 'role' => 'Head of Venue & Safety Regulations', 'cost_per_hour' => 110000, 'max_hours_per_day' => 9]
         );
         $r3Ariel = Resource::updateOrCreate(
             ['project_id' => $p3->id, 'email' => 'kontak@arieldaud.com'],
@@ -360,21 +360,21 @@ class DatabaseSeeder extends Seeder
         TaskDependency::firstOrCreate(['predecessor_id' => $t3_1->id, 'successor_id' => $t3_2->id], ['type' => 'FS']);
         TaskDependency::firstOrCreate(['predecessor_id' => $t3_2->id, 'successor_id' => $t3_3->id], ['type' => 'FS']);
 
-        TaskAssignment::firstOrCreate(['task_id' => $t3_1->id, 'resource_id' => $r3Sarah->id], ['allocation_percentage' => 100]);
+        TaskAssignment::firstOrCreate(['task_id' => $t3_1->id, 'resource_id' => $r3Surya->id], ['allocation_percentage' => 100]);
         TaskAssignment::firstOrCreate(['task_id' => $t3_2->id, 'resource_id' => $r3Ariel->id], ['allocation_percentage' => 80]);
-        TaskAssignment::firstOrCreate(['task_id' => $t3_3->id, 'resource_id' => $r3Sarah->id], ['allocation_percentage' => 100]);
+        TaskAssignment::firstOrCreate(['task_id' => $t3_3->id, 'resource_id' => $r3Surya->id], ['allocation_percentage' => 100]);
 
         $cpmCalculator->calculate($p3);
 
         // -------------------------------------------------------------
         // 6. PROYEK 4: Galang Dana & Konser Amal Peduli Bencana
-        // Leader: Sarah Anindya | Member: Maya Putri | Mohamad Nazril R. Daud diundang
+        // Leader: Surya Pratama | Member: Rizky Ramadhan | Mohamad Nazril R. Daud diundang
         // Karakter: Acara sosial non-profit, linimasa singkat
         // -------------------------------------------------------------
         $p4 = Project::updateOrCreate(
             ['name' => 'Galang Dana & Konser Amal Peduli Bencana'],
             [
-                'owner_id' => $sarah->id,
+                'owner_id' => $surya->id,
                 'work_calendar_id' => $calendarStandard->id,
                 'organization' => 'Yayasan Sahabat Kemanusiaan',
                 'description' => 'Malam penggalangan donasi dan lelang karya seni untuk pemulihan korban bencana alam.',
@@ -384,27 +384,27 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        ProjectMember::updateOrCreate(['project_id' => $p4->id, 'user_id' => $sarah->id], ['role' => 'leader']);
-        ProjectMember::updateOrCreate(['project_id' => $p4->id, 'user_id' => $maya->id], ['role' => 'member']);
+        ProjectMember::updateOrCreate(['project_id' => $p4->id, 'user_id' => $surya->id], ['role' => 'leader']);
+        ProjectMember::updateOrCreate(['project_id' => $p4->id, 'user_id' => $rizky->id], ['role' => 'member']);
 
         // Undangan pending ke Mohamad Nazril R. Daud
         ProjectInvitation::updateOrCreate(
             ['project_id' => $p4->id, 'email' => 'kontak@arieldaud.com'],
             [
-                'inviter_id' => $sarah->id,
+                'inviter_id' => $surya->id,
                 'invitee_id' => $ariel->id,
                 'status' => 'pending',
                 'message' => 'Hai Ariel! Butuh masukan teknis kamu untuk rundown konser amal ini.',
             ]
         );
 
-        $r4Sarah = Resource::updateOrCreate(
-            ['project_id' => $p4->id, 'email' => 'sarah@gemilang.com'],
-            ['name' => 'Sarah Anindya', 'role' => 'Event Producer', 'cost_per_hour' => 0, 'max_hours_per_day' => 8]
+        $r4Surya = Resource::updateOrCreate(
+            ['project_id' => $p4->id, 'email' => 'surya@gemilang.com'],
+            ['name' => 'Surya Pratama', 'role' => 'Event Producer', 'cost_per_hour' => 0, 'max_hours_per_day' => 8]
         );
-        $r4Maya = Resource::updateOrCreate(
-            ['project_id' => $p4->id, 'email' => 'maya@gemilang.com'],
-            ['name' => 'Maya Putri', 'role' => 'Koordinator Donasi & Lelang', 'cost_per_hour' => 0, 'max_hours_per_day' => 8]
+        $r4Rizky = Resource::updateOrCreate(
+            ['project_id' => $p4->id, 'email' => 'rizky@gemilang.com'],
+            ['name' => 'Rizky Ramadhan', 'role' => 'Koordinator Donasi & Lelang', 'cost_per_hour' => 0, 'max_hours_per_day' => 8]
         );
 
         $t4_1 = Task::updateOrCreate(
@@ -423,10 +423,10 @@ class DatabaseSeeder extends Seeder
         TaskDependency::firstOrCreate(['predecessor_id' => $t4_1->id, 'successor_id' => $t4_2->id], ['type' => 'FS']);
         TaskDependency::firstOrCreate(['predecessor_id' => $t4_2->id, 'successor_id' => $t4_3->id], ['type' => 'FS']);
 
-        TaskAssignment::firstOrCreate(['task_id' => $t4_1->id, 'resource_id' => $r4Maya->id], ['allocation_percentage' => 100]);
-        TaskAssignment::firstOrCreate(['task_id' => $t4_2->id, 'resource_id' => $r4Sarah->id], ['allocation_percentage' => 80]);
-        TaskAssignment::firstOrCreate(['task_id' => $t4_3->id, 'resource_id' => $r4Sarah->id], ['allocation_percentage' => 100]);
-        TaskAssignment::firstOrCreate(['task_id' => $t4_3->id, 'resource_id' => $r4Maya->id], ['allocation_percentage' => 100]);
+        TaskAssignment::firstOrCreate(['task_id' => $t4_1->id, 'resource_id' => $r4Rizky->id], ['allocation_percentage' => 100]);
+        TaskAssignment::firstOrCreate(['task_id' => $t4_2->id, 'resource_id' => $r4Surya->id], ['allocation_percentage' => 80]);
+        TaskAssignment::firstOrCreate(['task_id' => $t4_3->id, 'resource_id' => $r4Surya->id], ['allocation_percentage' => 100]);
+        TaskAssignment::firstOrCreate(['task_id' => $t4_3->id, 'resource_id' => $r4Rizky->id], ['allocation_percentage' => 100]);
 
         $cpmCalculator->calculate($p4);
     }
