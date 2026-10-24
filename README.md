@@ -65,8 +65,12 @@ Aplikasi telah terpasang dan dapat dicoba secara online melalui tautan berikut:
 
 ## 📸 Tangkapan Layar Aplikasi (Screenshots)
 
-### 1. Halaman Masuk (Login) Fixed Viewport & Dropdown Akun Demo
-Desain split layout yang responsif dan terkunci presisi dalam 1 layar (*fixed viewport*) tanpa *scroll*. Dilengkapi opsi masuk Google OAuth, form email/username, serta dropdown pemilih akun demo untuk pengujian cepat 6 peran pengguna (*Administrator, Event Planner, Coordinator, Tech, Creative, PR*).
+### 1. Halaman Autentikasi Fleksibel (Google OAuth, Akun Biasa, Registrasi Manual & Akun Demo)
+Antarmuka autentikasi modern dengan desain *split layout* responsif (*fixed viewport* 1 layar tanpa *scroll*). Menyediakan berbagai opsi akses yang lengkap dan fleksibel:
+- **Google OAuth (Sign in with Google)**: Akses masuk instan dan aman 1-klik menggunakan akun Google dengan integrasi profil persisten.
+- **Masuk Akun Biasa (Email / Username)**: Otentikasi standar menggunakan kombinasi email atau *username* terdaftar beserta kata sandi.
+- **Pendaftaran Akun Baru (Registrasi Manual)**: Tersedia formulir pendaftaran mandiri bagi pengguna baru untuk membuat akun dengan verifikasi data yang aman.
+- **Dropdown Pemilih Akun Demo (Auto-Fill)**: Opsi pengujian instan untuk masuk langsung ke 6 peran pengguna demo (*Administrator, Lead Planner, Event Coordinator, Tech Logistics, Creative, PR & Marketing*) tanpa perlu mengetik kata sandi manual.
 ![Halaman Login EventPlan](screenshoot/01-login-page.png)
 
 ---
