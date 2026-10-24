@@ -111,6 +111,19 @@ Halaman depan modern bernuansa *dark mode* futuristik yang dilengkapi simulator 
 
 ---
 
+### 8. Panel Administrasi Sistem Global (Kelola Proyek & Pengguna)
+Modul manajemen terpusat khusus bagi **Administrator** untuk mengontrol ekosistem EventPlan secara menyeluruh:
+
+- **Manajemen Seluruh Proyek Global (`/admin/projects`)**:
+  Menyajikan metrik agregat seluruh proyek (Total Portofolio, Proyek Aktif, Perencanaan, dan Selesai), filter pencarian otomatis berbasis teks (*live search debounce*), penyaringan status acara, penelusuran pemilik (*owner filter*), pemantauan tanggal linimasa, serta opsi pembersihan (*delete*) proyek secara aman.
+  ![Admin Kelola Proyek](screenshoot/admin-kelola-proyek.png)
+
+- **Manajemen Pengguna & Hak Akses Global (`/admin/users`)**:
+  Panel komprehensif untuk mengelola akun pengguna terdaftar dengan metrik jumlah pengguna & tugas CPM terdata, pencarian cepat nama/username/email, filter peran sistem (*Admin* vs *User*), tautan pintas portofolio per pemilik, pembaruan data pengguna, serta kontrol penghapusan akun.
+  ![Admin Kelola Pengguna](screenshoot/admin-kelola-pengguna.png)
+
+---
+
 ## 🚀 Kebutuhan Sistem & Dependensi
 
 - **PHP**: `>= 8.2` (Disarankan PHP 8.2, 8.3, atau 8.4 dengan ekstensi `pdo_mysql`, `mbstring`, `openssl`, `bcmath`, `xml`, `gd`)
