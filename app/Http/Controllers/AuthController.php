@@ -105,11 +105,14 @@ class AuthController extends Controller
      */
     public function redirectToGoogle()
     {
-        if (empty(config('services.google.client_id'))) {
-            return redirect()->route('login')->with('error', 'Google OAuth belum dikonfigurasi di file .env.');
+        if (empty(config('services.google.client_id')) || empty(config('services.google.client_secret'))) {
+            return redirect()->route('login')->with('error', 'Integrasi Google OAuth belum dikonfigurasi di file .env.');
         }
 
-        return Socialite::driver('google')->redirect();
+        // Gunakan prompt=select_account agar Google selalu menampilkan pilihan akun jika terdapat lebih dari satu sesi akun Google di browser
+        return Socialite::driver('google')
+            ->with(['prompt' => 'select_account'])
+            ->redirect();
     }
 
     /**
@@ -119,20 +122,70 @@ class AuthController extends Controller
     {
         try {
             $googleUser = Socialite::driver('google')->user();
+            $googleId = (string) $googleUser->getId();
+            $googleEmail = strtolower(trim($googleUser->getEmail()));
+            $googleName = trim($googleUser->getName() ?? '');
 
-            $user = User::where('google_id', $googleUser->getId())
-                ->orWhere('email', $googleUser->getEmail())
+            // 1. Jika pengguna saat ini sedang login dan ingin menautkan akun Google dari profil
+            if (Auth::check()) {
+                $currentUser = Auth::user();
+
+                // Cek apakah Google ID ini sudah terikat ke akun pengguna lain
+                $existingLinked = User::where('google_id', $googleId)
+                    ->where('id', '!=', $currentUser->id)
+                    ->first();
+
+                if ($existingLinked) {
+                    return redirect()->route('profile.edit')
+                        ->with('error', "Akun Google ({$googleEmail}) sudah terhubung ke akun '{$existingLinked->name}' ({$existingLinked->email}).");
+                }
+
+                $currentUser->update([
+                    'google_id' => $googleId,
+                    'avatar' => $currentUser->avatar ?: $googleUser->getAvatar(),
+                    'email_verified_at' => $currentUser->email_verified_at ?: now(),
+                ]);
+
+                return redirect()->route('profile.edit')
+                    ->with('success', "Akun Google ({$googleEmail}) berhasil ditautkan ke akun Anda!");
+            }
+
+            // 2. Login via Google OAuth: cari pengguna berdasarkan google_id atau email
+            $user = User::where('google_id', $googleId)
+                ->orWhere('email', $googleEmail)
                 ->first();
 
             if ($user) {
-                $user->update([
-                    'google_id' => $googleUser->getId(),
-                    'avatar' => $googleUser->getAvatar(),
-                    'name' => $googleUser->getName() ?? $user->name,
-                ]);
+                $updates = [];
+
+                // Tautkan google_id jika belum ada
+                if (empty($user->google_id)) {
+                    $updates['google_id'] = $googleId;
+                }
+
+                // JANGAN PERNAH menimpa nama pengguna jika user sudah memiliki nama (misal nama yang sudah diedit di profil)
+                // Hanya gunakan nama dari Google jika nama di database masih kosong atau default
+                if (empty($user->name) || $user->name === 'Pengguna EventPlan') {
+                    $updates['name'] = $googleName ?: 'Pengguna EventPlan';
+                }
+
+                // JANGAN menimpa foto profil jika user sudah upload foto kustom
+                if (empty($user->avatar) && !empty($googleUser->getAvatar())) {
+                    $updates['avatar'] = $googleUser->getAvatar();
+                }
+
+                // Tandai email terverifikasi karena Google sudah memverifikasi akun ini
+                if (empty($user->email_verified_at)) {
+                    $updates['email_verified_at'] = now();
+                }
+
+                if (!empty($updates)) {
+                    $user->update($updates);
+                }
             } else {
-                // Generate username dari email Google
-                $baseUsername = strtolower(explode('@', $googleUser->getEmail())[0]);
+                // Pengguna baru pertama kali mendaftar via Google
+                $baseUsername = strtolower(explode('@', $googleEmail)[0]);
+                $baseUsername = preg_replace('/[^a-z0-9_-]/', '', $baseUsername) ?: 'user';
                 $username = $baseUsername;
                 $counter = 1;
                 while (User::where('username', $username)->exists()) {
@@ -141,11 +194,11 @@ class AuthController extends Controller
                 }
 
                 $user = User::create([
-                    'name' => $googleUser->getName() ?? 'Pengguna EventPlan',
+                    'name' => $googleName ?: 'Pengguna EventPlan',
                     'username' => $username,
-                    'email' => strtolower($googleUser->getEmail()),
-                    'role' => 'user', // Aturan 2: otomatis mendapat role 'user'
-                    'google_id' => $googleUser->getId(),
+                    'email' => $googleEmail,
+                    'role' => 'user',
+                    'google_id' => $googleId,
                     'avatar' => $googleUser->getAvatar(),
                     'email_verified_at' => now(),
                     'password' => null,
@@ -154,10 +207,27 @@ class AuthController extends Controller
 
             Auth::login($user, true);
 
-            return redirect()->intended(route('dashboard'))->with('success', 'Selamat datang, ' . $user->name . '!');
+            return redirect()->intended(route('dashboard'))->with('success', 'Selamat datang kembali, ' . $user->name . '!');
         } catch (Throwable $e) {
             return redirect()->route('login')->with('error', 'Gagal login dengan Google: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Putuskan tautan akun Google dari profil
+     */
+    public function unlinkGoogle(Request $request)
+    {
+        $user = Auth::user();
+
+        // Jika user tidak memiliki password, jangan biarkan unlinking agar tidak terkunci keluar
+        if (empty($user->password)) {
+            return back()->with('error', 'Harap atur kata sandi terlebih dahulu pada formulir profil sebelum memutuskan tautan Google.');
+        }
+
+        $user->update(['google_id' => null]);
+
+        return back()->with('success', 'Tautan akun Google berhasil diputuskan.');
     }
 
     /**

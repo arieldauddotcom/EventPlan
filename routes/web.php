@@ -60,14 +60,16 @@ Route::get('/storage/avatars/{filename}', function ($filename) {
     return \Illuminate\Support\Facades\Storage::disk('public')->response($path);
 })->where('filename', '.*');
 
+// Google OAuth Routes (Dapat diakses guest untuk login atau user terautentikasi untuk menautkan akun)
+Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
+
 // Guest Routes
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.perform');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'register'])->name('register.perform');
-    Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
-    Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
     Route::post('/auth/dev-login', [AuthController::class, 'devLogin'])->name('auth.dev-login');
 });
 
@@ -85,9 +87,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // User Profile
+    // User Profile & OAuth Unlinking
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/auth/google', [AuthController::class, 'unlinkGoogle'])->name('auth.google.unlink');
 
     // Admin Routes
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
