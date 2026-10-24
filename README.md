@@ -95,9 +95,15 @@ Representasi graf simpul *Activity on Node* (AoN) interaktif yang dilengkapi fit
 
 ---
 
-### 6. Halaman Utama & Simulator CPM Interaktif (Landing Page)
+### 6. Kolaborasi Tim & Modal Undangan (Team Collaboration & Invite)
+Modal penambahan anggota tim kolaborasi yang dilengkapi verifikasi email terdaftar secara real-time (*AJAX detection*), pratinjau kartu profil pengguna terdaftar (avatar, nama, username), opsi pemilihan peran (*Member* atau *Co-Leader*), dan pesan pengantar sebelum undangan dikirimkan untuk proses persetujuan (*approval*).
+![Kolaborasi Undangan Tim](screenshoot/inviteteam.png)
+
+---
+
+### 7. Halaman Utama & Simulator CPM Interaktif (Landing Page)
 Halaman depan modern bernuansa *dark mode* futuristik yang dilengkapi simulator interaktif perhitungan jalur kritis (CPM), linimasa tugas animasi, dan ringkasan fitur utama sistem tanpa perlu registrasi terlebih dahulu.
-![Landing Page EventPlan](screenshoot/06-landing-page.png)
+![Landing Page EventPlan](screenshoot/07-landing-page.png)
 
 ---
 
