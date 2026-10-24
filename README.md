@@ -11,7 +11,7 @@ Dibangun menggunakan stack teknologi mutakhir **Laravel 13**, **Tailwind CSS v4*
 Aplikasi telah terpasang dan dapat dicoba secara online melalui tautan berikut:
 - **URL Demo**: [https://eventplan.arieldaud.com](https://eventplan.arieldaud.com)
 
-> 💡 **Tips Pengujian Cepat:** Pada halaman masuk ([/login](https://eventplan.arieldaud.com/login)), Anda dapat menggunakan dropdown **"Pilih Akun Demo untuk Auto-Fill"** untuk masuk langsung sebagai *Administrator*, *Lead Planner*, *Event Coordinator*, maupun divisi lainnya tanpa perlu mengetik kata sandi secara manual.
+> 💡 **Tips Pengujian Cepat:** Pada halaman masuk ([/login](https://eventplan.arieldaud.com/login)), Anda dapat menggunakan dropdown **"Pilih Akun Demo untuk Auto-Fill"** untuk masuk langsung tanpa perlu mengetik kata sandi secara manual. Sistem memiliki 2 peran utama (*System Role*), yaitu **Admin** dan **User**, di mana akun dengan peran **User** dapat memegang peran kolaborasi dinamis di dalam proyek sebagai **Leader** (pemilik/ketua proyek), **Co-Leader** (wakil ketua dengan hak kelola), maupun **Member** (anggota tim).
 
 ---
 
@@ -70,7 +70,7 @@ Antarmuka autentikasi modern dengan desain *split layout* responsif (*fixed view
 - **Google OAuth (Sign in with Google)**: Akses masuk instan dan aman 1-klik menggunakan akun Google dengan integrasi profil persisten.
 - **Masuk Akun Biasa (Email / Username)**: Otentikasi standar menggunakan kombinasi email atau *username* terdaftar beserta kata sandi.
 - **Pendaftaran Akun Baru (Registrasi Manual)**: Tersedia formulir pendaftaran mandiri bagi pengguna baru untuk membuat akun dengan verifikasi data yang aman.
-- **Dropdown Pemilih Akun Demo (Auto-Fill)**: Opsi pengujian instan untuk masuk langsung ke 6 peran pengguna demo (*Administrator, Lead Planner, Event Coordinator, Tech Logistics, Creative, PR & Marketing*) tanpa perlu mengetik kata sandi manual.
+- **Dropdown Pemilih Akun Demo (Auto-Fill)**: Opsi pengujian instan untuk masuk langsung menggunakan akun demo tanpa perlu mengetik kata sandi secara manual. Tersedia pilihan akun dengan peran sistem **Admin** (administrasi sistem global) serta peran **User** dengan berbagai peran tim dalam proyek (*Leader*, *Co-Leader*, dan *Member*).
 ![Halaman Login EventPlan](screenshoot/01-login-page.png)
 
 ---
@@ -200,18 +200,22 @@ Buka browser pada alamat: `http://127.0.0.1:8000`.
 
 ## 🔑 Akun Demo Pengujian
 
+Sistem autentikasi aplikasi memiliki **2 peran utama tingkat sistem (*System Role*)**, yaitu **`admin`** dan **`user`**:
+- **Admin**: Memiliki akses ke modul administrasi global (`/admin/projects` dan `/admin/users`) untuk memantau seluruh portofolio proyek dan akun pengguna di sistem.
+- **User**: Pengguna operasional yang dalam setiap proyek acara dapat memegang peran kolaborasi tim dinamis sebagai **`Leader`** (pemilik/ketua proyek), **`Co-Leader`** (wakil ketua dengan hak kelola), maupun **`Member`** (anggota tim).
+
 Semua akun demo di bawah ini siap digunakan dengan kata sandi default: **`password123`**
 
-| Nama Pengguna | Username | Alamat Email | Peran Sistem | Spesialisasi Peran |
+| Nama Pengguna | Username | Alamat Email | Peran Sistem (*System Role*) | Peran Tim dalam Proyek Acara |
 | :--- | :--- | :--- | :--- | :--- |
-| **Administrator EventPlan** | `admin` | `admin@arieldaud.com` | `admin` | Administrator Sistem Global |
-| **Mohamad Nazril R. Daud** | `planner` | `kontak@arieldaud.com` | `user` | Project Leader / Lead Planner |
-| **Surya Pratama** | `surya` | `surya@arieldaud.com` | `user` | Event Coordinator / Co-Leader |
-| **Budi Santoso** | `budisantoso` | `budi@arieldaud.com` | `user` | Tech, Sound & Logistics |
-| **Doni Kusuma** | `donikusuma` | `doni@arieldaud.com` | `user` | Design, Stage & Creative |
-| **Rizky Ramadhan** | `rizky` | `rizky@arieldaud.com` | `user` | PR, Media & Talent Coordinator |
+| **Administrator EventPlan** | `admin` | `admin@arieldaud.com` | `admin` | Administrator Sistem Global (Panel `/admin`) |
+| **Mohamad Nazril R. Daud** | `planner` | `kontak@arieldaud.com` | `user` | **Leader** (Pemilik Proyek Konser Musik & Festival Seni) |
+| **Surya Pratama** | `surya` | `surya@arieldaud.com` | `user` | **Co-Leader / Member** (Wakil Ketua & Leader Proyek Amal) |
+| **Budi Santoso** | `budisantoso` | `budi@arieldaud.com` | `user` | **Leader / Member** (Ketua Tech Expo & Logistik) |
+| **Doni Kusuma** | `donikusuma` | `doni@arieldaud.com` | `user` | **Member** (Anggota Tim Desain & Kreatif Panggung) |
+| **Rizky Ramadhan** | `rizky` | `rizky@arieldaud.com` | `user` | **Member** (Anggota Tim Publikasi & Kemitraan) |
 
-> *Catatan*: Kredensial di atas dapat dipilih secara otomatis melalui fitur **"Pilih Akun Demo untuk Auto-Fill"** pada halaman login.
+> 💡 *Catatan:* Seluruh kredensial di atas dapat dipilih secara otomatis melalui fitur **"Pilih Akun Demo untuk Auto-Fill"** pada halaman login.
 
 ---
 

@@ -216,12 +216,12 @@
                                 onchange="if(this.value){ document.getElementById('login-identity').value = this.value; document.getElementById('login-password').value = 'password123'; }"
                                 class="w-full text-xs bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 pr-8 text-slate-700 font-medium focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none appearance-none cursor-pointer">
                             <option value="">-- Pilih Akun Demo untuk Auto-Fill --</option>
-                            <option value="admin@arieldaud.com">👑 Administrator EventPlan (Admin) - admin@arieldaud.com</option>
-                            <option value="kontak@arieldaud.com">🎯 Mohamad Nazril R. Daud (Lead Planner) - kontak@arieldaud.com</option>
-                            <option value="surya@arieldaud.com">📋 Surya Pratama (Event Coordinator) - surya@arieldaud.com</option>
-                            <option value="budi@arieldaud.com">💻 Budi Santoso (Tech & Logistics) - budi@arieldaud.com</option>
-                            <option value="doni@arieldaud.com">🎨 Doni Kusuma (Design & Creative) - doni@arieldaud.com</option>
-                            <option value="rizky@arieldaud.com">📢 Rizky Ramadhan (PR & Marketing) - rizky@arieldaud.com</option>
+                            <option value="admin@arieldaud.com">👑 Administrator EventPlan (Role: Admin) - admin@arieldaud.com</option>
+                            <option value="kontak@arieldaud.com">🎯 Mohamad Nazril R. Daud (Role: User | Leader) - kontak@arieldaud.com</option>
+                            <option value="surya@arieldaud.com">📋 Surya Pratama (Role: User | Co-Leader / Member) - surya@arieldaud.com</option>
+                            <option value="budi@arieldaud.com">💻 Budi Santoso (Role: User | Leader / Member) - budi@arieldaud.com</option>
+                            <option value="doni@arieldaud.com">🎨 Doni Kusuma (Role: User | Member) - doni@arieldaud.com</option>
+                            <option value="rizky@arieldaud.com">📢 Rizky Ramadhan (Role: User | Member) - rizky@arieldaud.com</option>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-500">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
