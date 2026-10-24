@@ -6,7 +6,7 @@
     $isLeader = $project->isLeader($currentUser);
 @endphp
 
-<div class="space-y-8" x-data="{ activeTab: '{{ session('tab', 'tasks') }}', showNewTaskModal: false, showNewResourceModal: false, showInviteModal: false, showAddTeamModal: false, editTask: null }">
+<div class="space-y-8" x-data="{ activeTab: '{{ session('tab', 'tasks') }}', showNewTaskModal: false, showNewResourceModal: false, showAddTeamModal: false, editTask: null }">
     <!-- Header Proyek Responsif Mobile -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-4 sm:p-6 rounded-2xl border border-slate-200 shadow-xs">
         <div>
@@ -404,7 +404,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
                         <span>+ Tambah Tim</span>
                     </button>
-                    <button type="button" @click="showInviteModal = true" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition flex items-center space-x-1.5" title="Kirim email undangan">
+                    <button type="button" @click="showAddTeamModal = true" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition flex items-center space-x-1.5" title="Kirim email undangan">
                         <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                         <span>Undang via Email</span>
                     </button>
@@ -507,36 +507,7 @@
             </div>
         </div>
 
-        <!-- MODAL UNDANG ANGGOTA BARU (LEADER ONLY) -->
-        @if($isLeader)
-            <div x-show="showInviteModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs" style="display: none;">
-                <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200" @click.away="showInviteModal = false">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-base font-bold text-slate-900">Undang Anggota ke Proyek</h3>
-                        <button @click="showInviteModal = false" class="text-slate-400 hover:text-slate-600">&times;</button>
-                    </div>
-                    <p class="text-xs text-slate-500 mb-4">
-                        Masukkan email pengguna terdaftar. Setelah menerima undangan, mereka akan menjadi <strong>Member</strong> pada proyek ini.
-                    </p>
-                    <form method="POST" action="{{ route('projects.invitations.store', $project) }}" class="space-y-4">
-                        @csrf
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Alamat Email Pengguna *</label>
-                            <input type="email" name="email" required placeholder="user@example.com" class="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none">
-                            <span class="text-[10px] text-slate-400 mt-0.5 block">Harus akun yang sudah terdaftar di EventPlan.</span>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 mb-1">Pesan Singkat (Opsional)</label>
-                            <textarea name="message" rows="2" placeholder="Mohon bantuan untuk koordinasi teknis acara..." class="w-full px-3.5 py-2 border border-slate-300 rounded-xl text-xs focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
-                        </div>
-                        <div class="flex justify-end space-x-2 pt-2">
-                            <button type="button" @click="showInviteModal = false" class="px-4 py-2 border border-slate-300 text-xs rounded-xl font-semibold text-slate-700 hover:bg-slate-50">Batal</button>
-                            <button type="submit" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs rounded-xl font-semibold">Kirim Undangan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        @endif
+
     </div>
 
     <!-- TAB 3: SUMBER DAYA & TIM (RESOURCES) -->
@@ -832,10 +803,12 @@
                     email: '',
                     role: 'member',
                     checking: false,
+                    submitting: false,
                     status: null,
                     userFound: null,
                     message: '',
                     timer: null,
+                    lastCheckedEmail: '',
                     checkEmail() {
                         const cleanEmail = this.email.trim().toLowerCase();
                         if (!cleanEmail || !cleanEmail.includes('@') || !cleanEmail.includes('.')) {
@@ -843,6 +816,10 @@
                             this.userFound = null;
                             this.message = '';
                             this.checking = false;
+                            this.lastCheckedEmail = '';
+                            return;
+                        }
+                        if (cleanEmail === this.lastCheckedEmail && this.status !== null) {
                             return;
                         }
                         this.checking = true;
@@ -858,6 +835,7 @@
                             .then(res => res.json().then(data => ({ ok: res.ok, status: res.status, data })))
                             .then(result => {
                                 this.checking = false;
+                                this.lastCheckedEmail = cleanEmail;
                                 const data = result.data;
                                 if (!result.ok) {
                                     this.status = 'error';
@@ -893,7 +871,7 @@
                                 this.message = 'Gagal terhubung ke server untuk memeriksa email.';
                                 this.userFound = null;
                             });
-                        }, 300);
+                        }, 250);
                     },
                     closeModal() {
                         this.email = '';
@@ -902,6 +880,8 @@
                         this.userFound = null;
                         this.message = '';
                         this.checking = false;
+                        this.submitting = false;
+                        this.lastCheckedEmail = '';
                         showAddTeamModal = false;
                     }
                  }">
@@ -918,7 +898,7 @@
                     <button type="button" @click="closeModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold p-1 rounded-lg hover:bg-slate-100 transition">&times;</button>
                 </div>
 
-                <form method="POST" action="{{ route('projects.members.store', $project) }}" class="space-y-4">
+                <form method="POST" action="{{ route('projects.members.store', $project) }}" @submit="submitting = true" class="space-y-4">
                     @csrf
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1.5">
@@ -929,8 +909,6 @@
                                    name="email"
                                    x-model="email"
                                    @input="checkEmail()"
-                                   @blur="checkEmail()"
-                                   @keydown.enter.prevent="checkEmail()"
                                    required
                                    autocomplete="off"
                                    placeholder="Masukkan email yang terdaftar..."
@@ -1051,11 +1029,19 @@
                             Batal
                         </button>
                         <button type="submit"
-                                :disabled="status !== 'available' || checking"
+                                :disabled="status !== 'available' || checking || submitting"
                                 class="px-5 py-2 text-xs rounded-xl font-semibold text-white transition flex items-center space-x-1.5"
-                                :class="status === 'available' && !checking ? 'bg-indigo-600 hover:bg-indigo-700 shadow-sm' : 'bg-slate-300 cursor-not-allowed opacity-60'">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-                            <span>Kirim Undangan Tim</span>
+                                :class="status === 'available' && !checking && !submitting ? 'bg-indigo-600 hover:bg-indigo-700 shadow-sm cursor-pointer' : 'bg-slate-300 cursor-not-allowed opacity-60'">
+                            <template x-if="submitting">
+                                <svg class="animate-spin -ml-1 mr-1.5 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                </svg>
+                            </template>
+                            <template x-if="!submitting">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            </template>
+                            <span x-text="submitting ? 'Mengirim Undangan...' : 'Kirim Undangan Tim'"></span>
                         </button>
                     </div>
                 </form>

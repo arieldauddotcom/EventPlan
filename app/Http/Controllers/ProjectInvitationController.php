@@ -54,18 +54,21 @@ class ProjectInvitationController extends Controller
 
         // Aturan 15: Cegah self-invitation
         if ($inviteeEmail === strtolower($user->email)) {
-            return back()->with('error', 'Anda tidak dapat mengundang diri Anda sendiri ke proyek.');
+            return back()->with('error', 'Anda tidak dapat mengundang diri Anda sendiri ke proyek.')
+                ->with('tab', 'members');
         }
 
         // Aturan 6: Pengguna harus sudah terdaftar
         $invitee = User::whereRaw('LOWER(TRIM(email)) = ?', [$inviteeEmail])->first();
         if (!$invitee) {
-            return back()->with('error', 'Pengguna dengan email ' . $inviteeEmail . ' belum terdaftar di sistem. Harap minta mereka mendaftar terlebih dahulu.');
+            return back()->with('error', 'Pengguna dengan email ' . $inviteeEmail . ' belum terdaftar di sistem. Harap minta mereka mendaftar terlebih dahulu.')
+                ->with('tab', 'members');
         }
 
         // Aturan 15: Cegah duplicate project membership
         if ($project->members()->where('user_id', $invitee->id)->exists() || $project->isOwnedBy($invitee)) {
-            return back()->with('error', 'Pengguna ini sudah menjadi anggota pada proyek ini.');
+            return back()->with('error', 'Pengguna ini sudah menjadi anggota pada proyek ini.')
+                ->with('tab', 'members');
         }
 
         // Aturan 15: Cegah duplicate pending invitations
@@ -75,7 +78,8 @@ class ProjectInvitationController extends Controller
             ->first();
 
         if ($existingInvitation) {
-            return back()->with('error', 'Undangan untuk email ini sudah dikirim dan masih berstatus pending.');
+            return back()->with('error', 'Undangan untuk email ini sudah dikirim dan masih berstatus pending.')
+                ->with('tab', 'members');
         }
 
         $role = $validated['role'] ?? 'member';
@@ -90,7 +94,8 @@ class ProjectInvitationController extends Controller
             'message' => $validated['message'] ?? null,
         ]);
 
-        return back()->with('success', 'Undangan berhasil dikirim ke ' . $invitee->name . ' (' . $inviteeEmail . ').');
+        return back()->with('success', 'Undangan berhasil dikirim ke ' . $invitee->name . ' (' . $inviteeEmail . ').')
+            ->with('tab', 'members');
     }
 
     /**
@@ -185,6 +190,7 @@ class ProjectInvitationController extends Controller
 
         $invitation->delete();
 
-        return back()->with('success', 'Undangan berhasil dibatalkan.');
+        return back()->with('success', 'Undangan berhasil dibatalkan.')
+            ->with('tab', 'members');
     }
 }

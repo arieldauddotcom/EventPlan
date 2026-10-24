@@ -10,7 +10,7 @@
         </div>
         <div class="flex flex-wrap items-center gap-2 sm:gap-2.5">
             <a href="{{ route('profile.edit') }}" class="inline-flex items-center px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm transition border border-slate-200 shadow-2xs">
-                @if(auth()->user()->avatar_url)
+                @if(auth()->user()?->avatar_url)
                     <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="w-5 h-5 rounded-full object-cover mr-2 aspect-square" style="border-radius: 9999px;">
                 @else
                     <svg class="w-4 h-4 mr-2 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    @if(auth()->user()->isAdmin() && !empty($adminStats))
+    @if(auth()->user()?->isAdmin() && !empty($adminStats))
         <!-- Panel Ringkasan Administrator Global -->
         <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-2xl p-6 text-white shadow-md border border-slate-800 space-y-4">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800/80 gap-2">

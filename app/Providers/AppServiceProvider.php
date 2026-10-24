@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Mencegah error 500 jika touch() pada BladeCompiler gagal karena perbedaan user process (www-data vs CLI)
         set_error_handler(function ($severity, $message, $file, $line) {
-            if (str_contains($file, 'BladeCompiler.php') && str_contains($message, 'touch()')) {
+            if (str_contains($message, 'touch()') && (str_contains($file, 'BladeCompiler') || str_contains($message, 'Utime failed') || str_contains($message, 'Permission denied'))) {
                 return true;
             }
             return false;

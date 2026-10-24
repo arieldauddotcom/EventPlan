@@ -23,11 +23,11 @@
         </a>
         <div class="flex items-center space-x-2">
             <a href="{{ route('profile.edit') }}" class="flex items-center p-1 rounded-full hover:bg-slate-100 transition" title="Profil Saya">
-                @if(auth()->user()->avatar_url)
+                @if(auth()->user()?->avatar_url)
                     <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="w-8 h-8 rounded-full object-cover aspect-square border border-slate-200" style="border-radius: 9999px;">
                 @else
                     <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 font-bold text-xs flex items-center justify-center aspect-square border border-indigo-200" style="border-radius: 9999px;">
-                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        {{ strtoupper(substr(auth()->user()?->name ?? 'U', 0, 1)) }}
                     </div>
                 @endif
             </a>
@@ -73,10 +73,13 @@
                     Undangan Proyek
                 </div>
                 @php
-                    $pendingCount = \App\Models\ProjectInvitation::where(function($q) {
-                        $q->where('invitee_id', auth()->id())
-                          ->orWhere('email', strtolower(auth()->user()->email));
-                    })->where('status', 'pending')->count();
+                    $pendingCount = 0;
+                    if (auth()->check()) {
+                        $pendingCount = \App\Models\ProjectInvitation::where(function($q) {
+                            $q->where('invitee_id', auth()->id())
+                              ->orWhere('email', strtolower(auth()->user()->email));
+                        })->where('status', 'pending')->count();
+                    }
                 @endphp
                 @if($pendingCount > 0)
                     <span class="px-2 py-0.5 text-[11px] font-bold rounded-full bg-rose-500 text-white">{{ $pendingCount }}</span>
@@ -91,7 +94,7 @@
                 Pengaturan Profil
             </a>
 
-            @if(auth()->user()->isAdmin())
+            @if(auth()->user()?->isAdmin())
                 <div class="pt-4 pb-1">
                     <p class="px-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Administrasi</p>
                 </div>
@@ -119,16 +122,16 @@
         <div class="p-4 border-t border-slate-800">
             <div class="flex items-center justify-between">
                 <a href="{{ route('profile.edit') }}" class="flex items-center space-x-3 overflow-hidden group hover:opacity-90 transition flex-1 min-w-0 mr-2" title="Edit Profil">
-                    @if(auth()->user()->avatar_url)
+                    @if(auth()->user()?->avatar_url)
                         <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="w-9 h-9 rounded-full object-cover shrink-0 aspect-square border border-slate-700" style="border-radius: 9999px;">
                     @else
                         <div class="w-9 h-9 rounded-full bg-indigo-500/20 text-indigo-300 font-semibold flex items-center justify-center text-sm shrink-0 aspect-square border border-indigo-500/30" style="border-radius: 9999px;">
-                            {{ substr(auth()->user()->name, 0, 1) }}
+                            {{ substr(auth()->user()?->name ?? 'U', 0, 1) }}
                         </div>
                     @endif
                     <div class="truncate">
-                        <p class="text-sm font-semibold text-white group-hover:text-indigo-300 transition truncate">{{ auth()->user()->name }}</p>
-                        <p class="text-xs text-slate-400 truncate">{{ auth()->user()->email }}</p>
+                        <p class="text-sm font-semibold text-white group-hover:text-indigo-300 transition truncate">{{ auth()->user()?->name ?? 'Pengguna' }}</p>
+                        <p class="text-xs text-slate-400 truncate">{{ auth()->user()?->email ?? '' }}</p>
                     </div>
                 </a>
 
@@ -219,7 +222,7 @@
                     Pengaturan Profil
                 </a>
 
-                @if(auth()->user()->isAdmin())
+                @if(auth()->user()?->isAdmin())
                     <div class="pt-3 pb-1">
                         <p class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider">Administrasi</p>
                     </div>
@@ -247,16 +250,16 @@
             <div class="p-3.5 border-t border-slate-800 bg-slate-950/60">
                 <div class="flex items-center justify-between">
                     <a href="{{ route('profile.edit') }}" class="flex items-center space-x-2.5 overflow-hidden flex-1 min-w-0 mr-2">
-                        @if(auth()->user()->avatar_url)
+                        @if(auth()->user()?->avatar_url)
                             <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="w-9 h-9 rounded-full object-cover shrink-0 aspect-square border border-slate-700" style="border-radius: 9999px;">
                         @else
                             <div class="w-9 h-9 rounded-full bg-indigo-500/20 text-indigo-300 font-semibold flex items-center justify-center text-sm shrink-0 aspect-square border border-indigo-500/30" style="border-radius: 9999px;">
-                                {{ substr(auth()->user()->name, 0, 1) }}
+                                {{ substr(auth()->user()?->name ?? 'U', 0, 1) }}
                             </div>
                         @endif
                         <div class="truncate">
-                            <p class="text-xs font-semibold text-white truncate">{{ auth()->user()->name }}</p>
-                            <p class="text-[11px] text-slate-400 truncate">{{ auth()->user()->email }}</p>
+                            <p class="text-xs font-semibold text-white truncate">{{ auth()->user()?->name ?? 'Pengguna' }}</p>
+                            <p class="text-[11px] text-slate-400 truncate">{{ auth()->user()?->email ?? '' }}</p>
                         </div>
                     </a>
                     <form method="POST" action="{{ route('logout') }}">
