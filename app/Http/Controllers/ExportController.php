@@ -81,7 +81,7 @@ class ExportController extends Controller
             fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
 
             // Tulis Header Kolom
-            fputcsv($handle, $columns);
+            fputcsv($handle, $columns, ',', '"', '\\');
 
             foreach ($tasks as $task) {
                 $predecessors = $task->predecessors->pluck('name')->implode(', ');
@@ -108,7 +108,7 @@ class ExportController extends Controller
                     $this->sanitizeCell($resources),
                 ];
 
-                fputcsv($handle, $row);
+                fputcsv($handle, $row, ',', '"', '\\');
             }
 
             fclose($handle);
