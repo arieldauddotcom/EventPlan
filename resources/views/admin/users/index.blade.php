@@ -118,23 +118,46 @@
         </div>
     </div>
 
-    <!-- Filter & Pencarian -->
+    <!-- Filter & Pencarian (Auto-filter) -->
     <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200 shadow-xs">
-        <form method="GET" action="{{ route('admin.users.index') }}" class="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
-            <div class="flex-1">
-                <input type="text" name="search" value="{{ $search }}" placeholder="Cari nama, username, atau email..." class="w-full px-3.5 py-2 sm:py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+        <form method="GET" action="{{ route('admin.users.index') }}"
+              x-data="{
+                  searchTimer: null,
+                  onSearchInput() {
+                      clearTimeout(this.searchTimer);
+                      this.searchTimer = setTimeout(() => {
+                          $el.submit();
+                      }, 500);
+                  }
+              }"
+              x-init="
+                  @if($search)
+                      if ($refs.userSearchInput) {
+                          $refs.userSearchInput.focus();
+                          $refs.userSearchInput.setSelectionRange($refs.userSearchInput.value.length, $refs.userSearchInput.value.length);
+                      }
+                  @endif
+              "
+              class="flex flex-col sm:flex-row gap-2.5 sm:gap-3">
+            <div class="flex-1 relative">
+                <input type="text"
+                       name="search"
+                       x-ref="userSearchInput"
+                       @input="onSearchInput()"
+                       value="{{ $search }}"
+                       placeholder="Cari nama, username, atau email..."
+                       class="w-full px-3.5 py-2 sm:py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
             </div>
             <div class="flex items-center space-x-2">
-                <select name="role" class="w-full sm:w-36 px-3.5 py-2 sm:py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <select name="role"
+                        @change="$el.form.submit()"
+                        class="w-full sm:w-36 px-3.5 py-2 sm:py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white">
                     <option value="">Semua Role</option>
                     <option value="admin" {{ $role === 'admin' ? 'selected' : '' }}>Admin</option>
                     <option value="user" {{ $role === 'user' ? 'selected' : '' }}>User</option>
                 </select>
-                <button type="submit" class="px-5 py-2 sm:py-2.5 bg-slate-900 text-white rounded-xl text-xs font-semibold hover:bg-slate-800 transition shrink-0">
-                    Cari
-                </button>
                 @if($search || $role)
-                    <a href="{{ route('admin.users.index') }}" class="px-3 py-2 sm:py-2.5 bg-slate-100 text-slate-600 rounded-xl text-xs font-semibold hover:bg-slate-200 transition shrink-0 flex items-center justify-center">
+                    <a href="{{ route('admin.users.index') }}" class="px-3 py-2 sm:py-2.5 bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 border border-slate-200 rounded-xl text-xs font-semibold transition shrink-0 flex items-center justify-center">
                         Reset
                     </a>
                 @endif

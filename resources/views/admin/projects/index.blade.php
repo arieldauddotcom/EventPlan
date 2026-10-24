@@ -83,21 +83,53 @@
         </div>
     </div>
 
-    <!-- Filter & Pencarian -->
+    <!-- Filter & Pencarian (Auto-filter) -->
     <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3">
-        <form method="GET" action="{{ route('admin.projects.index') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3">
+        <form method="GET" action="{{ route('admin.projects.index') }}"
+              x-data="{
+                  searchTimer: null,
+                  onSearchInput() {
+                      clearTimeout(this.searchTimer);
+                      this.searchTimer = setTimeout(() => {
+                          $el.submit();
+                      }, 500);
+                  }
+              }"
+              x-init="
+                  @if($search)
+                      if ($refs.searchInput) {
+                          $refs.searchInput.focus();
+                          $refs.searchInput.setSelectionRange($refs.searchInput.value.length, $refs.searchInput.value.length);
+                      }
+                  @endif
+              "
+              class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3">
             <!-- Search -->
-            <div class="lg:col-span-5">
+            <div class="lg:col-span-5 relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                </div>
                 <input type="text"
                        name="search"
+                       x-ref="searchInput"
+                       @input="onSearchInput()"
                        value="{{ $search }}"
-                       placeholder="Cari nama proyek, organisasi, atau nama pemilik..."
-                       class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none placeholder-slate-400">
+                       placeholder="Cari proyek, organisasi, atau pemilik..."
+                       class="w-full pl-10 pr-9 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none placeholder-slate-400">
+                @if($search)
+                    <a href="{{ route('admin.projects.index', array_filter(['status' => $status, 'owner_id' => $ownerId])) }}"
+                       class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600"
+                       title="Hapus pencarian">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </a>
+                @endif
             </div>
 
             <!-- Status Filter -->
             <div class="lg:col-span-3">
-                <select name="status" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <select name="status"
+                        @change="$el.form.submit()"
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white">
                     <option value="">Semua Status Proyek</option>
                     <option value="active" {{ $status === 'active' ? 'selected' : '' }}>🟢 Aktif (Active)</option>
                     <option value="planning" {{ $status === 'planning' ? 'selected' : '' }}>🟡 Perencanaan (Planning)</option>
@@ -108,7 +140,9 @@
 
             <!-- Owner Filter -->
             <div class="lg:col-span-3">
-                <select name="owner_id" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                <select name="owner_id"
+                        @change="$el.form.submit()"
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-white">
                     <option value="">Semua Pemilik (Owner)</option>
                     @foreach($usersList as $u)
                         <option value="{{ $u->id }}" {{ (string)$ownerId === (string)$u->id ? 'selected' : '' }}>
@@ -118,15 +152,21 @@
                 </select>
             </div>
 
-            <!-- Buttons -->
-            <div class="lg:col-span-1 flex space-x-1.5">
-                <button type="submit" class="w-full px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold transition flex items-center justify-center">
-                    Cari
-                </button>
+            <!-- Reset Button / Status Filter Indikator -->
+            <div class="lg:col-span-1 flex items-center">
                 @if($search || $status || $ownerId)
-                    <a href="{{ route('admin.projects.index') }}" title="Reset Filter" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-semibold transition flex items-center justify-center">
-                        ✕
+                    <a href="{{ route('admin.projects.index') }}"
+                       title="Reset Semua Filter"
+                       class="w-full px-3 py-2.5 bg-slate-100 hover:bg-rose-50 text-slate-600 hover:text-rose-600 border border-slate-200 hover:border-rose-200 rounded-xl text-xs font-semibold transition flex items-center justify-center space-x-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                        <span class="sm:inline lg:hidden">Reset Filter</span>
                     </a>
+                @else
+                    <button type="submit"
+                            title="Filter otomatis aktif"
+                            class="w-full px-3 py-2.5 bg-slate-50 text-slate-400 border border-slate-200 rounded-xl text-xs font-medium transition flex items-center justify-center">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+                    </button>
                 @endif
             </div>
         </form>
