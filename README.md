@@ -274,7 +274,7 @@ app/
 ---
 
 ## TUGAS MATA KULIAH ARSITEKTUR SISTEM INFORMASI 
-**Implementasi Aplikasi Sistem Informasi Berbasis Agentic AI (Freebuff CLI)
+Implementasi Aplikasi Sistem Informasi Berbasis Agentic AI (Freebuff CLI)
 
 NAMA : MOHAMAD NAZRIL R. DAUD
 
