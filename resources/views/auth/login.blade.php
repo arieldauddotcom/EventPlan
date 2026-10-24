@@ -202,21 +202,32 @@
                     <a href="{{ route('register') }}" class="font-bold text-purple-600 hover:text-purple-700 hover:underline">Daftar sekarang</a>
                 </p>
 
-                <!-- Informasi Akun Demo & Quick Fill (Kompak Satu Baris) -->
-                <div class="py-1.5 px-3 rounded-xl bg-slate-50 border border-slate-200 text-xs flex items-center justify-between">
-                    <span class="text-[10px] font-bold text-slate-500 shrink-0">Demo:</span>
-                    <div class="flex items-center space-x-1.5 overflow-hidden">
-                        <button type="button"
-                                onclick="document.getElementById('login-identity').value='admin@eventplan.local'; document.getElementById('login-password').value='password123';"
-                                class="px-2 py-0.5 rounded-lg bg-white border border-slate-200 text-[10px] font-semibold text-slate-700 hover:border-purple-400 hover:text-purple-700 transition">
-                            Admin
-                        </button>
-                        <button type="button"
-                                onclick="document.getElementById('login-identity').value='kontak@arieldaud.com'; document.getElementById('login-password').value='password123';"
-                                class="px-2 py-0.5 rounded-lg bg-white border border-slate-200 text-[10px] font-semibold text-slate-700 hover:border-purple-400 hover:text-purple-700 transition">
-                            Mohamad Nazril R. Daud
-                        </button>
-                        <span class="text-[10px] text-slate-400 font-mono hidden sm:inline">(pass: password123)</span>
+                <!-- Pilihan Akun Demo (Dropdown Cepat) -->
+                <div class="py-2 px-3 rounded-xl bg-slate-50 border border-slate-200">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label for="demo-account-select" class="text-[11px] font-bold text-slate-700 flex items-center gap-1.5">
+                            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Pilih Akun Demo:
+                        </label>
+                        <span class="text-[10px] text-slate-400 font-mono">(pass: password123)</span>
+                    </div>
+                    <div class="relative">
+                        <select id="demo-account-select"
+                                onchange="if(this.value){ document.getElementById('login-identity').value = this.value; document.getElementById('login-password').value = 'password123'; }"
+                                class="w-full text-xs bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 pr-8 text-slate-700 font-medium focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none appearance-none cursor-pointer">
+                            <option value="">-- Pilih Akun Demo untuk Auto-Fill --</option>
+                            <option value="admin@eventplan.local">👑 Administrator EventPlan (Admin) - admin@eventplan.local</option>
+                            <option value="kontak@arieldaud.com">🎯 Mohamad Nazril R. Daud (Lead Planner) - kontak@arieldaud.com</option>
+                            <option value="sarah@gemilang.com">📋 Sarah Anindya (Event Coordinator) - sarah@gemilang.com</option>
+                            <option value="budi@gemilang.com">💻 Budi Santoso (Tech & Logistics) - budi@gemilang.com</option>
+                            <option value="doni@gemilang.com">🎨 Doni Kusuma (Design & Creative) - doni@gemilang.com</option>
+                            <option value="maya@gemilang.com">📢 Maya Putri (PR & Marketing) - maya@gemilang.com</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2.5 text-slate-500">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
                     </div>
                 </div>
 
