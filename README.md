@@ -76,8 +76,8 @@ Antarmuka autentikasi modern dengan desain *split layout* responsif (*fixed view
 ---
 
 ### 2. Dashboard Analitik Utama (Project Overview)
-Pusat kendali operasional yang menyajikan kartu metrik global (Total Proyek, Proyek Aktif, Fase Planning, Proyek Selesai), status tugas (Total, Sedang Dikerjakan, Tuntas, dan Tugas Kritis CPM), daftar proyek terbaru, widget pengingat tenggat waktu (*Deadline 7 Hari Kedepan*), serta panel *Admin Overview* (Ringkasan Sistem dan Global) khusus peran Administrator.
-![Dashboard Utama EventPlan](screenshoot/admin-dashboardutama.png)
+Pusat kendali pengguna yang menyajikan kartu metrik global (Total Proyek, Proyek Aktif, Fase Planning, Proyek Selesai), status tugas (Total, Sedang Dikerjakan, Tuntas, dan Tugas Kritis CPM), daftar proyek terbaru, serta widget pengingat tenggat waktu (*Deadline 7 Hari Kedepan*).
+![Dashboard Utama EventPlan](screenshoot/02-dashboard-utama.png)
 
 ---
 
@@ -111,8 +111,12 @@ Halaman depan modern bernuansa *dark mode* futuristik yang dilengkapi simulator 
 
 ---
 
-### 8. Panel Administrasi Sistem Global (Kelola Proyek & Pengguna)
+### 8. Panel Administrasi Sistem Global (Dashboard Admin, Kelola Proyek & Pengguna)
 Modul manajemen terpusat khusus bagi **Administrator** untuk mengontrol ekosistem EventPlan secara menyeluruh:
+
+- **Dashboard Utama Administrator (`/dashboard`)**:
+  Tampilan beranda khusus Administrator yang dilengkapi kartu ringkasan *Admin Overview* (total pengguna terdaftar, portofolio proyek global, status fase berjalan & perencanaan, serta tombol pintas ke modul administrasi).
+  ![Dashboard Utama Admin](screenshoot/admin-dashboardutama.png)
 
 - **Manajemen Seluruh Proyek Global (`/admin/projects`)**:
   Menyajikan metrik agregat seluruh proyek (Total Portofolio, Proyek Aktif, Perencanaan, dan Selesai), filter pencarian otomatis berbasis teks (*live search debounce*), penyaringan status acara, penelusuran pemilik (*owner filter*), pemantauan tanggal linimasa, serta opsi pembersihan (*delete*) proyek secara aman.
