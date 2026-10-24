@@ -58,6 +58,7 @@ class DashboardController extends Controller
                 'regular_users' => User::where('role', 'user')->count(),
                 'global_projects' => Project::count(),
                 'global_active_projects' => Project::where('status', 'active')->count(),
+                'global_planning_projects' => Project::where('status', 'planning')->count(),
                 'global_completed_projects' => Project::where('status', 'completed')->count(),
             ];
         }

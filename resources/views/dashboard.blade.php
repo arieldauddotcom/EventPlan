@@ -34,12 +34,18 @@
                     </span>
                     <h2 class="text-base font-bold text-white tracking-tight">Ringkasan Sistem dan Global</h2>
                 </div>
-                <a href="{{ route('admin.users.index') }}" class="text-xs font-semibold text-indigo-400 hover:text-indigo-300 inline-flex items-center">
-                    Buka Kelola Pengguna &rarr;
-                </a>
+                <div class="flex items-center space-x-3">
+                    <a href="{{ route('admin.projects.index') }}" class="text-xs font-semibold text-purple-300 hover:text-white inline-flex items-center">
+                        Semua Proyek &rarr;
+                    </a>
+                    <span class="text-slate-600">&bull;</span>
+                    <a href="{{ route('admin.users.index') }}" class="text-xs font-semibold text-indigo-400 hover:text-indigo-300 inline-flex items-center">
+                        Kelola Pengguna &rarr;
+                    </a>
+                </div>
             </div>
 
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                 <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
                     <span class="text-xs text-slate-400">Total Pengguna Terdaftar</span>
                     <p class="text-2xl font-black text-white mt-1">{{ $adminStats['total_users'] }}</p>
@@ -49,6 +55,11 @@
                     <span class="text-xs text-slate-400">Total Proyek Global</span>
                     <p class="text-2xl font-black text-white mt-1">{{ $adminStats['global_projects'] }}</p>
                     <p class="text-[11px] text-slate-400 mt-0.5">Semua user terdaftar</p>
+                </div>
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
+                    <span class="text-xs text-amber-400">Proyek Planning Global</span>
+                    <p class="text-2xl font-black text-amber-400 mt-1">{{ $adminStats['global_planning_projects'] }}</p>
+                    <p class="text-[11px] text-slate-400 mt-0.5">Fase perencanaan</p>
                 </div>
                 <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
                     <span class="text-xs text-emerald-400">Proyek Global Aktif</span>
