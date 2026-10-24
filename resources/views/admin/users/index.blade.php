@@ -29,11 +29,12 @@
     <!-- Panel Kartu Ringkasan Statistik Sistem -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <!-- Kartu Total Proyek -->
-        <div class="bg-gradient-to-br from-indigo-900 via-indigo-950 to-slate-900 rounded-2xl p-5 text-white shadow-sm border border-indigo-800/50 flex flex-col justify-between">
-            <div>
+        <div class="relative overflow-hidden bg-gradient-to-br from-indigo-600 via-indigo-700 to-purple-700 rounded-2xl p-5 text-white shadow-md shadow-indigo-500/20 border border-indigo-500/30 flex flex-col justify-between">
+            <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-xl pointer-events-none"></div>
+            <div class="relative z-10">
                 <div class="flex items-center justify-between mb-2">
-                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-300">Total Portofolio Proyek</span>
-                    <span class="p-2 rounded-xl bg-indigo-500/20 text-indigo-300">
+                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-100">Total Portofolio Proyek</span>
+                    <span class="p-2 rounded-xl bg-white/20 text-white">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
@@ -41,22 +42,22 @@
                 </div>
                 <div class="flex items-baseline space-x-2">
                     <p class="text-3xl font-black text-white tracking-tight">{{ $stats['total_projects'] }}</p>
-                    <span class="text-xs text-indigo-200">proyek terdaftar</span>
+                    <span class="text-xs text-indigo-100 font-medium">proyek terdaftar</span>
                 </div>
                 <div class="mt-3 flex flex-wrap gap-1.5 text-[11px]">
-                    <span class="px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-medium">
+                    <span class="px-2 py-0.5 rounded-md bg-white/20 text-white border border-white/30 font-semibold">
                         {{ $stats['active_projects'] }} Aktif
                     </span>
-                    <span class="px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30 font-medium">
+                    <span class="px-2 py-0.5 rounded-md bg-white/20 text-amber-200 border border-amber-300/40 font-semibold">
                         {{ $stats['planning_projects'] }} Planning
                     </span>
-                    <span class="px-2 py-0.5 rounded-md bg-purple-500/20 text-purple-300 border border-purple-500/30 font-medium">
+                    <span class="px-2 py-0.5 rounded-md bg-white/20 text-purple-200 border border-purple-300/40 font-semibold">
                         {{ $stats['completed_projects'] }} Selesai
                     </span>
                 </div>
             </div>
-            <div class="mt-4 pt-3 border-t border-indigo-800/60 flex items-center justify-between text-xs">
-                <a href="{{ route('admin.projects.index') }}" class="text-indigo-300 hover:text-white font-semibold inline-flex items-center transition group">
+            <div class="mt-4 pt-3 border-t border-indigo-400/30 flex items-center justify-between text-xs relative z-10">
+                <a href="{{ route('admin.projects.index') }}" class="text-indigo-100 hover:text-white font-semibold inline-flex items-center transition group">
                     <span>Lihat Rincian Semua Proyek</span>
                     <svg class="w-3.5 h-3.5 ml-1 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                 </a>
