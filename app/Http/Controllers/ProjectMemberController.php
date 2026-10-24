@@ -44,6 +44,13 @@ class ProjectMemberController extends Controller
 
         $isOwner = $project->owner_id === $targetUser->id;
         $existingMember = $project->members()->where('user_id', $targetUser->id)->first();
+        $pendingInvitation = $project->invitations()
+            ->where(function ($q) use ($targetUser, $email) {
+                $q->where('invitee_id', $targetUser->id)
+                  ->orWhere('email', $email);
+            })
+            ->where('status', 'pending')
+            ->first();
 
         return response()->json([
             'exists' => true,
@@ -57,12 +64,15 @@ class ProjectMemberController extends Controller
             'is_member' => (bool)$existingMember || $isOwner,
             'is_owner' => $isOwner,
             'member_role' => $existingMember ? $existingMember->role : ($isOwner ? 'Leader (Owner)' : null),
+            'has_pending_invitation' => (bool)$pendingInvitation,
+            'pending_role' => $pendingInvitation ? ($pendingInvitation->role ?? 'member') : null,
             'message' => 'Pengguna terdaftar ditemukan.'
         ]);
     }
 
     /**
-     * Tambah anggota tim ke proyek secara langsung berdasarkan email terdaftar.
+     * Tambah/Undang anggota tim ke proyek berdasarkan email terdaftar.
+     * Mengirim undangan (status: pending) dan baru aktif setelah di-approve oleh pengguna.
      */
     public function store(Request $request, Project $project)
     {
@@ -75,6 +85,7 @@ class ProjectMemberController extends Controller
         $validated = $request->validate([
             'email' => 'required|email|max:255',
             'role' => 'required|in:member,leader',
+            'message' => 'nullable|string|max:500',
         ], [
             'email.required' => 'Alamat email wajib diisi.',
             'email.email' => 'Format alamat email tidak valid.',
@@ -87,7 +98,7 @@ class ProjectMemberController extends Controller
         // Deteksi apakah email terdaftar di sistem
         $targetUser = User::whereRaw('LOWER(TRIM(email)) = ?', [$email])->first();
         if (!$targetUser) {
-            return back()->with('error', 'Email "' . $email . '" tidak terdaftar di sistem EventPlan. Anggota tim harus memiliki akun terdaftar terlebih dahulu.')
+            return back()->with('error', 'Email "' . $email . '" tidak terdaftar di sistem EventPlan. Calon anggota harus memiliki akun terdaftar terlebih dahulu.')
                 ->with('tab', 'members')
                 ->withInput();
         }
@@ -99,45 +110,41 @@ class ProjectMemberController extends Controller
                 ->withInput();
         }
 
-        // Cek jika pengguna sudah menjadi anggota atau pemilik
+        // Cek jika pengguna sudah menjadi anggota aktif atau pemilik
         if ($project->members()->where('user_id', $targetUser->id)->exists() || $project->owner_id === $targetUser->id) {
-            return back()->with('error', 'Pengguna "' . $targetUser->name . '" (' . $email . ') sudah terdaftar di tim proyek ini.')
+            return back()->with('error', 'Pengguna "' . $targetUser->name . '" (' . $email . ') sudah menjadi anggota aktif di tim proyek ini.')
                 ->with('tab', 'members')
                 ->withInput();
         }
 
-        // Buat ProjectMember
-        $member = ProjectMember::create([
+        // Cek jika sudah ada undangan pending untuk pengguna ini
+        $existingPending = ProjectInvitation::where('project_id', $project->id)
+            ->where(function ($q) use ($targetUser, $email) {
+                $q->where('invitee_id', $targetUser->id)
+                  ->orWhere('email', $email);
+            })
+            ->where('status', 'pending')
+            ->first();
+
+        if ($existingPending) {
+            return back()->with('error', 'Undangan untuk ' . $targetUser->name . ' (' . $email . ') sudah dikirim sebelumnya dan sedang menunggu persetujuan (approve).')
+                ->with('tab', 'members')
+                ->withInput();
+        }
+
+        // Buat ProjectInvitation berstatus pending (harus di-approve oleh pengguna)
+        ProjectInvitation::create([
             'project_id' => $project->id,
-            'user_id' => $targetUser->id,
+            'inviter_id' => $user->id,
+            'invitee_id' => $targetUser->id,
+            'email' => $email,
             'role' => $validated['role'],
+            'status' => 'pending',
+            'message' => $validated['message'] ?? 'Undangan bergabung ke tim proyek ' . $project->name,
         ]);
 
-        // Sinkronisasi otomatis ke tabel Resource agar langsung dapat ditugaskan tugas
-        Resource::firstOrCreate(
-            [
-                'project_id' => $project->id,
-                'email' => $targetUser->email,
-            ],
-            [
-                'user_id' => $targetUser->id,
-                'name' => $targetUser->name,
-                'role' => $validated['role'] === 'leader' ? 'Project Co-Leader' : 'Anggota Tim Pelaksana',
-                'cost_per_hour' => 50000,
-                'max_hours_per_day' => 8,
-            ]
-        );
-
-        // Jika ada invitation pending untuk email ini, tandai sebagai accepted
-        ProjectInvitation::where('project_id', $project->id)
-            ->where('email', $email)
-            ->update([
-                'invitee_id' => $targetUser->id,
-                'status' => 'accepted',
-            ]);
-
-        $roleLabel = $validated['role'] === 'leader' ? 'Leader' : 'Member';
-        return back()->with('success', "{$targetUser->name} ({$targetUser->email}) berhasil ditambahkan ke tim proyek sebagai {$roleLabel}!")
+        $roleLabel = $validated['role'] === 'leader' ? 'Co-Leader' : 'Member';
+        return back()->with('success', "Undangan tim berhasil dikirim ke {$targetUser->name} ({$targetUser->email}) sebagai {$roleLabel}! Proyek akan muncul di daftar proyek pengguna setelah disetujui (approve) di menu Undangan Proyek.")
             ->with('tab', 'members');
     }
 

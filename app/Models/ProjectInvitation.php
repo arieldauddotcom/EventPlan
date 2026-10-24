@@ -14,6 +14,7 @@ class ProjectInvitation extends Model
         'inviter_id',
         'invitee_id',
         'email',
+        'role',
         'status', // 'pending', 'accepted', 'declined'
         'message',
     ];

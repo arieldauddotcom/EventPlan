@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Models\ProjectInvitation;
 use App\Models\ProjectMember;
+use App\Models\Resource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -45,6 +46,7 @@ class ProjectInvitationController extends Controller
 
         $validated = $request->validate([
             'email' => 'required|email|max:255',
+            'role' => 'nullable|in:member,leader',
             'message' => 'nullable|string|max:500',
         ]);
 
@@ -76,11 +78,14 @@ class ProjectInvitationController extends Controller
             return back()->with('error', 'Undangan untuk email ini sudah dikirim dan masih berstatus pending.');
         }
 
+        $role = $validated['role'] ?? 'member';
+
         ProjectInvitation::create([
             'project_id' => $project->id,
             'inviter_id' => $user->id,
             'invitee_id' => $invitee->id,
             'email' => $inviteeEmail,
+            'role' => $role,
             'status' => 'pending',
             'message' => $validated['message'] ?? null,
         ]);
@@ -89,7 +94,7 @@ class ProjectInvitationController extends Controller
     }
 
     /**
-     * Terima undangan proyek -> pengguna otomatis menjadi 'member'.
+     * Terima undangan proyek -> pengguna resmi bergabung ke proyek.
      */
     public function accept(ProjectInvitation $invitation)
     {
@@ -105,22 +110,39 @@ class ProjectInvitationController extends Controller
         }
 
         $project = $invitation->project;
+        $role = in_array($invitation->role, ['leader', 'member']) ? $invitation->role : 'member';
 
-        // Cegah duplikasi membership
+        // Buat keanggotaan proyek setelah di-approve oleh pengguna
         if (!$project->members()->where('user_id', $user->id)->exists()) {
             ProjectMember::create([
                 'project_id' => $project->id,
                 'user_id' => $user->id,
-                'role' => 'member',
+                'role' => $role,
             ]);
         }
+
+        // Sinkronisasi otomatis ke tabel Resource agar langsung dapat ditugaskan tugas
+        Resource::firstOrCreate(
+            [
+                'project_id' => $project->id,
+                'email' => $user->email,
+            ],
+            [
+                'user_id' => $user->id,
+                'name' => $user->name,
+                'role' => $role === 'leader' ? 'Project Co-Leader' : 'Anggota Tim Pelaksana',
+                'cost_per_hour' => 50000,
+                'max_hours_per_day' => 8,
+            ]
+        );
 
         $invitation->update([
             'invitee_id' => $user->id,
             'status' => 'accepted',
         ]);
 
-        return redirect()->route('projects.show', $project)->with('success', 'Selamat bergabung! Anda sekarang adalah member di proyek ' . $project->name . '.');
+        $roleLabel = $role === 'leader' ? 'Co-Leader' : 'Member';
+        return redirect()->route('projects.show', $project)->with('success', 'Selamat bergabung! Anda telah menyetujui undangan dan resmi menjadi ' . $roleLabel . ' di proyek ' . $project->name . '.');
     }
 
     /**

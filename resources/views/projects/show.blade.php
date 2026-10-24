@@ -875,7 +875,11 @@
                                     this.userFound = data.user;
                                 } else if (data.is_member) {
                                     this.status = 'already_member';
-                                    this.message = 'Pengguna sudah menjadi anggota tim proyek ini (' + (data.member_role || 'Anggota') + ').';
+                                    this.message = 'Pengguna sudah menjadi anggota aktif tim proyek ini (' + (data.member_role || 'Anggota') + ').';
+                                    this.userFound = data.user;
+                                } else if (data.has_pending_invitation) {
+                                    this.status = 'already_member';
+                                    this.message = 'Pengguna ini sudah memiliki undangan aktif yang sedang menunggu persetujuan (approve).';
                                     this.userFound = data.user;
                                 } else {
                                     this.status = 'available';
@@ -907,8 +911,8 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
                         </div>
                         <div>
-                            <h3 class="text-base font-bold text-slate-900">Tambah Tim Proyek</h3>
-                            <p class="text-xs text-slate-500">Cari email pengguna terdaftar di sistem EventPlan.</p>
+                            <h3 class="text-base font-bold text-slate-900">Undang Tim ke Proyek</h3>
+                            <p class="text-xs text-slate-500">Kirim undangan ke pengguna terdaftar. Proyek akan aktif setelah di-approve oleh pengguna.</p>
                         </div>
                     </div>
                     <button type="button" @click="closeModal()" class="text-slate-400 hover:text-slate-600 text-lg font-bold p-1 rounded-lg hover:bg-slate-100 transition">&times;</button>
@@ -1050,8 +1054,8 @@
                                 :disabled="status !== 'available' || checking"
                                 class="px-5 py-2 text-xs rounded-xl font-semibold text-white transition flex items-center space-x-1.5"
                                 :class="status === 'available' && !checking ? 'bg-indigo-600 hover:bg-indigo-700 shadow-sm' : 'bg-slate-300 cursor-not-allowed opacity-60'">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
-                            <span>Tambahkan ke Tim</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                            <span>Kirim Undangan Tim</span>
                         </button>
                     </div>
                 </form>

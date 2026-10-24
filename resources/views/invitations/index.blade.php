@@ -27,8 +27,11 @@
                 @foreach($invitations as $inv)
                     <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-slate-50/80 transition">
                         <div class="space-y-1">
-                            <div class="flex items-center space-x-2">
+                            <div class="flex flex-wrap items-center gap-1.5">
                                 <h4 class="text-sm font-bold text-slate-900">{{ $inv->project->name }}</h4>
+                                <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase {{ ($inv->role ?? 'member') === 'leader' ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-700' }}">
+                                    Peran: {{ ($inv->role ?? 'member') === 'leader' ? 'Co-Leader' : 'Member' }}
+                                </span>
                                 @if($inv->isPending())
                                     <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">Menunggu Respon</span>
                                 @elseif($inv->isAccepted())
