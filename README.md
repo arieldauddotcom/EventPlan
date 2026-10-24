@@ -6,6 +6,15 @@ Dibangun menggunakan stack **Laravel 13**, **Tailwind CSS v4**, **Alpine.js**, d
 
 ---
 
+## 🌐 Demo Aplikasi Langsung (Live Demo)
+
+Aplikasi telah terpasang dan dapat dicoba secara online melalui tautan berikut:
+- **URL Demo**: [https://eventplan.arieldaud.com](https://eventplan.arieldaud.com)
+
+> 💡 **Tips Pengujian:** Pada halaman login, Anda dapat menggunakan tombol dropdown **"Pilih Akun Demo"** untuk masuk langsung sebagai *Administrator* atau *Perencana Acara (Planner)* tanpa perlu mengetik kata sandi secara manual.
+
+---
+
 ## 🌟 Fitur Utama
 
 1. **Autentikasi & Multi-Tenancy Proyek**
