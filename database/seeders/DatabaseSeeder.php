@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
         // 1. Akun Pengguna Global (Role: admin & user)
         // -------------------------------------------------------------
         $admin = User::updateOrCreate(
-            ['email' => 'admin@eventplan.local'],
+            ['email' => 'admin@arieldaud.com'],
             [
                 'name' => 'Administrator EventPlan',
                 'username' => 'admin',
@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
         );
 
         $surya = User::updateOrCreate(
-            ['email' => 'surya@gemilang.com'],
+            ['email' => 'surya@arieldaud.com'],
             [
                 'name' => 'Surya Pratama',
                 'username' => 'surya',
@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
         );
 
         $budi = User::updateOrCreate(
-            ['email' => 'budi@gemilang.com'],
+            ['email' => 'budi@arieldaud.com'],
             [
                 'name' => 'Budi Santoso',
                 'username' => 'budisantoso',
@@ -74,7 +74,7 @@ class DatabaseSeeder extends Seeder
         );
 
         $doni = User::updateOrCreate(
-            ['email' => 'doni@gemilang.com'],
+            ['email' => 'doni@arieldaud.com'],
             [
                 'name' => 'Doni Kusuma',
                 'username' => 'donikusuma',
@@ -85,7 +85,7 @@ class DatabaseSeeder extends Seeder
         );
 
         $rizky = User::updateOrCreate(
-            ['email' => 'rizky@gemilang.com'],
+            ['email' => 'rizky@arieldaud.com'],
             [
                 'name' => 'Rizky Ramadhan',
                 'username' => 'rizky',
@@ -146,7 +146,7 @@ class DatabaseSeeder extends Seeder
         ProjectMember::updateOrCreate(['project_id' => $p1->id, 'user_id' => $doni->id], ['role' => 'member']);
 
         ProjectInvitation::updateOrCreate(
-            ['project_id' => $p1->id, 'email' => 'budi@gemilang.com'],
+            ['project_id' => $p1->id, 'email' => 'budi@arieldaud.com'],
             [
                 'inviter_id' => $ariel->id,
                 'invitee_id' => $budi->id,
@@ -157,19 +157,19 @@ class DatabaseSeeder extends Seeder
 
         // Resources P1
         $r1Budi = Resource::updateOrCreate(
-            ['project_id' => $p1->id, 'email' => 'budi@gemilang.com'],
+            ['project_id' => $p1->id, 'email' => 'budi@arieldaud.com'],
             ['name' => 'Budi Santoso', 'role' => 'Project Director', 'cost_per_hour' => 150000, 'max_hours_per_day' => 8]
         );
         $r1Surya = Resource::updateOrCreate(
-            ['project_id' => $p1->id, 'email' => 'surya@gemilang.com'],
+            ['project_id' => $p1->id, 'email' => 'surya@arieldaud.com'],
             ['name' => 'Surya Pratama', 'role' => 'Koordinator Venue & Legal', 'cost_per_hour' => 100000, 'max_hours_per_day' => 8]
         );
         $r1Doni = Resource::updateOrCreate(
-            ['project_id' => $p1->id, 'email' => 'doni@gemilang.com'],
+            ['project_id' => $p1->id, 'email' => 'doni@arieldaud.com'],
             ['name' => 'Doni Kusuma', 'role' => 'Lead Audio & Lighting Engineer', 'cost_per_hour' => 125000, 'max_hours_per_day' => 8]
         );
         $r1Rizky = Resource::updateOrCreate(
-            ['project_id' => $p1->id, 'email' => 'rizky@gemilang.com'],
+            ['project_id' => $p1->id, 'email' => 'rizky@arieldaud.com'],
             ['name' => 'Rizky Ramadhan', 'role' => 'Head of Brand & Ticket Sales', 'cost_per_hour' => 95000, 'max_hours_per_day' => 8]
         );
 
@@ -264,11 +264,11 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Mohamad Nazril R. Daud', 'role' => 'Curator of Content & Keynote Speakers', 'cost_per_hour' => 140000, 'max_hours_per_day' => 8]
         );
         $r2Rizky = Resource::updateOrCreate(
-            ['project_id' => $p2->id, 'email' => 'rizky@gemilang.com'],
+            ['project_id' => $p2->id, 'email' => 'rizky@arieldaud.com'],
             ['name' => 'Rizky Ramadhan', 'role' => 'Sponsorship & Exhibitor Manager', 'cost_per_hour' => 110000, 'max_hours_per_day' => 8]
         );
         $r2Budi = Resource::updateOrCreate(
-            ['project_id' => $p2->id, 'email' => 'budi@gemilang.com'],
+            ['project_id' => $p2->id, 'email' => 'budi@arieldaud.com'],
             ['name' => 'Budi Santoso', 'role' => 'Event Director & Live Stream Producer', 'cost_per_hour' => 160000, 'max_hours_per_day' => 8]
         );
 
@@ -336,7 +336,7 @@ class DatabaseSeeder extends Seeder
         ProjectMember::updateOrCreate(['project_id' => $p3->id, 'user_id' => $surya->id], ['role' => 'member']);
 
         $r3Surya = Resource::updateOrCreate(
-            ['project_id' => $p3->id, 'email' => 'surya@gemilang.com'],
+            ['project_id' => $p3->id, 'email' => 'surya@arieldaud.com'],
             ['name' => 'Surya Pratama', 'role' => 'Head of Venue & Safety Regulations', 'cost_per_hour' => 110000, 'max_hours_per_day' => 9]
         );
         $r3Ariel = Resource::updateOrCreate(
@@ -399,11 +399,11 @@ class DatabaseSeeder extends Seeder
         );
 
         $r4Surya = Resource::updateOrCreate(
-            ['project_id' => $p4->id, 'email' => 'surya@gemilang.com'],
+            ['project_id' => $p4->id, 'email' => 'surya@arieldaud.com'],
             ['name' => 'Surya Pratama', 'role' => 'Event Producer', 'cost_per_hour' => 0, 'max_hours_per_day' => 8]
         );
         $r4Rizky = Resource::updateOrCreate(
-            ['project_id' => $p4->id, 'email' => 'rizky@gemilang.com'],
+            ['project_id' => $p4->id, 'email' => 'rizky@arieldaud.com'],
             ['name' => 'Rizky Ramadhan', 'role' => 'Koordinator Donasi & Lelang', 'cost_per_hour' => 0, 'max_hours_per_day' => 8]
         );
 

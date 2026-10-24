@@ -154,8 +154,14 @@ Buka browser pada alamat: `http://127.0.0.1:8000`.
 
 ## 🔑 Petunjuk Masuk (Login)
 
-1. **Dev / Local Login (Instan)**
-   Pada halaman login (`/login`), klik tombol **"Masuk Cepat (Akun Uji Coba / Developer)"**. Sistem akan secara otomatis mengotentikasi sebagai pengguna pengembang `dev@eventplan.local`.
+1. **Demo Account Login (Pilih Akun Demo)**
+   Pada halaman login (`/login`), tersedia opsi dropdown **"Pilih Akun Demo untuk Auto-Fill"** untuk masuk secara instan (kata sandi: `password123`):
+   - `admin@arieldaud.com` (Administrator EventPlan - Hak Akses Penuh & Manajemen Sistem)
+   - `kontak@arieldaud.com` (Mohamad Nazril R. Daud - Lead Planner)
+   - `surya@arieldaud.com` (Surya Pratama - Event Coordinator)
+   - `budi@arieldaud.com` (Budi Santoso - Tech & Logistics)
+   - `doni@arieldaud.com` (Doni Kusuma - Design & Creative)
+   - `rizky@arieldaud.com` (Rizky Ramadhan - PR & Marketing)
 
 2. **Google OAuth (Opsional)**
    Tambahkan kredensial Google Cloud Console pada berkas `.env` jika ingin mengaktifkan *Sign in with Google*:

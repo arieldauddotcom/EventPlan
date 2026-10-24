@@ -20,7 +20,7 @@ return new class extends Migration
         });
 
         // Set default admin untuk user pertama/admin jika ada
-        DB::table('users')->where('email', 'admin@eventplan.local')->update(['role' => 'admin']);
+        DB::table('users')->whereIn('email', ['admin@eventplan.local', 'admin@arieldaud.com'])->update(['role' => 'admin']);
 
         // 2. Sesuaikan tabel project_members: role per proyek (leader / member)
         Schema::table('project_members', function (Blueprint $table) {
