@@ -27,11 +27,32 @@ class ProjectMember extends Model
 
     public function isLeader(): bool
     {
-        return $this->role === 'leader';
+        return in_array($this->role, ['leader', 'co-leader']);
     }
 
     public function isMember(): bool
     {
         return $this->role === 'member';
+    }
+
+    public function isOwner(): bool
+    {
+        return $this->project && $this->user_id === $this->project->owner_id;
+    }
+
+    public function isCoLeader(): bool
+    {
+        return $this->isLeader() && !$this->isOwner();
+    }
+
+    public function getRoleLabelAttribute(): string
+    {
+        if ($this->isOwner()) {
+            return 'Leader (Owner)';
+        }
+        if ($this->isLeader()) {
+            return 'Co-Leader';
+        }
+        return 'Member';
     }
 }

@@ -77,7 +77,7 @@ class Project extends Model
 
         return $this->members()
             ->where('user_id', $user->id)
-            ->where('role', 'leader')
+            ->whereIn('role', ['leader', 'co-leader'])
             ->exists();
     }
 

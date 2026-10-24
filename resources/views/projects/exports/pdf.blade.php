@@ -481,7 +481,7 @@
                                 <td>{{ $m->user->email ?? '-' }}</td>
                                 <td>
                                     <span class="badge {{ $m->role === 'leader' ? 'badge-critical' : 'badge-normal' }}">
-                                        {{ ucfirst($m->role) }}
+                                        {{ $m->role_label }}
                                     </span>
                                 </td>
                             </tr>

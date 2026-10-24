@@ -33,7 +33,7 @@ class ProjectController extends Controller
             if ($request->role === 'leader') {
                 $query->where(function ($q) use ($user) {
                     $q->where('owner_id', $user->id)
-                      ->orWhereHas('members', fn($mq) => $mq->where('user_id', $user->id)->where('role', 'leader'));
+                      ->orWhereHas('members', fn($mq) => $mq->where('user_id', $user->id)->whereIn('role', ['leader', 'co-leader']));
                 });
             } elseif ($request->role === 'member') {
                 $query->whereHas('members', fn($mq) => $mq->where('user_id', $user->id)->where('role', 'member'))

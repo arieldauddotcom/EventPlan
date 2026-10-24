@@ -428,39 +428,72 @@
                 </div>
                 <div class="divide-y divide-slate-100">
                     @foreach($project->members as $member)
-                        <div class="p-4 flex items-center justify-between hover:bg-slate-50/80 transition">
+                        <div class="p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/80 transition">
                             <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm shadow-2xs">
+                                <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center text-sm shadow-2xs shrink-0 aspect-square">
                                     {{ strtoupper(substr($member->user->name, 0, 2)) }}
                                 </div>
                                 <div>
-                                    <div class="flex items-center space-x-2">
+                                    <div class="flex items-center flex-wrap gap-1.5">
                                         <h4 class="text-sm font-bold text-slate-900">{{ $member->user->name }}</h4>
-                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase {{ $member->isLeader() ? 'bg-purple-100 text-purple-700' : 'bg-slate-100 text-slate-600' }}">
-                                            {{ $member->role }}
-                                        </span>
                                         @if($member->user_id === $project->owner_id)
-                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-amber-100 text-amber-800">
-                                                Owner
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-amber-100 text-amber-800 border border-amber-200">
+                                                Leader (Owner)
+                                            </span>
+                                        @elseif($member->isLeader())
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-purple-100 text-purple-700 border border-purple-200">
+                                                Co-Leader
+                                            </span>
+                                        @else
+                                            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-slate-100 text-slate-600 border border-slate-200">
+                                                Member
                                             </span>
                                         @endif
                                         @if($member->user_id === $currentUser->id)
                                             <span class="text-[10px] text-slate-400 font-medium">(Anda)</span>
                                         @endif
                                     </div>
-                                    <p class="text-xs text-slate-500">{{ $member->user->email }}</p>
+                                    <p class="text-xs text-slate-500 mt-0.5">{{ $member->user->email }}</p>
                                 </div>
                             </div>
 
-                            @if($isLeader && $member->user_id !== $currentUser->id && $member->user_id !== $project->owner_id && (!$member->isLeader() || $project->owner_id === $currentUser->id))
-                                <form method="POST" action="{{ route('projects.members.destroy', [$project, $member]) }}" onsubmit="return confirm('Apakah Anda yakin ingin mengeluarkan {{ addslashes($member->user->name) }} dari tim proyek?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="px-3 py-1.5 text-xs text-rose-600 hover:text-white hover:bg-rose-600 border border-rose-200 hover:border-rose-600 rounded-xl font-semibold transition flex items-center space-x-1 shadow-2xs" title="Hapus dari Tim">
-                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                        <span>Hapus</span>
-                                    </button>
-                                </form>
+                            @if($isLeader && $member->user_id !== $currentUser->id && $member->user_id !== $project->owner_id)
+                                <div class="flex items-center space-x-2 shrink-0 self-end sm:self-center">
+                                    {{-- Tombol Angkat / Turunkan Peran --}}
+                                    @if($member->role === 'member')
+                                        <form method="POST" action="{{ route('projects.members.update-role', [$project, $member]) }}" onsubmit="return confirm('Angkat {{ addslashes($member->user->name) }} menjadi Co-Leader? Pengguna ini akan memiliki hak untuk memimpin dan mengelola proyek.')" class="inline">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="role" value="leader">
+                                            <button type="submit" class="px-2.5 py-1.5 text-xs text-indigo-700 hover:text-white bg-indigo-50 hover:bg-indigo-600 border border-indigo-200 hover:border-indigo-600 rounded-xl font-semibold transition flex items-center space-x-1 shadow-2xs cursor-pointer" title="Angkat menjadi Co-Leader">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 11l7-7 7 7M5 19l7-7 7 7"/></svg>
+                                                <span>Jadikan Co-Leader</span>
+                                            </button>
+                                        </form>
+                                    @elseif($member->isLeader() && ($currentUser->id === $project->owner_id || $currentUser->isAdmin()))
+                                        <form method="POST" action="{{ route('projects.members.update-role', [$project, $member]) }}" onsubmit="return confirm('Turunkan {{ addslashes($member->user->name) }} menjadi Member biasa? Hak manajerial proyek akan dinonaktifkan.')" class="inline">
+                                            @csrf
+                                            @method('PATCH')
+                                            <input type="hidden" name="role" value="member">
+                                            <button type="submit" class="px-2.5 py-1.5 text-xs text-slate-700 hover:text-white bg-slate-100 hover:bg-slate-600 border border-slate-200 hover:border-slate-600 rounded-xl font-semibold transition flex items-center space-x-1 shadow-2xs cursor-pointer" title="Ubah kembali menjadi Member">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 13l-7 7-7-7m14-8l-7 7-7-7"/></svg>
+                                                <span>Jadikan Member</span>
+                                            </button>
+                                        </form>
+                                    @endif
+
+                                    {{-- Tombol Hapus Anggota --}}
+                                    @if(!$member->isLeader() || $project->owner_id === $currentUser->id || $currentUser->isAdmin())
+                                        <form method="POST" action="{{ route('projects.members.destroy', [$project, $member]) }}" onsubmit="return confirm('Apakah Anda yakin ingin mengeluarkan {{ addslashes($member->user->name) }} dari tim proyek?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="px-2.5 py-1.5 text-xs text-rose-600 hover:text-white hover:bg-rose-600 border border-rose-200 hover:border-rose-600 rounded-xl font-semibold transition flex items-center space-x-1 shadow-2xs cursor-pointer" title="Hapus dari Tim">
+                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                                <span>Hapus</span>
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
                             @endif
                         </div>
                     @endforeach

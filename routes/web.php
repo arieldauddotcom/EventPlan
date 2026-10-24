@@ -112,6 +112,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/projects/{project}/invitations/{invitation}', [ProjectInvitationController::class, 'destroy'])->name('projects.invitations.destroy');
     Route::get('/projects/{project}/check-user-email', [ProjectMemberController::class, 'checkUserEmail'])->name('projects.members.check-email');
     Route::post('/projects/{project}/members', [ProjectMemberController::class, 'store'])->name('projects.members.store');
+    Route::patch('/projects/{project}/members/{member}/role', [ProjectMemberController::class, 'updateRole'])->name('projects.members.update-role');
     Route::delete('/projects/{project}/members/{member}', [ProjectMemberController::class, 'destroy'])->name('projects.members.destroy');
 
     // Visualizations (Gantt, PERT, Resource Chart)

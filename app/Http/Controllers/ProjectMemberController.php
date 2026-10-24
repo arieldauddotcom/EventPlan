@@ -149,6 +149,78 @@ class ProjectMemberController extends Controller
     }
 
     /**
+     * Ubah role anggota tim proyek (mengangkat menjadi Co-Leader atau menurunkan menjadi Member).
+     */
+    public function updateRole(Request $request, Project $project, ProjectMember $member)
+    {
+        $user = Auth::user();
+
+        if (!$project->isLeader($user)) {
+            abort(403, 'Hanya Project Leader yang dapat mengubah peran anggota tim.');
+        }
+
+        if ($member->project_id !== $project->id) {
+            abort(404);
+        }
+
+        // Pemilik proyek (Owner) perannya permanen dan tidak dapat diubah
+        if ($member->user_id === $project->owner_id) {
+            return back()->with('error', 'Peran Pemilik Proyek (Owner) adalah permanen dan tidak dapat diubah.')
+                ->with('tab', 'members');
+        }
+
+        // Pengguna tidak dapat mengubah perannya sendiri
+        if ($member->user_id === $user->id) {
+            return back()->with('error', 'Anda tidak dapat mengubah peran akun Anda sendiri.')
+                ->with('tab', 'members');
+        }
+
+        // Co-Leader hanya dapat diubah/diturunkan oleh Pemilik Proyek (Owner) atau Administrator
+        if ($member->isLeader() && $user->id !== $project->owner_id && !$user->isAdmin()) {
+            return back()->with('error', 'Hanya Pemilik Proyek (Owner) yang memiliki wewenang untuk mengubah peran Co-Leader.')
+                ->with('tab', 'members');
+        }
+
+        $validated = $request->validate([
+            'role' => 'required|in:member,leader,co-leader',
+        ], [
+            'role.required' => 'Peran anggota wajib ditentukan.',
+            'role.in' => 'Peran harus berupa member, co-leader, atau leader.',
+        ]);
+
+        // Standarisasi role internal: 'leader' mewakili Co-Leader untuk non-owner
+        $newRole = in_array($validated['role'], ['leader', 'co-leader']) ? 'leader' : 'member';
+        $oldRole = $member->role;
+
+        if ($oldRole === $newRole) {
+            $currentLabel = $newRole === 'leader' ? 'Co-Leader' : 'Member';
+            return back()->with('info', "Peran {$member->user->name} sudah merupakan {$currentLabel}.")
+                ->with('tab', 'members');
+        }
+
+        $member->update(['role' => $newRole]);
+
+        // Sinkronisasi peran pada Resource proyek jika ada
+        $resource = Resource::where('project_id', $project->id)
+            ->where('user_id', $member->user_id)
+            ->first();
+
+        if ($resource) {
+            if ($newRole === 'leader' && in_array($resource->role, ['Anggota Tim Pelaksana', 'Member', null])) {
+                $resource->update(['role' => 'Project Co-Leader']);
+            } elseif ($newRole === 'member' && in_array($resource->role, ['Project Co-Leader', 'Leader', 'Co-Leader'])) {
+                $resource->update(['role' => 'Anggota Tim Pelaksana']);
+            }
+        }
+
+        $memberName = $member->user->name ?? 'Anggota';
+        $actionText = $newRole === 'leader' ? 'diangkat menjadi Co-Leader' : 'diubah menjadi Member';
+
+        return back()->with('success', "{$memberName} berhasil {$actionText} proyek!")
+            ->with('tab', 'members');
+    }
+
+    /**
      * Keluarkan anggota dari tim proyek oleh Project Leader.
      */
     public function destroy(Project $project, ProjectMember $member)
