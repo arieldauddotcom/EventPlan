@@ -282,5 +282,7 @@ app/
 
 **Kelas : D
 
+*Semester : 5
+
 **Dosen Pengampu : Dr. Mohamad Syafri Tuloli, ST, MT
 
